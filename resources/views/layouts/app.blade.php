@@ -49,18 +49,33 @@
                         <span><img src="{{asset('app-assets/assets/images/logo-sm.png')}}" alt="logo-small" class="logo-sm" style="height: 25px;"></span>
                     </a>
                 </div>
-                <div class="navbar-custom-menu " style="    margin-left: 3.5rem !important">
+                <div class="navbar-custom-menu" style="margin-left: 3.5rem !important">
                     <div id="navigation">
                         <ul class="navigation-menu">
-                        <li class="{{ Request::is('home') ? 'submenuactive' : '' }}">
+                            <li class="{{ Request::is('home') ? 'submenuactive' : '' }}">
                                 <a href="{{ route('home') }}">
                                     <i class="dripicons-basketball {{ Request::is('home') ? 'submenuactivei' : '' }}"></i>
                                     Dashboard
                                 </a>
-                        </li>
-                   
-                     
-                        
+                            </li>
+                            <li class="{{ Request::is('view_courses') ? 'submenuactive' : '' }}">
+                                <a href="{{ route('course_list') }}">
+                                    <i class="dripicons-view-list-large {{ Request::is('view_courses') ? 'submenuactivei' : '' }}"></i>
+                                    Courses
+                                </a>
+                            </li>
+                            <li class="{{ Request::is('view_subjects') ? 'submenuactive' : '' }}">
+                                <a href="{{ route('subject_list') }}">
+                                    <i class="dripicons-box {{ Request::is('view_subjects') ? 'submenuactivei' : '' }}"></i>
+                                    Subjects
+                                </a>
+                            </li>
+                            <li class="{{ Request::is('view_mapping') ? 'submenuactive' : '' }}">
+                                <a href="{{ route('mapping_list') }}">
+                                    <i class="dripicons-basketball {{ Request::is('view_mapping') ? 'submenuactivei' : '' }}"></i>
+                                    Course Subject Mapping
+                                </a>
+                            </li>
                         </ul>
                     </div>
                 </div>
