@@ -342,6 +342,8 @@ input[readonly] {pointer-events:none}
 }
 .modal-footer
 {
+    margin-top: 4px!important;
+    padding: 2px .75rem !important;
     background-color: #fff !important;
 }
 .modal-header
@@ -365,4 +367,8 @@ div.dt-buttons
 
 .d-none {
     display: none !important;
+}
+.edit_icon
+{
+    cursor: pointer;
 }

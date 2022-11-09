@@ -18,6 +18,7 @@ class User extends Authenticatable
      * @var array<int, string>
      */
      protected $table = 'mdblms_users';
+     public $timestamps = false;
     protected $fillable = [
         'first_name',
         'email',
@@ -42,4 +43,13 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function getCompany()
+    {
+        return $this->hasOne('App\Models\Company','id','company_id')->select(['id', 'company_name'])->where('is_active',1);
+    }
+     public function getUserTypes()
+    {
+        return $this->belongsTo('App\Models\UserTypes','user_type_id','id')->select(['id', 'user_type']);
+    }
 }
