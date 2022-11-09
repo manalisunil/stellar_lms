@@ -10,6 +10,7 @@
                     <table id="datatable" class="table table-bordered mb-0" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                         <thead>
                             <tr>
+                                <th>Sl No</th>
                                 <th>Subject Id</th>
                                 <th>Subject Name</th>
                                 <th>Status</th>
@@ -17,8 +18,9 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @forelse($subjects as $subject)
+                            @forelse($subjects as $k=>$subject)
                             <tr>
+                                <td>{{++$k}}</td>
                                 <td>{{$subject->subject_id}}</td>
                                 <td>{{$subject->subject_name}}</td>
                                 <td>
@@ -185,7 +187,7 @@ $(document).ready(function()
 		    $("div.toolbar").html('<button id="addSubject" type="button" class="ml-2 btn btn-primary" data-toggle="modal" data-target="#addSubjectModal"><img class="menuicon" src="{{asset("app-assets/assets/images/add.svg")}}">&nbsp;Add Subject</button><br />');
 		}, 
         'columnDefs': [ {
-            'targets': [3],
+            'targets': [4],
             'orderable': false,
         }]
     });
@@ -201,13 +203,16 @@ function saveSubject() {
     if ($("#addSubjectForm").parsley()) {
         if ($("#addSubjectForm").parsley().validate()) {
             event.preventDefault();
+            var formData = new FormData($("#addSubjectForm")[0]);
+            var descValue = CKEDITOR.instances.subject_description.getData();
+            formData.append("descriptionValue", descValue);
             if ($("#addSubjectForm").parsley().isValid()) {
                 $.ajax({
                     type: "POST",
                     cache:false,
                     async: false,
                     url: "{{ route('submit_subject') }}",
-                    data: new FormData($("#addSubjectForm")[0]),
+                    data: formData,
                     processData: false,
                     contentType: false,
                     success: function(response) {
@@ -304,6 +309,5 @@ function updateSubject()
 		}
 	}
 }
-
 </script>
 @endsection

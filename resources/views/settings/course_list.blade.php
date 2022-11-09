@@ -10,6 +10,7 @@
                     <table id="datatable" class="table table-bordered mb-0" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                         <thead>
                             <tr>
+                                <th>Sl No</th>
                                 <th>Course Id</th>
                                 <th>Course Name</th>
                                 <th>Course Duration</th>
@@ -19,8 +20,9 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @forelse($courses as $course)
-                            <tr>
+                            @forelse($courses as $k=>$course)
+                            <tr style="cursor:pointer" onclick="details_view('.$course->id.')">
+                                <td>{{++$k}}</td>
                                 <td>{{$course->course_id}}</td>
                                 <td>{{$course->course_name}}</td>
                                 <td>{{$course->course_duration}}</td>
@@ -218,7 +220,7 @@ $(document).ready(function()
 		    $("div.toolbar").html('<button id="addCourse" type="button" class="ml-2 btn btn-primary" data-toggle="modal" data-target="#addCourseModal"><img class="menuicon" src="{{asset("app-assets/assets/images/add.svg")}}">&nbsp;Add Course</button><br />');
 		}, 
         'columnDefs': [ {
-            'targets': [5],
+            'targets': [6],
             'orderable': false,
         }]
     });
@@ -337,6 +339,11 @@ function courseUpdate(){
         }
     }
     return false;
+}
+
+function details_orderview(courseid)
+{
+    window.location.href = "/course_details_view/"+courseid;
 }
 
 </script>

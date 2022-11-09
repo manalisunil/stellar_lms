@@ -35,7 +35,11 @@ Route::post('updateUser',[\App\Http\Controllers\UserController::class, 'updateUs
 
 
 //company 
-Route::get('settings/company',[App\Http\Controllers\UserController::class, 'index'])->name('company');
+Route::get('settings/company',[App\Http\Controllers\CompanyController::class, 'viewCompany'])->name('company_list');
+Route::post('/submit_company', [App\Http\Controllers\CompanyController::class, 'submitCompany'])->name('submit_company');
+Route::get('/edit_company/{id}',[\App\Http\Controllers\CompanyController::class, 'editCompany'])->name('edit_company');
+Route::post('/update_company',[\App\Http\Controllers\CompanyController::class, 'updateCompany'])->name('update_company');
+Route::any('/companyStatus/{companyid?}', [App\Http\Controllers\CompanyController::class, 'companyStatus'])->name('company_status');
 
 //subject
 Route::get('settings/chapter',[App\Http\Controllers\ChapterController::class, 'index'])->name('chapter');
@@ -55,6 +59,7 @@ Route::post('/submit_course', [App\Http\Controllers\CourseController::class, 'su
 Route::any('/courseStatus/{courseid?}', [App\Http\Controllers\CourseController::class, 'courseStatus'])->name('course_status');
 Route::get('/edit_course/{id}',[\App\Http\Controllers\CourseController::class, 'editCourse'])->name('edit_course');
 Route::post('/update_course',[\App\Http\Controllers\CourseController::class, 'updateCourse'])->name('update_course');
+Route::get('/course_details_view/{courseid}', [App\Http\Controllers\CourseController::class, 'courseDetails'])->name('detailsview');
 
 //Subject
 Route::get('settings/view_subjects', [App\Http\Controllers\SubjectController::class, 'viewSubject'])->name('subject_list');

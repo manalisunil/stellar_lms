@@ -4,7 +4,7 @@
 			<div class="card-body tabborder" >
 				<table width="100% " class="ml-1">
 					<tr>
-						<td ><a id="tab1" class="btn btn-sm  odtabs"  href="{{route('company')}}" >Company</a></td>
+						<td ><a id="tab1" class="btn btn-sm  odtabs"  href="{{route('company_list')}}" >Company</a></td>
 						<td ><a id="tab2" class="btn btn-sm  odtabs" href="{{route('user')}}"  >Users</a></td>
 						<td ><a id="tab3" class="btn btn-sm  odtabs"  href="{{route('subject_list')}}" > Subjects</a></td>
 						<td ><a id="tab4" class="btn btn-sm  odtabs"  href="{{route('chapter')}}" >Chapters </a></td>

@@ -27,7 +27,7 @@ class SubjectController extends Controller
         $subject = new Subject();
         $subject->subject_id = $request->subject_id;
         $subject->subject_name = $request->subject_name;
-        $subject->subject_description = $request->subject_description;
+        $subject->subject_description = $request->descriptionValue;
         $subject->added_by = Auth::user()->id;
         $subject->is_active = ($request->is_active == 1)? 1 :0;
         $subject->added_datetime = date('Y-m-d H:i:s');

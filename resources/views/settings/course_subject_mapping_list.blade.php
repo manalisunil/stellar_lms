@@ -10,6 +10,7 @@
                     <table id="datatable" class="table table-bordered mb-0" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                         <thead>
                             <tr>
+                                <th>Sl No</th>
                                 <th>Course</th>
                                 <th>Subject</th>
                                 <th>Status</th>
@@ -17,8 +18,9 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @forelse($mappings as $map)
+                            @forelse($mappings as $k=>$map)
                             <tr>
+                                <td>{{++$k}}</td>
                                 <td>@if(isset($map->course)){{$map->course->course_name}}@endif</td>
                                 <td>@if(isset($map->subject)){{$map->subject->subject_name}}@endif</td>
                                 <td>
@@ -189,7 +191,7 @@ $(document).ready(function()
 		    $("div.toolbar").html('<button id="addMapping" type="button" class="ml-2 btn btn-primary" data-toggle="modal" data-target="#addMappingModal"><img class="menuicon" src="{{asset("app-assets/assets/images/add.svg")}}">&nbsp;Add Mapping</button><br />');
 		}, 
         'columnDefs': [ {
-            'targets': [3],
+            'targets': [4],
             'orderable': false,
         }]
     });

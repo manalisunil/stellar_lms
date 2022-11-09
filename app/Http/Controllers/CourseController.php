@@ -248,4 +248,10 @@ class CourseController extends Controller
             return response()->json(['data'=>'error','msg'=>$validator->errors()->all()]);
         }
     }
+
+    public function courseDetails($courseid='')
+    {
+        $course = Course::find($courseid);
+        return view('settings.course_details_view',compact('course'));
+    }
 }
