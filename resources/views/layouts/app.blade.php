@@ -49,33 +49,25 @@
                         <span><img src="{{asset('app-assets/assets/images/logo-sm.png')}}" alt="logo-small" class="logo-sm" style="height: 25px;"></span>
                     </a>
                 </div>
-                <div class="navbar-custom-menu" style="margin-left: 3.5rem !important">
+                <div class="navbar-custom-menu " style="    margin-left: 3.5rem !important">
                     <div id="navigation">
                         <ul class="navigation-menu">
-                            <li class="{{ Request::is('home') ? 'submenuactive' : '' }}">
+                        <li class="{{ Request::is('home') ? 'submenuactive' : '' }}">
                                 <a href="{{ route('home') }}">
                                     <i class="dripicons-basketball {{ Request::is('home') ? 'submenuactivei' : '' }}"></i>
                                     Dashboard
                                 </a>
-                            </li>
-                            <li class="{{ Request::is('view_courses') ? 'submenuactive' : '' }}">
-                                <a href="{{ route('course_list') }}">
-                                    <i class="dripicons-view-list-large {{ Request::is('view_courses') ? 'submenuactivei' : '' }}"></i>
-                                    Courses
+                        </li>
+                      
+                        <li class="{{ Request::is('settings/*') ? 'submenuactive' : '' }}">
+                                <a href="{{ route('user') }}">
+                                    <i class="dripicons-basket {{ Request::is('settings/*') ? 'submenuactivei' : '' }}"></i>
+                                    Settings
                                 </a>
-                            </li>
-                            <li class="{{ Request::is('view_subjects') ? 'submenuactive' : '' }}">
-                                <a href="{{ route('subject_list') }}">
-                                    <i class="dripicons-box {{ Request::is('view_subjects') ? 'submenuactivei' : '' }}"></i>
-                                    Subjects
-                                </a>
-                            </li>
-                            <li class="{{ Request::is('view_mapping') ? 'submenuactive' : '' }}">
-                                <a href="{{ route('mapping_list') }}">
-                                    <i class="dripicons-basketball {{ Request::is('view_mapping') ? 'submenuactivei' : '' }}"></i>
-                                    Course Subject Mapping
-                                </a>
-                            </li>
+                        </li>
+                       
+                     
+                        
                         </ul>
                     </div>
                 </div>
@@ -94,11 +86,8 @@
                                 <i class="mdi mdi-chevron-down"></i></span>
                             </a>
                             <div class="dropdown-menu dropdown-menu-right">
-                                 <form id="logout-form" action="{{ url('logout') }}" method="POST">
-                                      {{ csrf_field() }}
-                                        
-                                         <button type="submit">Logout</button>
-                                         </form>
+                                
+                                <a class="dropdown-item" href="{{ route('logout') }}"><i class="ti-power-off text-muted mr-2"></i> Logout</a>
                                    
                                 <a class="dropdown-item" href=""><i class="fa fa-user ti-power-off text-muted mr-2"></i> Profile</a>
                             </div>
