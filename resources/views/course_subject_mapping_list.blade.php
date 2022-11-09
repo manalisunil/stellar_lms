@@ -27,7 +27,7 @@
                                     </div>
                                 </td>
                                 <td> 
-                                    <button type="button" class="edit_mapping ml-2 btn btn-sm"  data-id="{{ $map->id }}"><img class="menuicon tbl_editbtn" src="{{asset("app-assets/assets/images/edit.svg")}}" >&nbsp;</button>
+                                    <button type="button" class="edit_icon edit_mapping ml-2 btn btn-sm"  data-id="{{ $map->id }}"><img class="menuicon tbl_editbtn" src="{{asset("app-assets/assets/images/edit.svg")}}" >&nbsp;</button>
                                 </td>
                             </tr>
                             @empty
@@ -39,7 +39,7 @@
         </div>
     </div>
 </div>
-<!-- The Add Subject Modal -->
+<!-- The Add Mapping Modal -->
 <div class="modal fade" id="addMappingModal">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
@@ -93,6 +93,64 @@
         </div>
     </div>
 </div>
+<!-- End -->
+
+<!-- The Edit Mapping Modal -->
+<div class="modal fade" id="mappingEditModal">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+	        <form method="post" name="updateMappingForm" id="updateMappingForm" role="form" enctype="multipart/form-data" autocomplete="off" data-parsley-validate>
+	            @csrf
+                <input  name="id" value="" id="id" type="hidden"  />
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Edit Course Subject Mapping</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+                </div>
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-lg-1">
+                            <label for="unique-id-input" class="col-form-label">Subject<span class="text-danger"> * <span></label>
+                        </div>
+                        <div class="col-lg-3">
+                            <select required class="form-control" name="subject_id" id="ed_subject_id" required>
+                                <option value="">Select Subject</option>
+                                @foreach($subjects as $subject)
+                                    <option value="{{ $subject->id }}">{{ $subject->subject_name }}</option>
+                                @endforeach
+                            </select>                                        
+                        </div>
+                        <div class="col-lg-1 pr-0">
+                            <label for="address-input" class="col-form-label">Course<span class="text-danger"> * <span></label>
+                        </div>
+                        <div class="col-lg-3">
+                            <select required class="form-control" name="course_id" id="ed_course_id" required>
+                                <option value="">Select Course</option>
+                                @foreach($cources as $course)
+                                    <option value="{{ $course->id }}">{{ $course->course_name }}</option>
+                                @endforeach
+                            </select>    
+                        </div>
+                        <div class="col-lg-1 pr-0">
+                            <label for="active-input" class="col-forwm-label">Is Active?</label>
+                        </div>
+                        <div class="col-lg-3 mt-2">
+                            <input type="checkbox" checked value="1" id="ed_is_active" name="is_active" />
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    <input type="submit" value="Update" name="submit" id="edit_submit" class="btn btn-primary" onclick="updateMapping();">
+                </div>
+	        </form>
+        </div>
+    </div>
+</div>
+<!-- End Modal -->
 
 <script type="text/javascript">
 $(function () {
@@ -185,6 +243,80 @@ function saveMapping() {
             }
         }
     }
+}
+
+$(".edit_mapping").click(function() {
+    var id = $(this).data('id');
+    var url = '{{ route("edit_mapping") }}';
+    $.ajax({
+        type: "post",
+        url: url,
+        data: { id:id , _token: '{{csrf_token()}}'},
+        success: function(response)
+        {
+            var res =response.data[0];
+            $("#id").val(res['id']);
+            $("#ed_subject_id").val(res['subject_id']);
+            $("#ed_course_id").val(res['course_id']);
+            if(res['is_active'] == 1)
+            {
+                $( "#ed_is_active" ).attr('checked', 'checked');
+            }
+            else
+            {
+                $( "#ed_is_active" ).removeAttr('checked', 'checked');
+            }
+            $("#mappingEditModal").modal('show');
+        }
+    });
+});
+
+function updateMapping()
+{
+    var url = '{{ route("update_mapping") }}';
+    if ($("#updateMappingForm").parsley()) {
+		if ($("#updateMappingForm").parsley().validate()) {
+			event.preventDefault();
+            var formData = new FormData($("#updateMappingForm")[0]);
+			if ($("#updateMappingForm").parsley().isValid()) {
+				$.ajax({
+					type: "POST",
+					cache:false,
+					async: false,
+					url: url,
+					data: formData,
+					processData: false,
+					contentType: false,
+					success: function(response) {
+                        if(response.msg=="Mapping Already Exists!"){
+                            new PNotify({
+                            title: 'Error',
+                            text:  response.msg,
+                            type: 'error',
+                            delay: 1000
+                            });
+                            return false;
+                        } else {
+                            new PNotify({
+                            title: 'Success',
+                            text:  response.msg,
+                            type: 'success'
+                            });
+                            setTimeout(function(){  location.reload(); }, 1000);
+                        }
+                    },
+					error:function(response) {
+						var errors = response.responseJSON;
+						new PNotify({
+                            title: 'Error',
+                            text:  errors.msg,
+                            type: 'error'
+					    });
+					}
+				});
+			}
+		}
+	}
 }
 </script>
 @endsection

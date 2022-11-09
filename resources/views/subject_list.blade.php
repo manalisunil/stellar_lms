@@ -27,7 +27,7 @@
                                     </div>
                                 </td>
                                 <td> 
-                                    <button type="button" class="edit_subject ml-2 btn btn-sm"  data-id="{{ $subject->id }}"><img class="menuicon tbl_editbtn" src="{{asset("app-assets/assets/images/edit.svg")}}" >&nbsp;</button>
+                                    <button type="button" class="edit_icon edit_subject ml-2 btn btn-sm"  data-id="{{ $subject->id }}"><img class="menuicon tbl_editbtn" src="{{asset("app-assets/assets/images/edit.svg")}}" >&nbsp;</button>
                                 </td>
                             </tr>
                             @empty
@@ -260,6 +260,7 @@ $(".edit_subject").click(function() {
         }
     });
 });
+
 function updateSubject()
 {
     var url = '{{ route("update_subject") }}';

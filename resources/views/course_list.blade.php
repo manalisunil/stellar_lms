@@ -31,7 +31,7 @@
                                     </div>
                                 </td>
                                 <td> 
-                                    <button type="button" class="edit_course ml-2 btn btn-sm"  data-id="{{ $course->id }}"><img class="menuicon tbl_editbtn" src="{{asset("app-assets/assets/images/edit.svg")}}" >&nbsp;</button>
+                                    <button type="button" class="edit_icon edit_course ml-2 btn btn-sm"  data-id="{{ $course->id }}" onclick="editCourse({{ $course->id }})"><img class="menuicon tbl_editbtn" src="{{asset("app-assets/assets/images/edit.svg")}}" >&nbsp;</button>
                                 </td>
                             </tr>
                             @empty
@@ -151,6 +151,35 @@
         </div>
     </div>
 </div>
+<!-- End -->
+
+<!-- The Edit Course Modal -->
+<div class="modal fade" id="courseEditModal">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+	        <form method="post" name="updateCourseForm" id="updateCourseForm" role="form" enctype="multipart/form-data" autocomplete="off" data-parsley-validate>
+	            @csrf
+                <input  name="id" value="" id="id" type="hidden"  />
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Edit Course</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+                </div>
+                <!-- Modal body -->
+                <div class="modal-body">
+    		        <div id="append_data"></div>   
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    <input type="submit" value="Update" name="submit" id="edit_submit" class="btn btn-primary" onclick="courseUpdate();">
+                </div>
+	        </form>
+        </div>
+    </div>
+</div>
+<!-- End Modal -->
 
 <script type="text/javascript">
 $(function () {
@@ -203,13 +232,20 @@ function saveCourse() {
     if ($("#addCourseForm").parsley()) {
         if ($("#addCourseForm").parsley().validate()) {
             event.preventDefault();
+            var formData = new FormData($("#addCourseForm")[0]);
+            var descValue = CKEDITOR.instances.course_description.getData();
+            var deliValue = CKEDITOR.instances.course_deliverables.getData();
+            var eligValue = CKEDITOR.instances.course_eligibility.getData();
+            formData.append("descriptionValue", descValue);
+            formData.append("deliverableValue", deliValue);
+            formData.append("eligibilityValue", eligValue);
             if ($("#addCourseForm").parsley().isValid()) {
                 $.ajax({
                     type: "POST",
                     cache:false,
                     async: false,
                     url: "{{ route('submit_course') }}",
-                    data: new FormData($("#addCourseForm")[0]),
+                    data: formData,
                     processData: false,
                     contentType: false,
                     success: function(response) {
@@ -237,5 +273,67 @@ function saveCourse() {
         }
     }
 }
+
+function editCourse(courseId){
+    $("#removeData").remove();
+    $.ajax({
+        url: "/edit_course/" + courseId,
+        success: function(data) {
+            $("#append_data").append(data.data);
+            CKEDITOR.replace('ed_course_description');
+            CKEDITOR.replace('ed_course_deliverables');
+            CKEDITOR.replace('ed_course_eligibility');
+            $('#courseEditModal').modal('show'); 
+        }
+    })
+}
+
+function courseUpdate(){
+    if ($("#updateCourseForm").parsley()) {
+        if ($("#updateCourseForm").parsley().validate()) {
+            event.preventDefault();
+            var formData = new FormData($("#updateCourseForm")[0]);
+            var descValue = CKEDITOR.instances.ed_course_description.getData();
+            var deliValue = CKEDITOR.instances.ed_course_deliverables.getData();
+            var eligValue = CKEDITOR.instances.ed_course_eligibility.getData();
+            formData.append("descriptionValue", descValue);
+            formData.append("deliverableValue", deliValue);
+            formData.append("eligibilityValue", eligValue);
+            if ($(updateCourseForm).parsley().isValid()) {
+                $.ajax({	
+                    type: "POST",
+                    cache:false,
+                    async: false,
+                    url: "{{ url('/update_course') }}",
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        new PNotify({
+                            title: 'Success',
+                            text:  response.msg,
+                            type: 'success'
+                        });
+                        setTimeout(function(){  location.reload(); }, 800);
+                    },
+                    error:function(response) {
+                        var err = "";
+                        $.each(response.responseJSON.errors,function(field_name,error){
+                            err = err +'<br>' + error;
+                        });
+                        new PNotify({
+                            title: 'Error',
+                            text:err,
+                            type: 'error',
+                            delay: 2000
+                        });
+                    }
+                });
+            }
+        }
+    }
+    return false;
+}
+
 </script>
 @endsection

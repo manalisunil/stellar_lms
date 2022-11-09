@@ -25,6 +25,8 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::get('/view_courses', [App\Http\Controllers\CourseController::class, 'viewCourse'])->name('course_list');
 Route::post('/submit_course', [App\Http\Controllers\CourseController::class, 'submitCourse'])->name('submit_course');
 Route::any('/courseStatus/{courseid?}', [App\Http\Controllers\CourseController::class, 'courseStatus'])->name('course_status');
+Route::get('/edit_course/{id}',[\App\Http\Controllers\CourseController::class, 'editCourse'])->name('edit_course');
+Route::post('/update_course',[\App\Http\Controllers\CourseController::class, 'updateCourse'])->name('update_course');
 
 //Subject
 Route::get('/view_subjects', [App\Http\Controllers\SubjectController::class, 'viewSubject'])->name('subject_list');
@@ -37,7 +39,8 @@ Route::post('/update_subject',[\App\Http\Controllers\SubjectController::class, '
 Route::get('/view_mapping', [App\Http\Controllers\SubjectController::class, 'viewMapping'])->name('mapping_list');
 Route::post('/course_subject_mapping', [App\Http\Controllers\SubjectController::class, 'submitCousreSubjectMapping'])->name('submit_csmapping');
 Route::any('/mappingStatus/{mappingid?}', [App\Http\Controllers\SubjectController::class, 'mappingStatus'])->name('mapping_status');
-
+Route::post('/edit_mapping',[\App\Http\Controllers\SubjectController::class, 'editMapping'])->name('edit_mapping');
+Route::post('/update_mapping',[\App\Http\Controllers\SubjectController::class, 'updateMapping'])->name('update_mapping');
 
 
 

@@ -137,4 +137,40 @@ class SubjectController extends Controller
         }
     }
 
+    public function editMapping(Request $request)
+    {
+        $id =$request->id;
+        $mappingDetail = CourseSubjectMapping::where('id',$id)->get();
+        return response()->json(['data'=>$mappingDetail]);
+    }
+
+    public function updateMapping(Request $request)
+    {
+         $request->validate([
+            'subject_id' => 'required',
+            'course_id' => 'required',
+        ]);
+
+        $check_mapping = CourseSubjectMapping::Where('subject_id','=',$request->subject_id)->where('course_id','=',$request->course_id)->first();
+        if(isset($check_mapping))
+        {
+            return response()->json(['data'=>'error','msg'=>'Mapping Already Exists!']);
+        }
+        
+        $csmapping = CourseSubjectMapping::find($request->id);
+        $csmapping->subject_id = $request->subject_id;
+        $csmapping->course_id = $request->course_id;
+        $csmapping->added_by = Auth::user()->id;
+        $csmapping->is_active = ($request->is_active == 1)? 1 :0;
+        $csmapping->added_datetime = date('Y-m-d H:i:s');
+        if($csmapping->save())
+        {
+            return response()->json(['data'=>'success','msg'=>'Mapping Updated Successfully!']);
+        }
+        else
+        {
+            return response()->json(['data'=>'error','msg'=>$validator->errors()->all()]);
+        }
+    }
+
 }
