@@ -2,6 +2,7 @@
 @section('title', 'Subject')
 @section('content')
 <div class="container-fluid mt-1">
+    @include('settings.common_tabs')
     <div class="col-lg-12" >
         <div class="card" >
             <div class="card-body">
@@ -174,6 +175,9 @@ $(function () {
 
 $(document).ready(function()
 {
+    $(".odtabs").not("#tab3").addClass('btn-outline-secondary');
+	$("#tab3").addClass('btn-secondary');
+
     var table = $('#datatable').DataTable({
         responsive: true,
         dom: 'l<"toolbar">frtip',

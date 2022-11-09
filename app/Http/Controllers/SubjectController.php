@@ -14,7 +14,7 @@ class SubjectController extends Controller
     public function viewSubject()
     {
         $subjects = Subject::all();
-        return view('subject_list',compact('subjects'));
+        return view('settings.subject_list',compact('subjects'));
     }
 
     public function submitSubject(Request $request)
@@ -63,7 +63,7 @@ class SubjectController extends Controller
         $cources = Course::where('is_active', 1)->get();
         $subjects = Subject::where('is_active', 1)->get();
 
-        return view('course_subject_mapping_list',compact('mappings','cources','subjects'));
+        return view('settings.course_subject_mapping_list',compact('mappings','cources','subjects'));
     }
 
     public function submitCousreSubjectMapping(Request $request)
@@ -156,7 +156,7 @@ class SubjectController extends Controller
         {
             return response()->json(['data'=>'error','msg'=>'Mapping Already Exists!']);
         }
-        
+
         $csmapping = CourseSubjectMapping::find($request->id);
         $csmapping->subject_id = $request->subject_id;
         $csmapping->course_id = $request->course_id;

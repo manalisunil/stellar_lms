@@ -13,7 +13,7 @@ class CourseController extends Controller
     {
         $courses = Course::all();
         $company_list = Company::all();
-        return view('course_list',compact('courses','company_list'));
+        return view('settings.course_list',compact('courses','company_list'));
     }
 
     public function submitCourse(Request $request)
