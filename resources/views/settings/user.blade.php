@@ -17,6 +17,7 @@
 									<th>Email</th>
 									<th>User Role</th>
 									<th> Status</th>
+									<th></th>
 									<th>Action</th>
 								</tr>
 							</thead>
@@ -25,7 +26,7 @@
 								<tr>
 									<td> {{++$k}}</td>
 									<td> @if($userDt->getCompany != null) {{$userDt->getCompany['company_name']}} @endif</td>
-									<td> {{$userDt->first_name}}  {{$userDt->last_name}}</td>
+									<td> {{$userDt->first_name}} {{$userDt->middle_name}} {{$userDt->last_name}}</td>
 									<td> {{$userDt->email}}</td>
 									<td> {{$userDt->getUserTypes['user_type']}}</td>
 									<td>
@@ -34,6 +35,9 @@
 											<label class="custom-control-label" for="customSwitch{{ $userDt->id }}">@if($userDt->is_active==1) Active @else Inactive @endif</label>
 										</div>
 									</td>
+									<th>
+										<span  class="btn-primary btn-sm edit_icon"  onClick="view_detail({{ $userDt->id}})">View</span>
+									</th>
 									<td> <span   class="edit_icon edit_user ml-2"  data-id="{{ $userDt->id }}"><img class="menuicon tbl_editbtn" src="{{asset("app-assets/assets/images/edit.svg")}}" >&nbsp;</span>
 									</td>
 								</tr>
@@ -208,8 +212,44 @@
 				
 			</div>
 		</div>
-	</div>
+</div>
+<div class="modal fade" id="userviewModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-lg" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">User Detail</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+				<div id="viewuserdata"></div>
+				</div>
+				
+			</div>
+		</div>
+</div>
 <script type="text/javascript">
+function userStatus(value)
+{
+	window.location.href = '/userStatus/' + value;
+}
+function view_detail(id)
+{
+	var url = '{{ route("user_view_topic") }}';
+	$.ajax({
+		type: "post",
+		url: url,
+		data: { id:id , _token: '{{csrf_token()}}'},
+		dataType:'html',
+		success: function(response)
+		{
+			$('#userviewModal').modal('show');
+			$("#viewuserdata").html(response);
+		}
+	});
+
+}
 $(function () 
 {
 	@if(Session::has('success'))

@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
-use App\Models\Subjects;
+use App\Models\Subject;
 use App\Models\Chapter;
 use App\Models\Topic;
 
@@ -72,7 +72,7 @@ class TopicsController extends Controller
 							</div>
 							<div class="col-lg-4">
 								<label for="company_select" class="col-form-label"> Topic Id <span class="text-danger"> * </span></label>
-								<input required name="topic_id" value="'.$topicDetail->chapter_id.'" id="topic_id" type="text" class="form-control" placeholder="Enter Topic Id" required data-parsley-trigger="focusout" data-parsley-trigger="keyup" data-parsley-pattern="^[A-Za-z _0-9][A-Za-z 0-9]*$" />
+								<input required name="topic_id" value="'.$topicDetail->topic_id.'" id="topic_id" type="text" class="form-control" placeholder="Enter Topic Id" required data-parsley-trigger="focusout" data-parsley-trigger="keyup" data-parsley-pattern="^[A-Za-z _0-9][A-Za-z 0-9]*$" />
 								
 							</div>
 
@@ -128,5 +128,48 @@ class TopicsController extends Controller
         {
             return response()->json(['data'=>'error','msg'=>$validator->errors()->all()]);
         }
+    }
+    public function topicStatus($id) 
+    {
+        $detail = Topic::find($id);
+        if ($detail->is_active == 1) {
+            Topic::where('id', $id)->update(['is_active' => 0]);
+        } else {
+            Topic::where('id', $id)->update(['is_active' => 1]);
+        }
+        return redirect()->back()->with('success', "Status Changed Successfully!");
+    }
+    public function view_topic(Request $request)
+    {
+        $id = $request->id;
+        $detail = Topic::find($id);
+        // dd($detail);
+
+        $output ='<div class="row ">
+            <div class="col-lg-9 text-left">
+                <h5 class="modal-title pl-3" id="exampleModalLabel">
+                    
+                    <img class="mensuicon " src="'.asset('app-assets/assets/images/backs.png').'" style="width:1.3rem;height:1.3rem;margin-right: 10px; cursor:pointer;" onclick=backTo_tble()>
+                    
+                        '.$detail->topic_name.'
+                </h5>
+            </div>
+            <div class="col-lg-3 pt-2">
+                <label for="unique-id-input" class="">Chapter Name  : '.$detail->getChapter['chapter_name'].'</b></label>
+            </div>
+        </div>
+        <div class="card  card_top_orenge" >
+            <div class="card-body">
+                <div class="row mb-2">
+                <div class="col-lg-1">
+                    <label for="city-input" class="">Topic Desacription :</b> </label>
+                </div>
+                    <div class="col-lg-12">
+                       '.$detail->topic_description.'
+                    </div> 
+                </div>  
+            </div>
+        </div>';
+        echo $output;
     }
 }

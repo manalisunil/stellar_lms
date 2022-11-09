@@ -299,4 +299,142 @@ class UserController extends Controller
             return response()->json(['data'=>'error','msg'=>$validator->errors()->all()]);
         }
     }
+    public function userStatus($userid) 
+    {
+        $userdetails = User::find($userid);
+        if ($userdetails->is_active == 1) {
+            User::where('id', $userid)->update(['is_active' => 0]);
+        } else {
+            User::where('id', $userid)->update(['is_active' => 1]);
+        }
+        return redirect()->back()->with('success', "Status Changed Successfully!");
+    }
+    public function user_view(Request $request)
+    {
+    	$id = $request->id;
+    	$userdetails = User::find($id);
+    	?>
+	    	<div class="row">
+				<div class="col-lg-4">
+					<label class="col-form-label"> Company </label> : <?php echo ($userdetails->getCompany != null)?$userdetails->getCompany['company_name']:"";?>
+					
+				</div>
+				<div class="col-lg-4">
+					<label  class="col-form-label">Address 1</label> 
+					: <?php echo $userdetails->address_line1 ;?>
+					
+				</div>
+				
+				<div class="col-lg-4">
+					<label  class="col-form-label">Address 2</label> 
+					: <?php echo $userdetails->address_line1 ;?>
+					
+				</div>
+				<div class="col-lg-4">
+					<label  class="col-form-label">First Name </label> : <?php echo $userdetails->first_name;?>
+					
+				</div>
+				<div class="col-lg-4">
+					<label  class="col-form-label">City</label> 
+					: <?php echo $userdetails->city ;?>
+					
+				</div>
+				<div class="col-lg-4">
+					<label  class="col-form-label">DOB</label> 
+					: <?php echo date('d-m-Y', strtotime($userdetails->dob));?>
+				</div>
+				<div class="col-lg-4">
+					<label  class="col-form-label">Middel Name</label> 
+					: <?php echo $userdetails->middle_name;?>
+		
+					
+				</div>
+				<div class="col-lg-4">
+					<label  class="col-form-label">State</label> 
+					: <?php echo $userdetails->state ;?>
+					
+				</div>
+				<div class="col-lg-4">
+					<label  class="col-form-label">Gender</label> 
+					: <?php echo ($userdetails->gender == 1)?"Male":"Female";?>
+					
+				</div>
+				<div class="col-lg-4">
+					<label  class="col-form-label">Last Name</label> 
+					: <?php echo $userdetails->last_name;?>
+					
+					
+					
+				</div>
+				<div class="col-lg-4">
+					<label  class="col-form-label">Country</label> 
+					: <?php echo $userdetails->country ;?>
+					
+				</div>
+				
+				<div class="col-lg-4">
+					<label  class="col-form-label">Contact No.</label> 
+					: <?php echo $userdetails->contact_no ;?>
+					
+				</div>
+				<div class="col-lg-4">
+					<label  class="col-form-label">Email</label> 
+					: <?php echo $userdetails->email ;?>
+					
+				</div>
+				<div class="col-lg-4">
+					<label  class="col-form-label">Zip</label> 
+					: <?php echo $userdetails->zip ;?>
+					
+				</div>
+				
+				<div class="col-lg-4">
+					<label  class="col-form-label">Status</label> 
+					: <?php echo ($userdetails->is_active == 1)?"Active":"Inactive"; ;?>
+					
+				</div>
+				<div class="col-lg-4">
+					<label  class="col-form-label">User type</label> 
+					: <?php echo ($userdetails->getUserTypes != null)?$userdetails->getUserTypes['user_type']:"";?>
+					
+				</div>
+				<?php 
+				if($userdetails->user_type_id != 4)
+				{
+					?>
+					<div class="col-lg-4">
+						<label  class="col-form-label">Content Writer</label> 
+						: <?php echo ($userdetails->is_content_writer ==1)? "Yes":"No";?>
+					
+					</div>
+					<?php
+					
+
+				}
+				if($userdetails->user_type_id != 3)
+				{
+					?>
+					<div class="col-lg-4">
+						<label  class="col-form-label">Qualification</label> 
+						: <?php echo $userdetails->qualification ;?>
+					
+					</div>
+					<div class="col-lg-4">
+						<label  class="col-form-label">Institution</label> 
+						: <?php echo $userdetails->institution ;?>
+					
+					</div>
+					
+					
+					<?php
+				}
+				
+				
+				
+				
+				
+			?></div>
+			 <?php
+
+    }  
 }

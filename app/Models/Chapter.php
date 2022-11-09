@@ -13,6 +13,6 @@ class Chapter extends Model
 
     public function getSubject()
     {
-        return $this->hasOne('App\Models\Subjects','id','subject_id')->select(['id', 'subject_name'])->where('is_active',1);
+        return $this->hasOne('App\Models\Subject','id','subject_id')->select(['id', 'subject_name'])->where('is_active',1);
     }
 }

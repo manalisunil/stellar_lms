@@ -7,13 +7,14 @@
 		<div class="col-lg-12">
 			<div class="card">
 				<div class="card-body">
-					<div class="p-0">
+					<div class="p-0" id="tbl_list">
 						<table id="datatable" class="table table-bordered mb-0" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
 							<thead>
 								<tr>
 									<th> Sl no</th>
 									<th>Chapter</th>
 									<th>Topic</th>
+									<th>Description</th>
 									<th>Status</th>
 									<th>Action</th>
 								</tr>
@@ -26,10 +27,13 @@
 									<td> {{$topcDt->topic_name}}</td>
 									<td>
 										<div class="custom-control custom-switch">
-											<input type="checkbox"  class="custom-control-input" id="customSwitch{{ $topcDt->id }}"  value="{{ $topcDt->id }}" onclick="userStatus(this.value)" @if($topcDt->is_active==1) checked @endif>
+											<input type="checkbox"  class="custom-control-input" id="customSwitch{{ $topcDt->id }}"  value="{{ $topcDt->id }}" onclick="topicStatus(this.value)" @if($topcDt->is_active==1) checked @endif>
 											<label class="custom-control-label" for="customSwitch{{ $topcDt->id }}">@if($topcDt->is_active==1) Active @else Inactive @endif</label>
 										</div>
 									</td>
+									<td  >
+                                        <span  class="btn-primary btn-sm edit_icon"  onClick="view_description({{ $topcDt->id}})">View</span>
+                                    </td>
 									<td> <span   class="edit_icon edit_topic ml-2"  data-id="{{ $topcDt->id }}"><img class="menuicon tbl_editbtn" src="{{asset("app-assets/assets/images/edit.svg")}}" >&nbsp;</span>
 									</td>
 								</tr>
@@ -37,6 +41,9 @@
 								@endforelse
 							</tbody>
 						</table>
+					</div>
+					<div class="p-0" id="topicdetail">
+						<div id="topic_view_div"></div>
 					</div>
 				</div>
 			</div>
@@ -122,8 +129,57 @@
 				
 			</div>
 		</div>
-	</div>
+</div>
+<div class="modal" id="viewDocModal" style="display:none;">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title">View Description</h6>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="supportingDoc">
+                    <div class="row" id="append_stdoc_view"></div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</div>
 <script type="text/javascript">
+function topicStatus(value)
+{
+	window.location.href = '/topicStatus/' + value;
+}
+// function view_description(text)
+// {
+//     $('#viewDocModal').modal('show');
+//     $(".modal-body #append_stdoc_view").html(text.topic_description);
+    
+// }
+function backTo_tble()
+{
+	$("#tbl_list").show();
+	$("#topicdetail").hide();
+	$("#topic_view_div").html("");
+}
+function view_description(id)
+{
+	var url = '{{ route("topic_view_topic") }}';
+	$.ajax({
+		type: "post",
+		url: url,
+		data: { id:id , _token: '{{csrf_token()}}'},
+		dataType:'html',
+		success: function(response)
+		{
+			$("#topic_view_div").html(response);
+			$("#tbl_list").hide();
+			$("#topicdetail").show();
+		}
+	});
+    
+}
 $(function () 
 {
 	@if(Session::has('success'))
@@ -149,6 +205,7 @@ $(function ()
 });
 $(document).ready(function()
 {
+	$("#topicdetail").hide();
 	$(".odtabs").not("#tab5").addClass('btn-outline-secondary');
 	$("#tab5").addClass('btn-secondary');
 	

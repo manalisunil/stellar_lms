@@ -4,14 +4,14 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
-use App\Models\Subjects;
+use App\Models\Subject;
 use App\Models\Chapter;
 
 class ChapterController extends Controller
 {
     public function index()
     {
-    	$subjectList  = Subjects::where('is_active',1)->get();
+    	$subjectList  = Subject::where('is_active',1)->get();
         $chapterList  = Chapter::get();
         return view('settings.chapter',compact('chapterList','subjectList'));
     }
@@ -47,7 +47,7 @@ class ChapterController extends Controller
      public function edit_chapter(Request $request)
     {
         $id =$request->id;
-        $subjectList  = Subjects::where('is_active',1)->get();
+        $subjectList  = Subject::where('is_active',1)->get();
 
         $chapterDetail = Chapter::where('id',$id)->first();
        	$output="";
@@ -127,5 +127,49 @@ class ChapterController extends Controller
         {
             return response()->json(['data'=>'error','msg'=>$validator->errors()->all()]);
         }
+    }
+    public function chapterstatus($id) 
+    {
+        $detail = Chapter::find($id);
+        if ($detail->is_active == 1) 
+        {
+            Chapter::where('id', $id)->update(['is_active' => 0]);
+        } else {
+            Chapter::where('id', $id)->update(['is_active' => 1]);
+        }
+        return redirect()->back()->with('success', "Status Changed Successfully!");
+    }
+    public function view_topic(Request $request)
+    {
+        $id = $request->id;
+        $detail = Chapter::find($id);
+        // dd($detail);
+
+        $output ='<div class="row ">
+            <div class="col-lg-9 text-left">
+                <h5 class="modal-title pl-3" id="exampleModalLabel">
+                    
+                    <img class="mensuicon " src="'.asset('app-assets/assets/images/backs.png').'" style="width:1.3rem;height:1.3rem;margin-right: 10px; cursor:pointer;" onclick=backTo_tble()>
+                    
+                        '.$detail->chapter_name.'
+                </h5>
+            </div>
+            <div class="col-lg-3 pt-2">
+                <label for="unique-id-input" class="">Subject Name  : '.$detail->getSubject['subject_name'].'</b></label>
+            </div>
+        </div>
+        <div class="card  card_top_orenge" >
+            <div class="card-body">
+                <div class="row mb-2">
+                <div class="col-lg-1">
+                    <label for="city-input" class="">Topic Desacription :</b> </label>
+                </div>
+                    <div class="col-lg-12">
+                       '.$detail->chapter_name.'
+                    </div> 
+                </div>  
+            </div>
+        </div>';
+        echo $output;
     }
 }

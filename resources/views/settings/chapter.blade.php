@@ -7,14 +7,16 @@
 		<div class="col-lg-12">
 			<div class="card">
 				<div class="card-body">
-					<div class="p-0">
+					<div class="p-0" id="tbl_list">
 						<table id="datatable" class="table table-bordered mb-0" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
 							<thead>
 								<tr>
 									<th> Sl no</th>
-									<th> Company</th>
+									<th> Subject Name</th>
+									<th> Chapter Id</th>
 									<th>Name</th>
 									<th> Status</th>
+									<th>Description</th>
 									<th>Action</th>
 								</tr>
 							</thead>
@@ -23,13 +25,19 @@
 								<tr>
 									<td> {{++$k}}</td>
 									<td> @if($chpDt->getSubject != null) {{$chpDt->getSubject['subject_name']}} @endif</td>
+									<td> {{$chpDt->chapter_id}}</td>
 									<td> {{$chpDt->chapter_name}}</td>
+									
 									<td>
 										<div class="custom-control custom-switch">
-											<input type="checkbox"  class="custom-control-input" id="customSwitch{{ $chpDt->id }}"  value="{{ $chpDt->id }}" onclick="userStatus(this.value)" @if($chpDt->is_active==1) checked @endif>
+											<input type="checkbox"  class="custom-control-input" id="customSwitch{{ $chpDt->id }}"  value="{{ $chpDt->id }}" onclick="chapterstatus(this.value)" @if($chpDt->is_active==1) checked @endif>
 											<label class="custom-control-label" for="customSwitch{{ $chpDt->id }}">@if($chpDt->is_active==1) Active @else Inactive @endif</label>
 										</div>
 									</td>
+									<td>
+                                        <span  class="btn-primary btn-sm edit_icon"  onClick="view_description({{ $chpDt->id}})">View</span>
+                                    </td>
+
 									<td> <span   class="edit_icon edit_chapter ml-2"  data-id="{{ $chpDt->id }}"><img class="menuicon tbl_editbtn" src="{{asset("app-assets/assets/images/edit.svg")}}" >&nbsp;</span>
 									</td>
 								</tr>
@@ -37,6 +45,9 @@
 								@endforelse
 							</tbody>
 						</table>
+					</div>
+					<div class="p-0" id="chapterdetail">
+						<div id="chapter_view_div"></div>
 					</div>
 				</div>
 			</div>
@@ -123,7 +134,51 @@
 			</div>
 		</div>
 	</div>
+
+<div class="modal" id="viewDocModal" style="display:none;">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title">View Description</h6>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="supportingDoc">
+                    <div class="row" id="append_stdoc_view"></div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</div>
 <script type="text/javascript">
+function backTo_tble()
+{
+	$("#tbl_list").show();
+	$("#chapterdetail").hide();
+	$("#chapter_view_div").html("");
+}
+function view_description(id)
+{
+	var url = '{{ route("chapter_view_topic") }}';
+	$.ajax({
+		type: "post",
+		url: url,
+		data: { id:id , _token: '{{csrf_token()}}'},
+		dataType:'html',
+		success: function(response)
+		{
+			$("#chapter_view_div").html(response);
+			$("#tbl_list").hide();
+			$("#chapterdetail").show();
+		}
+	});
+    
+}
+function chapterstatus(value)
+{
+	window.location.href = '/chapterstatus/' + value;
+}
 $(function () 
 {
 	@if(Session::has('success'))
