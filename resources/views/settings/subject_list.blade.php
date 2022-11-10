@@ -62,13 +62,13 @@
                             <label for="unique-id-input" class="col-form-label">Subject Id<span class="text-danger"> * <span></label>
                         </div>
                         <div class="col-lg-3">
-                            <input name="subject_id" id="subject_id" type="text" class="form-control" placeholder="SUB-0001" required/>
+                            <input name="subject_id" id="subject_id" type="text" class="form-control" placeholder="SUB-0001" required data-parsley-trigger="focusout" data-parsley-trigger="keyup" data-parsley-pattern="^[A-Za-z _0-9][A-Za-z 0-9]*$"/>
                         </div>
                         <div class="col-lg-1 pr-0">
                             <label for="address-input" class="col-form-label">Subject Name<span class="text-danger"> * <span></label>
                         </div>
                         <div class="col-lg-3">
-                            <input name="subject_name" id="subject_name" type="text" class="form-control" placeholder="Enter Subject Name" required/>
+                            <input name="subject_name" id="subject_name" type="text" class="form-control" placeholder="Enter Subject Name" required data-parsley-trigger="focusout" data-parsley-trigger="keyup" data-parsley-pattern="^[A-Za-z ][A-Za-z ]*$"/>
                         </div>
                         <div class="col-lg-1 pr-0">
                             <label for="active-input" class="col-forwm-label">Is Active?</label>
@@ -79,10 +79,10 @@
                     </div>
                     <div class="row mt-2">
                         <div class="col-lg-1 pr-0">
-                            <label for="desc-input" class="col-forwm-label px-0 mx-0" style="width: 114%;text-align: left;">Subject Description</label>
+                            <label for="desc-input" class="col-forwm-label px-0 mx-0" style="width: 114%;text-align: left;">Description</label>
                         </div>
                         <div class="col-lg-10">
-                            <textarea  name="subject_description" id="subject_description" type="text" class="form-control" placeholder="Enter Subject Description" ></textarea>
+                            <textarea  name="subject_description" id="subject_description" type="text" class="form-control" placeholder="Enter Description" ></textarea>
                         </div>
                     </div>
                 </div>
@@ -117,13 +117,13 @@
                             <label for="unique-id-input" class="col-form-label">Subject Id<span class="text-danger"> * <span></label>
                         </div>
                         <div class="col-lg-3">
-                            <input name="subject_id" id="ed_subject_id" type="text" class="form-control" placeholder="SUB-0001" required/>
+                            <input name="subject_id" id="ed_subject_id" type="text" class="form-control" placeholder="SUB-0001" required data-parsley-trigger="focusout" data-parsley-trigger="keyup" data-parsley-pattern="^[A-Za-z _0-9][A-Za-z 0-9]*$"/>
                         </div>
                         <div class="col-lg-1 pr-0">
                             <label for="address-input" class="col-form-label">Subject Name<span class="text-danger"> * <span></label>
                         </div>
                         <div class="col-lg-3">
-                            <input name="subject_name" id="ed_subject_name" type="text" class="form-control" placeholder="Enter Subject Name" required/>
+                            <input name="subject_name" id="ed_subject_name" type="text" class="form-control" placeholder="Enter Subject Name" required data-parsley-trigger="focusout" data-parsley-trigger="keyup" data-parsley-pattern="^[A-Za-z ][A-Za-z ]*$"/>
                         </div>
                         <div class="col-lg-1 pr-0">
                             <label for="active-input" class="col-forwm-label">Is Active?</label>
@@ -199,7 +199,8 @@ function subjectStatus(value)
     window.location.href = '/subjectStatus/' + value;
 }
 
-function saveSubject() {
+function saveSubject() 
+{
     if ($("#addSubjectForm").parsley()) {
         if ($("#addSubjectForm").parsley().validate()) {
             event.preventDefault();
@@ -241,7 +242,8 @@ function saveSubject() {
     }
 }
 
-$(".edit_subject").click(function() {
+$(".edit_subject").click(function() 
+{
     CKEDITOR.replace('ed_subject_description');
     var id = $(this).data('id');
     var url = '{{ route("edit_subject") }}';

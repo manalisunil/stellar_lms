@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Company;
 use App\Models\Course;
+use Illuminate\Support\Facades\Crypt;
 use Auth;
 
 class CourseController extends Controller
@@ -102,7 +103,7 @@ class CourseController extends Controller
                         '<label for="unique-id-input" class="col-form-label">Course Id<span class="text-danger"> * <span></label>'.
                     '</div>'.
                     '<div class="col-lg-3">'.
-                        '<input name="course_id" id="ed_course_id" value="'.$courseData->course_id.'" type="text" class="form-control" placeholder="COURS-0001" required/>'.
+                        '<input name="course_id" id="ed_course_id" value="'.$courseData->course_id.'" type="text" class="form-control" placeholder="COURS-0001" required data-parsley-trigger="focusout" data-parsley-trigger="keyup" data-parsley-pattern="^[A-Za-z _0-9][A-Za-z 0-9]*$"/>'.
                     '</div>'.
                     '<div class="col-lg-1 pr-0">'.
                         '<label for="name-input" class="col-form-label px-0 mx-0" style="width: 114%;text-align: left;">Company Name<span class="text-danger"> * <span></label>'.
@@ -123,7 +124,7 @@ class CourseController extends Controller
                         '<label for="address-input" class="col-form-label">Course Name<span class="text-danger"> * <span></label>'.
                     '</div>'.
                     '<div class="col-lg-3">'.
-                        '<input name="course_name" id="ed_course_name" type="text" class="form-control" value="'.$courseData->course_name.'" placeholder="Enter Course Name" required/>'.
+                        '<input name="course_name" id="ed_course_name" type="text" class="form-control" value="'.$courseData->course_name.'" placeholder="Enter Course Name" required data-parsley-trigger="focusout" data-parsley-trigger="keyup" data-parsley-pattern="^[A-Za-z ][A-Za-z ]*$"/>'.
                     '</div>'.
                 '</div>'.
                 '<div class="row">'.
@@ -251,7 +252,51 @@ class CourseController extends Controller
 
     public function courseDetails($courseid='')
     {
-        $course = Course::find($courseid);
+        $course_id = Crypt::decrypt($courseid);
+        $course = Course::find($course_id);
         return view('settings.course_details_view',compact('course'));
+    }
+
+    public function viewBanner($id)
+    {
+        if(request()->ajax()) {
+            $output="";
+            $course = Course::findOrFail($id);
+            if(!empty($course->course_banner)) {
+                $output.='<div id="removeData">'.
+                    '<img src="data:image;base64,'.base64_encode($course->course_banner).'"  style="width:40%;height:auto;">'.
+                '</div>';
+            } else {
+                $output.= '<div id="removeData">'.
+                    '<p>No Image to Display!</p>'.
+                '</div>';
+            }
+            return response()->json(['data' => $output]);
+        }
+    }
+
+    public function viewDocument($id)
+    {
+        if(request()->ajax()) {
+            $output="";
+            $course = Course::findOrFail($id);
+            if(!empty($course->course_doc)) {
+                if($course->course_doc_type == "application/pdf")
+                {
+                    $output.='<div id="removeData">'.
+                        '<center><iframe height="450" width="700" display="block" src="data:application/pdf;base64,'.base64_encode($course->course_doc).'"></iframe></center>'.
+                    '</div>';
+                } else {
+                    $output.='<div id="removeData">'.
+                        '<img src="data:image;base64,'.base64_encode($course->course_doc).'"  style="width:40%;height:auto;">'.
+                    '</div>';
+                }
+            } else {
+                $output.= '<div id="removeData">'.
+                    '<p>No Document to Display!</p>'.
+                '</div>';
+            }
+            return response()->json(['data' => $output]);
+        }
     }
 }

@@ -66,8 +66,8 @@ Route::any('/courseStatus/{courseid?}', [App\Http\Controllers\CourseController::
 Route::get('/edit_course/{id}',[\App\Http\Controllers\CourseController::class, 'editCourse'])->name('edit_course');
 Route::post('/update_course',[\App\Http\Controllers\CourseController::class, 'updateCourse'])->name('update_course');
 Route::get('/course_details_view/{courseid}', [App\Http\Controllers\CourseController::class, 'courseDetails'])->name('detailsview');
-
-
+Route::get('/view_course_banner/{id}',[\App\Http\Controllers\CourseController::class, 'viewBanner'])->name('view_banner');
+Route::get('/view_course_document/{id}',[\App\Http\Controllers\CourseController::class, 'viewDocument'])->name('view_document');
 
 //Subject
 Route::get('settings/view_subjects', [App\Http\Controllers\SubjectController::class, 'viewSubject'])->name('subject_list');

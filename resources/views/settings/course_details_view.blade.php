@@ -2,9 +2,9 @@
 @section('title', 'Course Details')
 @section('content')
 <div class="container-fluid mt-1">
-    <div class="col-lg-12" >
-        <div class="card" >
-            <div class="card-body tabborder">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-body tabborder3">
                 <div class="pl-2">
                     <h4 class="card-title">
                         <a href="{{ route('course_list') }}" style="text-decoration:none;">
@@ -14,27 +14,27 @@
                 </div>
             </div>
         </div>
-        <div class="card" >
+        <div class="card">
             <div class="card-body tabborder">
                 <div class="pl-2">
                     <h4 class="card-title">Course Description</h4>
-                    <p class="card-text">{{$course->course_description}}</p>
+                    <p class="card-text">{!! $course->course_description !!}</p>
                 </div>
             </div>
         </div>
-        <div class="card" >
-            <div class="card-body tabborder">
+        <div class="card">
+            <div class="card-body tabborder2">
                 <div class="pl-2">
                     <h4 class="card-title">Course Deliverables</h4>
-                    <p class="card-text">{{$course->course_deliverables}}</p>
+                    <p class="card-text">{!! $course->course_deliverables !!}</p>
                 </div>
             </div>
         </div>
-        <div class="card" >
-            <div class="card-body tabborder">
+        <div class="card">
+            <div class="card-body tabborder3">
                 <div class="pl-2">
                     <h4 class="card-title">Course Eligibility</h4>
-                    <p class="card-text">{{$course->course_eligibility}}</p>
+                    <p class="card-text">{!! $course->course_eligibility !!}</p>
                 </div>
             </div>
         </div>

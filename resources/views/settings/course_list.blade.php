@@ -15,18 +15,26 @@
                                 <th>Course Name</th>
                                 <th>Course Duration</th>
                                 <th>Course Price</th>
+                                <th>Course Banner</th>
+                                <th>Course Document</th>
                                 <th>Status</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
                             @forelse($courses as $k=>$course)
-                            <tr style="cursor:pointer" onclick="details_view('.$course->id.')">
+                            <tr style="cursor:pointer" onclick="window.location='{{route('detailsview',[Crypt::encrypt($course->id)])}}'">
                                 <td>{{++$k}}</td>
                                 <td>{{$course->course_id}}</td>
                                 <td>{{$course->course_name}}</td>
                                 <td>{{$course->course_duration}}</td>
                                 <td>{{$course->course_price}}</td>
+                                <td>                                                    
+                                    <button onClick="ReadBanner({{$course->id}})" type="button" class="btn btn-success btn-sm">View</button>
+                                </td>
+                                <td>                                                   
+                                    <button onClick="ReadDocument({{$course->id}})" type="button" class="btn btn-primary btn-sm">View</button>
+                                </td>
                                 <td>
                                     <div class="custom-control custom-switch">
                                         <input type="checkbox"  class="custom-control-input" id="customSwitch{{ $course->id }}"  value="{{ $course->id }}" onclick="courseStatus(this.value)" @if($course->is_active==1) checked @endif>
@@ -66,7 +74,7 @@
                             <label for="unique-id-input" class="col-form-label">Course Id<span class="text-danger"> * <span></label>
                         </div>
                         <div class="col-lg-3">
-                            <input name="course_id" id="course_id" type="text" class="form-control" placeholder="COURS-0001" required/>
+                            <input name="course_id" id="course_id" type="text" class="form-control" placeholder="COURS-0001" required data-parsley-trigger="focusout" data-parsley-trigger="keyup" data-parsley-pattern="^[A-Za-z _0-9][A-Za-z 0-9]*$"/>
                         </div>
                         <div class="col-lg-1 pr-0">
                             <label for="name-input" class="col-form-label px-0 mx-0" style="width: 114%;text-align: left;">Company Name<span class="text-danger"> * <span></label>
@@ -84,7 +92,7 @@
                             <label for="address-input" class="col-form-label">Course Name<span class="text-danger"> * <span></label>
                         </div>
                         <div class="col-lg-3">
-                            <input name="course_name" id="course_name" type="text" class="form-control" placeholder="Enter Course Name" required/>
+                            <input name="course_name" id="course_name" type="text" class="form-control" placeholder="Enter Course Name" required data-parsley-trigger="focusout" data-parsley-trigger="keyup" data-parsley-pattern="^[A-Za-z ][A-Za-z ]*$"/>
                         </div>
                     </div>
                     <div class="row">
@@ -184,6 +192,44 @@
 </div>
 <!-- End Modal -->
 
+<!-- Banner Modal -->
+<div class="modal" id="bannerModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h5 class="modal-title">Course Banner</h5>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <div id="append_image"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Modal -->
+
+<!-- Document Modal -->
+<div class="modal" id="documentModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h5 class="modal-title">Course Document</h5>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <div id="append_doc"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Modal -->
+
 <script type="text/javascript">
 $(function () {
 	@if(Session::has('success'))
@@ -229,12 +275,40 @@ $(document).ready(function()
     CKEDITOR.replace('course_eligibility');
 });
 
+function ReadBanner(value)
+{
+    event.stopPropagation();
+    $("#removeData").remove();
+    $.ajax({
+        url: "/view_course_banner/" + value,
+        success: function(data) {
+            $("#append_image").append(data.data);
+            $('#bannerModal').modal('show'); 
+        }
+    })
+}
+
+function ReadDocument(value)
+{
+    event.stopPropagation();
+    $("#removeData").remove();
+    $.ajax({
+        url: "/view_course_document/" + value,
+        success: function(data) {
+            $("#append_doc").append(data.data);
+            $('#documentModal').modal('show'); 
+        }
+    })
+}
+
 function courseStatus(value)
 {
+    event.stopPropagation();
     window.location.href = '/courseStatus/' + value;
 }
 
-function saveCourse() {
+function saveCourse() 
+{
     if ($("#addCourseForm").parsley()) {
         if ($("#addCourseForm").parsley().validate()) {
             event.preventDefault();
@@ -280,7 +354,9 @@ function saveCourse() {
     }
 }
 
-function editCourse(courseId){
+function editCourse(courseId) 
+{
+    event.stopPropagation();
     $("#removeData").remove();
     $.ajax({
         url: "/edit_course/" + courseId,
@@ -294,7 +370,8 @@ function editCourse(courseId){
     })
 }
 
-function courseUpdate(){
+function courseUpdate()
+{
     if ($("#updateCourseForm").parsley()) {
         if ($("#updateCourseForm").parsley().validate()) {
             event.preventDefault();
@@ -340,11 +417,5 @@ function courseUpdate(){
     }
     return false;
 }
-
-function details_orderview(courseid)
-{
-    window.location.href = "/course_details_view/"+courseid;
-}
-
 </script>
 @endsection
