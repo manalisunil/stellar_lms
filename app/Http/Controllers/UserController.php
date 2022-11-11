@@ -27,7 +27,7 @@ class UserController extends Controller
     	$request->validate([
             'company_id'=>'required',
             'first_name' => 'required',
-            'email' => 'required|unique:mdblms_users,email',
+            'email' => 'required|email|unique:mdblms_users,email',
             'password'=>'required',          
             'user_type_id' => 'required',
             'gender'=>'required'
@@ -63,7 +63,7 @@ class UserController extends Controller
         			'institution'=>isset($request->institution) ? $request->institution : NULL ,
         			'is_content_writer'=>isset($request->is_content_writer)? 1 : 0,
         			'is_active'=>isset($request->is_active) ? 1 : 0 ,
-        			'added_datetime'=>\Carbon\Carbon::now()
+        			'added_datetime'=>Carbon::now()
 
          ];
 
@@ -83,8 +83,6 @@ class UserController extends Controller
         $userDetail = User::where('id',$id)->first();
         $companyList  = Company::where('is_active',1)->get();
         $usertypesList    = DB::table('mdblms_usertypes')->whereNotIn('id', [1])->orderBy('id', 'ASC')->get();
-
-
        	$output="";
         $output .='
 					<div class="modal-body">
@@ -144,15 +142,13 @@ class UserController extends Controller
 					                else {
 					                    $output.='';
 					                }
-				                $output.='>Male 
-			                            <input type="radio" id="gender" name="gender" value="2"'
-			                            ;
-			                            if ($userDetail->gender == 2)
-				                    $output.='checked';
-				                else {
-				                    $output.='';
-				                }
-			                $output.='>Female
+				                	$output.='>Male <input type="radio" id="gender" name="gender" value="0"';
+			                            if ($userDetail->gender == 0)
+											$output.='checked';
+										else {
+											$output.='';
+										}
+			                		$output.='>Female
 	                        	</div>
                         	</div>
                         	<div class="col-lg-3">
@@ -229,7 +225,7 @@ class UserController extends Controller
 							
 						<div class="col-lg-3">
 							<label for="example-email-input" class="col-form-label">Status </label><br>
-							<input type="checkbox" checked value="1" id="is_active" name="is_active"';
+							<input type="checkbox" value="1" id="is_active" name="is_active"';
 							if ($userDetail->is_active == 1)
 			                    $output.='checked';
 			                else {
@@ -249,15 +245,14 @@ class UserController extends Controller
     	$request->validate([
             'company_id'=>'required',
             'first_name' => 'required',
-            // 'email' => 'required|unique:mdblms_users,email,'.$request->id,
-            // 'password'=>'required',          
+            'email' => 'required|email|unique:mdblms_users,email,'.$request->id,
             'user_type_id' => 'required',
             'gender'=>'required'
         ]);
     	if(isset($request->dob))
     	{
     		$dob = $request->dob;
-    		$newDate = \Carbon\Carbon::createFromFormat('d/m/Y', $dob)->format('Y-m-d');
+    		$newDate = Carbon::createFromFormat('d/m/Y', $dob)->format('Y-m-d');
     	}
     	else
     	{
@@ -285,11 +280,10 @@ class UserController extends Controller
         			'institution'=>isset($request->institution) ? $request->institution : NULL ,
         			'is_content_writer'=>isset($request->is_content_writer)? 1 : 0,
         			'is_active'=>isset($request->is_active) ? 1 : 0 ,
-        			'added_datetime'=>\Carbon\Carbon::now()
+        			'added_datetime'=>Carbon::now()
 
          ];
         $res = User::where('id', $request->id)->update($user_update_data);
-        // dd($res);
         if($res)
         {
             return response()->json(['data'=>'success','msg'=>'User Updated Successfully!']);
@@ -424,17 +418,9 @@ class UserController extends Controller
 						: <?php echo $userdetails->institution ;?>
 					
 					</div>
-					
-					
 					<?php
 				}
-				
-				
-				
-				
-				
 			?></div>
 			 <?php
-
     }  
 }

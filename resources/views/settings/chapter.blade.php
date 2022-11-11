@@ -56,14 +56,14 @@
 	<div class="modal fade" id="chapteraddModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 		<div class="modal-dialog modal-lg" role="document">
 			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title" id="exampleModalLabel">Add Chapter</h5>
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-					</button>
-				</div>
 				<form method="post" id="chptfrm" name="chptfrm"  data-parsley-validate data-parsley-trigger="keyup">
-					@csrf
+				@csrf
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel">Add Chapter</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
 					<div class="modal-body">
 						
 						<div class="row">
@@ -92,7 +92,7 @@
 						</div>
 						<div class="row mt-1">
 							<div class="col-lg-12">
-								<label for="example-email-input" class="col-form-label">Desacription </label><br>
+								<label for="example-email-input" class="col-form-label">Description <span class="text-danger"> * </span></label><br>
 								<textarea class="form-control" name="chapter_description" id="chapter_description" required></textarea>
 							</div>	
 							
@@ -103,7 +103,7 @@
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-						<button type="submit" class="btn btn-primary">Submit</button>
+						<button type="submit" class="btn btn-primary" onclick="saveChapter();">Submit</button>
 					</div>
 				</form>
 			</div>
@@ -127,7 +127,7 @@
 				<div id="edit_chapter_data"></div>
 				<div class="modal-footer">
 						<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-						<button type="submit" class="btn btn-primary">Submit</button>
+						<button type="submit" class="btn btn-primary" onclick="updateChapter();">Submit</button>
 					</div>
 				</form>
 				
@@ -202,71 +202,64 @@ $(function ()
 		@endforeach
 	@endif
 });
-$(document).ready(function()
-{
+$(document).ready(function() {
 	$(".odtabs").not("#tab4").addClass('btn-outline-secondary');
 	$("#tab4").addClass('btn-secondary');
 
 	CKEDITOR.replace('chapter_description');
 	var table = $('#datatable').DataTable({
 		responsive: true,
-		dom: 'l<"toolbar">Bfrtip',
-		buttons: [
-			'excel'
-		],
+		dom: 'l<"toolbar">frtip',
+		// buttons: [
+		// 	'excel'
+		// ],
 		initComplete: function(){
 		$("div.toolbar").html('<button   type="button" class=" ml-2 btn btn-primary" data-toggle="modal" data-target="#chapteraddModal"><img class="menuicon" src="{{asset("app-assets/assets/images/add.svg")}}">&nbsp;Add Chapter</button><br />');
 		}
 	});
-
-	$('#chptfrm').on('submit', function(event)
+});
+	function saveChapter() 
 	{
-		event.preventDefault();
-		if($('#chptfrm').parsley().isValid())
-		{
-			var url = '{{ route("addChapter") }}';
-			var data = $("#chptfrm").serialize();
-			$.ajax({
-				type: "post",
-				url: url,
-				data: data,
-				success: function(response) {
-					if(response.data =='success')
-					{
-						new PNotify({
-							title: 'Success',
-							text:  response.msg,
-							type: 'success'
+		if ($("#chptfrm").parsley()) {
+			if ($("#chptfrm").parsley().validate()) {
+				event.preventDefault();
+				var formData = new FormData($("#chptfrm")[0]);
+				var descValue = CKEDITOR.instances.chapter_description.getData();
+				formData.append("descriptionValue", descValue);
+				if ($("#chptfrm").parsley().isValid()) {
+					$.ajax({
+						type: "POST",
+						cache:false,
+						async: false,
+						url: "{{ route('addChapter') }}",
+						data: formData,
+						processData: false,
+						contentType: false,
+						success: function(response) {
+							new PNotify({
+								title: 'Success',
+								text:  response.msg,
+								type: 'success'
 							});
-						setTimeout(function(){  location.reload(); }, 800);
-					}
-					else
-					{
-						new PNotify({
-						title: 'Error',
-						text:  response.msg,
-						type: 'error'
-						});
-					}
-					
-				},
-					
-				error: function(response)
-				{
-					var err = "";
-					$.each(response.responseJSON.errors,function(field_name,error){
-						err = err +'<br>' + error;
+							setTimeout(function(){  location.reload(); }, 800);
+						},
+						error:function(response) {
+							var err = "";
+							$.each(response.responseJSON.errors,function(field_name,error){
+								err = err +'<br>' + error;
+							});
+							new PNotify({
+								title: 'Error',
+								text:err,
+								type: 'error',
+								delay: 2000
+							});
+						}
 					});
-					new PNotify({
-							title: 'Error',
-							text:  err,
-							type: 'error'
-					});
-					
-				},
-			});
+				}
+			}
 		}
-	});
+	} 
 
 	$(".edit_chapter").click(function()
 	{
@@ -282,66 +275,56 @@ $(document).ready(function()
 			{
 				$("#chapterEditModal").modal('show');
 				$("#edit_chapter_data").html(response);
-
 				CKEDITOR.replace('chapter_description1');
-			
 			}
 		});
-		
 	});
 
-	$('#updatechapterfrm').on('submit', function(event)
+	function updateChapter()
 	{
-		event.preventDefault();
-		if($('#updatechapterfrm').parsley().isValid())
-		{
-			var url = '{{ route("updateChapter") }}';
-			var data = $("#updatechapterfrm").serialize();
-			$.ajax({
-				type: "post",
-				url: url,
-				data: data,
-				success: function(response) 
-				{
-					if(response.data =='success')
-					{
-						new PNotify({
-							title: 'Success',
-							text:  response.msg,
-							type: 'success'
+		var url = '{{ route("updateChapter") }}';
+		if ($("#updatechapterfrm").parsley()) {
+			if ($("#updatechapterfrm").parsley().validate()) {
+				event.preventDefault();
+				var formData = new FormData($("#updatechapterfrm")[0]);
+				$descriptionValue = CKEDITOR.instances.chapter_description1.getData();
+				formData.append("descriptionValue", $descriptionValue);
+				if ($("#updatechapterfrm").parsley().isValid()) {
+					$.ajax({
+						type: "POST",
+						cache:false,
+						async: false,
+						url: url,
+						data: formData,
+						processData: false,
+						contentType: false,
+						success: function(response) {
+							new PNotify({
+								title: 'Success',
+								text:  response.msg,
+								type: 'success'
 							});
-						setTimeout(function(){  location.reload(); }, 800);
-					}
-					else
-					{
-						new PNotify({
-						title: 'Error',
-						text:  response.msg,
-						type: 'error'
-						});
-					}	
-				},
-					
-				error: function(response)
-				{
-					var err = "";
-					$.each(response.responseJSON.errors,function(field_name,error){
-					err = err +'<br>' + error;
+							setTimeout(function(){  location.reload(); }, 800);
+						},
+						error:function(response) {
+							var err = "";
+							$.each(response.responseJSON.errors,function(field_name,error){
+								err = err +'<br>' + error;
+							});
+							new PNotify({
+								title: 'Error',
+								text:err,
+								type: 'error',
+								delay: 2000
+							});
+						}
 					});
-					new PNotify({
-							title: 'Error',
-							text:  err,
-							type: 'error'
-							});
-					
-				},
-			});
+				}
+			}
 		}
-	});
-});
+	}
 $(document).ready(function()
 {
-	
 	//has uppercase
 	window.Parsley.addValidator('uppercase', {
 	  requirementType: 'number',

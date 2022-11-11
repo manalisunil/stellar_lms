@@ -6,13 +6,14 @@
     <div class="col-lg-12" >
         <div class="card" >
             <div class="card-body">
-                <div class="p-0">
+                <div class="p-0" id="tbl_list">
                     <table id="datatable" class="table table-bordered mb-0" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                         <thead>
                             <tr>
                                 <th>Sl No</th>
                                 <th>Subject Id</th>
                                 <th>Subject Name</th>
+                                <th>Description</th>
                                 <th>Status</th>
                                 <th>Action</th>
                             </tr>
@@ -23,6 +24,11 @@
                                 <td>{{++$k}}</td>
                                 <td>{{$subject->subject_id}}</td>
                                 <td>{{$subject->subject_name}}</td>
+                                <td>
+                                    @if(!empty($subject->subject_description))
+                                        <span  class="btn-primary btn-sm edit_icon"  onClick="view_description({{ $subject->id}})">View</span>
+                                    @endif
+                                </td>
                                 <td>
                                     <div class="custom-control custom-switch">
                                         <input type="checkbox"  class="custom-control-input" id="customSwitch{{ $subject->id }}"  value="{{ $subject->id }}" onclick="subjectStatus(this.value)" @if($subject->is_active==1) checked @endif>
@@ -38,6 +44,9 @@
                         </tbody>
                     </table>
                 </div>
+                <div class="p-0" id="subdetail">
+					<div id="sub_view_div"></div>
+				</div>
             </div>
         </div>
     </div>
@@ -62,13 +71,13 @@
                             <label for="unique-id-input" class="col-form-label">Subject Id<span class="text-danger"> * <span></label>
                         </div>
                         <div class="col-lg-3">
-                            <input name="subject_id" id="subject_id" type="text" class="form-control" placeholder="SUB-0001" required data-parsley-trigger="focusout" data-parsley-trigger="keyup" data-parsley-pattern="^[A-Za-z _0-9][A-Za-z 0-9]*$"/>
+                            <input name="subject_id" id="subject_id" type="text" class="form-control" placeholder="SUB0001" required data-parsley-trigger="focusout" data-parsley-trigger="keyup" data-parsley-pattern="^[A-Za-z _0-9][A-Za-z 0-9]*$"/>
                         </div>
                         <div class="col-lg-1 pr-0">
                             <label for="address-input" class="col-form-label">Subject Name<span class="text-danger"> * <span></label>
                         </div>
                         <div class="col-lg-3">
-                            <input name="subject_name" id="subject_name" type="text" class="form-control" placeholder="Enter Subject Name" required data-parsley-trigger="focusout" data-parsley-trigger="keyup" data-parsley-pattern="^[A-Za-z ][A-Za-z ]*$"/>
+                            <input name="subject_name" id="subject_name" type="text" class="form-control" placeholder="Enter Subject Name" required data-parsley-trigger="focusout" data-parsley-trigger="keyup" data-parsley-pattern="^[A-Za-z _0-9][A-Za-z 0-9]*$"/>
                         </div>
                         <div class="col-lg-1 pr-0">
                             <label for="active-input" class="col-forwm-label">Is Active?</label>
@@ -117,13 +126,13 @@
                             <label for="unique-id-input" class="col-form-label">Subject Id<span class="text-danger"> * <span></label>
                         </div>
                         <div class="col-lg-3">
-                            <input name="subject_id" id="ed_subject_id" type="text" class="form-control" placeholder="SUB-0001" required data-parsley-trigger="focusout" data-parsley-trigger="keyup" data-parsley-pattern="^[A-Za-z _0-9][A-Za-z 0-9]*$"/>
+                            <input name="subject_id" id="ed_subject_id" type="text" class="form-control" placeholder="SUB0001" required data-parsley-trigger="focusout" data-parsley-trigger="keyup" data-parsley-pattern="^[A-Za-z _0-9][A-Za-z 0-9]*$"/>
                         </div>
                         <div class="col-lg-1 pr-0">
                             <label for="address-input" class="col-form-label">Subject Name<span class="text-danger"> * <span></label>
                         </div>
                         <div class="col-lg-3">
-                            <input name="subject_name" id="ed_subject_name" type="text" class="form-control" placeholder="Enter Subject Name" required data-parsley-trigger="focusout" data-parsley-trigger="keyup" data-parsley-pattern="^[A-Za-z ][A-Za-z ]*$"/>
+                            <input name="subject_name" id="ed_subject_name" type="text" class="form-control" placeholder="Enter Subject Name" required data-parsley-trigger="focusout" data-parsley-trigger="keyup" data-parsley-pattern="^[A-Za-z _0-9][A-Za-z 0-9]*$"/>
                         </div>
                         <div class="col-lg-1 pr-0">
                             <label for="active-input" class="col-forwm-label">Is Active?</label>
@@ -310,6 +319,30 @@ function updateSubject()
 			}
 		}
 	}
+}
+
+function backTo_tble()
+{
+	$("#tbl_list").show();
+	$("#subdetail").hide();
+	$("#topic_view_div").html("");
+}
+
+function view_description(id)
+{
+	var url = '{{ route("sub_view") }}';
+	$.ajax({
+		type: "post",
+		url: url,
+		data: { id:id , _token: '{{csrf_token()}}'},
+		dataType:'html',
+		success: function(response)
+		{
+			$("#sub_view_div").html(response);
+			$("#tbl_list").hide();
+			$("#subdetail").show();
+		}
+	});  
 }
 </script>
 @endsection

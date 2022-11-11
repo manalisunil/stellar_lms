@@ -19,7 +19,7 @@ class CompanyController extends Controller
             'company_name' => 'required',
             'address' => 'required',
             'phone_no' =>'required',
-            'email_id' => 'required|unique:mdblms_company,email_id',
+            'email_id' => 'required|email|unique:mdblms_company,email_id',
             'logo' => 'nullable|file|max:50',
         ]);
 
@@ -65,7 +65,7 @@ class CompanyController extends Controller
                         '<label for="unique-id-input" class="col-form-label px-0 mx-0" style="width: 114%;text-align: left;">Company Name<span class="text-danger"> * <span></label>'.
                     '</div>'.
                     '<div class="col-lg-3">'.
-                        '<input name="company_name" id="ed_company_name" type="text" class="form-control" value="'.$companyData->company_name.'" placeholder="Enter Company Name" required data-parsley-trigger="focusout" data-parsley-trigger="keyup" data-parsley-pattern="^[A-Za-z ][A-Za-z ]*$"/>'.
+                        '<input name="company_name" id="ed_company_name" type="text" class="form-control" value="'.$companyData->company_name.'" placeholder="Enter Company Name" required data-parsley-trigger="focusout" data-parsley-trigger="keyup" data-parsley-pattern="^[A-Za-z ][A-Za-z \.]*$"/>'.
                     '</div>'.
                     '<div class="col-lg-1 pr-0">'.
                         '<label for="address-input" class="col-form-label px-0 mx-0" style="width: 114%;text-align: left;">Address<span class="text-danger"> * <span></label>'.
@@ -118,7 +118,7 @@ class CompanyController extends Controller
             'company_name' => 'required',
             'address' => 'required',
             'phone_no' =>'required',
-            'email_id' => 'required|unique:mdblms_company,email_id,'.$request->id,
+            'email_id' => 'required|email|unique:mdblms_company,email_id,'.$request->id,
             'logo' => 'nullable|file|max:50',
         ]);
 

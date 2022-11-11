@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\Subject;
 use App\Models\Chapter;
 use App\Models\Topic;
+use Carbon\Carbon;
 
 class TopicsController extends Controller
 {
@@ -21,17 +22,17 @@ class TopicsController extends Controller
     	$request->validate([
     		'chapter_id'  =>'required',
             'topic_id' => 'required|unique:mdblms_topics,topic_id',
-            'topic_name' => 'required|unique:mdblms_topics,topic_name'
-            
+            'topic_name' => 'required|unique:mdblms_topics,topic_name',
+            'descriptionValue' =>'required',
         ]);
 
         $topic = new Topic();
         $topic->chapter_id = $request->chapter_id;
         $topic->topic_id = $request->topic_id;
         $topic->topic_name = $request->topic_name;
-        $topic->topic_description = $request->topic_description;
+        $topic->topic_description = $request->descriptionValue;
         $topic->added_by = auth()->user()->id;
-        $topic->added_datetime = \Carbon\Carbon::now();
+        $topic->added_datetime = Carbon::now();
         $topic->is_active = isset($request->is_active) ? 1 : 0;
         $res = $topic->save();
         if($res)
@@ -90,7 +91,7 @@ class TopicsController extends Controller
 							
 							<div class="col-lg-3">
 								<label for="example-email-input" class="col-form-label pr-3">Status </label> 
-								<input type="checkbox" checked class="" value="1" id="is_active" name="is_active"';
+								<input type="checkbox" value="1" id="is_active" name="is_active"';
 								if ($topicDetail->is_active == 1)
 			                    $output.='checked';
 			                else {
@@ -107,15 +108,15 @@ class TopicsController extends Controller
     	$request->validate([
     		'chapter_id'  =>'required',
             'topic_id' => 'required|unique:mdblms_topics,topic_id,'.$request->id,
-            'topic_name' => 'required|unique:mdblms_topics,topic_name,'.$request->id
-            
+            'topic_name' => 'required|unique:mdblms_topics,topic_name,'.$request->id,
+            'descriptionValue' =>'required',
         ]);
 
         $topic = Topic::find($request->id);
         $topic->chapter_id = $request->chapter_id;
         $topic->topic_id = $request->topic_id;
         $topic->topic_name = $request->topic_name;
-        $topic->topic_description = $request->topic_description1;
+        $topic->topic_description = $request->descriptionValue;
         $topic->added_by = auth()->user()->id;
         $topic->added_datetime = \Carbon\Carbon::now();
         $topic->is_active = isset($request->is_active) ? 1 : 0;
@@ -143,8 +144,6 @@ class TopicsController extends Controller
     {
         $id = $request->id;
         $detail = Topic::find($id);
-        // dd($detail);
-
         $output ='<div class="row ">
             <div class="col-lg-9 text-left">
                 <h5 class="modal-title pl-3" id="exampleModalLabel">
@@ -161,8 +160,8 @@ class TopicsController extends Controller
         <div class="card  card_top_orenge" >
             <div class="card-body">
                 <div class="row mb-2">
-                <div class="col-lg-1">
-                    <label for="city-input" class="">Topic Desacription :</b> </label>
+                <div class="col-lg-2">
+                    <label for="city-input" class="">Topic Description :</b> </label>
                 </div>
                     <div class="col-lg-12">
                        '.$detail->topic_description.'

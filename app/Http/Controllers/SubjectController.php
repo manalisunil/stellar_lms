@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 use App\Models\Subject;
 use App\Models\Course;
 use App\Models\CourseSubjectMapping;
@@ -20,8 +21,8 @@ class SubjectController extends Controller
     public function submitSubject(Request $request)
     {
         $request->validate([
-            'subject_id' => 'required',
-            'subject_name' => 'required',
+            'subject_id' => 'required|unique:mdblms_subjects,subject_id',
+            'subject_name' => 'required|unique:mdblms_subjects,subject_name',
         ]);
 
         $subject = new Subject();
@@ -30,7 +31,7 @@ class SubjectController extends Controller
         $subject->subject_description = $request->descriptionValue;
         $subject->added_by = Auth::user()->id;
         $subject->is_active = ($request->is_active == 1)? 1 :0;
-        $subject->added_datetime = date('Y-m-d H:i:s');
+        $subject->added_datetime = Carbon::now();
         if($subject->save())
         {
             return response()->json(['data'=>'success','msg'=>'Subject Added Successfully!']);
@@ -84,7 +85,7 @@ class SubjectController extends Controller
         $csmapping->course_id = $request->course_id;
         $csmapping->added_by = Auth::user()->id;
         $csmapping->is_active = ($request->is_active == 1)? 1 :0;
-        $csmapping->added_datetime = date('Y-m-d H:i:s');
+        $csmapping->added_datetime = Carbon::now();
         if($csmapping->save())
         {
             return response()->json(['data'=>'success','msg'=>'Mapping Added Successfully!']);
@@ -116,8 +117,8 @@ class SubjectController extends Controller
     public function updateSubject(Request $request)
     {
          $request->validate([
-            'subject_id' => 'required',
-            'subject_name' => 'required',
+            'subject_id' => 'required|unique:mdblms_subjects,subject_id,'.$request->id,
+            'subject_name' => 'required|unique:mdblms_subjects,subject_name,'.$request->id,
         ]);
         $subject = Subject::find($request->id);
         $subject->subject_id = $request->subject_id;
@@ -125,7 +126,7 @@ class SubjectController extends Controller
         $subject->subject_description = $request->descriptionValue;
         $subject->added_by = Auth::user()->id;
         $subject->is_active = ($request->is_active == 1)? 1 :0;
-        $subject->added_datetime = date('Y-m-d H:i:s');
+        $subject->added_datetime = Carbon::now();
         $res = $subject->save();
         if($res)
         {
@@ -151,7 +152,7 @@ class SubjectController extends Controller
             'course_id' => 'required',
         ]);
 
-        $check_mapping = CourseSubjectMapping::Where('subject_id','=',$request->subject_id)->where('course_id','=',$request->course_id)->first();
+        $check_mapping = CourseSubjectMapping::Where('subject_id','=',$request->subject_id)->where('course_id','=',$request->course_id)->where('id','!=',$request->id)->first();
         if(isset($check_mapping))
         {
             return response()->json(['data'=>'error','msg'=>'Mapping Already Exists!']);
@@ -162,7 +163,7 @@ class SubjectController extends Controller
         $csmapping->course_id = $request->course_id;
         $csmapping->added_by = Auth::user()->id;
         $csmapping->is_active = ($request->is_active == 1)? 1 :0;
-        $csmapping->added_datetime = date('Y-m-d H:i:s');
+        $csmapping->added_datetime = Carbon::now();
         if($csmapping->save())
         {
             return response()->json(['data'=>'success','msg'=>'Mapping Updated Successfully!']);
@@ -173,4 +174,31 @@ class SubjectController extends Controller
         }
     }
 
+    public function viewSubjectDescription(Request $request)
+    {
+        $id = $request->id;
+        $detail = Subject::find($id);
+        $output ='<div class="row ">
+            <div class="col-lg-9 text-left">
+                <h5 class="modal-title pl-3" id="exampleModalLabel">
+                    <img class="mensuicon " src="'.asset('app-assets/assets/images/backs.png').'" style="width:1.3rem;height:1.3rem;margin-right: 10px; cursor:pointer;" onclick=backTo_tble()>
+                    
+                        '.$detail->subject_name.'
+                </h5>
+            </div>
+        </div>
+        <div class="card  card_top_orenge" >
+            <div class="card-body">
+                <div class="row mb-2">
+                <div class="col-lg-2">
+                    <label for="city-input" class="">Subject Description :</b> </label>
+                </div>
+                    <div class="col-lg-12">
+                       '.$detail->subject_description.'
+                    </div> 
+                </div>  
+            </div>
+        </div>';
+        echo $output;
+    }
 }

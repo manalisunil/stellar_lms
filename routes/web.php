@@ -75,6 +75,7 @@ Route::post('/submit_subject', [App\Http\Controllers\SubjectController::class, '
 Route::any('/subjectStatus/{subjectid?}', [App\Http\Controllers\SubjectController::class, 'subjectStatus'])->name('subject_status');
 Route::post('/edit_subject',[\App\Http\Controllers\SubjectController::class, 'editSubject'])->name('edit_subject');
 Route::post('/update_subject',[\App\Http\Controllers\SubjectController::class, 'updateSubject'])->name('update_subject');
+Route::post('/sub_view',[\App\Http\Controllers\SubjectController::class, 'viewSubjectDescription'])->name('sub_view');
 
 //Course Subject Mapping
 

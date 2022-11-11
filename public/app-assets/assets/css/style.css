@@ -149,7 +149,8 @@ flex-direction: row;
 }
 .btn-secondary
 {
-    width:110px !important;
+    min-width:7.2vw!important;
+    /* width:120px !important; */
     /*height:35px !important;*/
     font-size:11px !important;
     font-weight:bold;

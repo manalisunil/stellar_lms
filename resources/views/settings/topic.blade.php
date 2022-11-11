@@ -12,8 +12,9 @@
 							<thead>
 								<tr>
 									<th> Sl no</th>
-									<th>Chapter</th>
+									<th>Topic Id</th>
 									<th>Topic</th>
+									<th>Chapter</th>
 									<th>Description</th>
 									<th>Status</th>
 									<th>Action</th>
@@ -23,18 +24,20 @@
 								@forelse($topicList as $k=> $topcDt)
 								<tr>
 									<td> {{++$k}}</td>
-									<td> @if($topcDt->getChapter != null) {{$topcDt->getChapter['chapter_name']}} @endif</td>
+									<td> {{$topcDt->topic_id}}</td>
 									<td> {{$topcDt->topic_name}}</td>
+									<td> @if($topcDt->getChapter != null) {{$topcDt->getChapter['chapter_name']}} @endif</td>
+									<td>
+                                        <span  class="btn-primary btn-sm edit_icon"  onClick="view_description({{ $topcDt->id}})">View</span>
+                                    </td>
 									<td>
 										<div class="custom-control custom-switch">
 											<input type="checkbox"  class="custom-control-input" id="customSwitch{{ $topcDt->id }}"  value="{{ $topcDt->id }}" onclick="topicStatus(this.value)" @if($topcDt->is_active==1) checked @endif>
 											<label class="custom-control-label" for="customSwitch{{ $topcDt->id }}">@if($topcDt->is_active==1) Active @else Inactive @endif</label>
 										</div>
 									</td>
-									<td  >
-                                        <span  class="btn-primary btn-sm edit_icon"  onClick="view_description({{ $topcDt->id}})">View</span>
-                                    </td>
-									<td> <span   class="edit_icon edit_topic ml-2"  data-id="{{ $topcDt->id }}"><img class="menuicon tbl_editbtn" src="{{asset("app-assets/assets/images/edit.svg")}}" >&nbsp;</span>
+									<td> 
+										<span class="edit_icon edit_topic ml-2"  data-id="{{ $topcDt->id }}"><img class="menuicon tbl_editbtn" src="{{asset("app-assets/assets/images/edit.svg")}}" >&nbsp;</span>
 									</td>
 								</tr>
 								@empty
@@ -52,16 +55,15 @@
 	<div class="modal fade" id="topicaddModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 		<div class="modal-dialog modal-lg" role="document">
 			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title" id="exampleModalLabel">Add Topic</h5>
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-					</button>
-				</div>
 				<form method="post" id="topicfrm" name="topicfrm"  data-parsley-validate data-parsley-trigger="keyup">
-					@csrf
+				@csrf
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel">Add Topic</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
 					<div class="modal-body">
-						
 						<div class="row">
 							<div class="col-lg-4">
 								<label for="company_select" class="col-form-label"> Chapter  <span class="text-danger"> * </span></label>
@@ -88,7 +90,7 @@
 						</div>
 						<div class="row mt-1">
 							<div class="col-lg-12">
-								<label for="example-email-input" class="col-form-label">Desacription </label><br>
+								<label for="example-email-input" class="col-form-label">Description <span class="text-danger"> * </span></label><br>
 								<textarea class="form-control" name="topic_description" id="topic_description" required></textarea>
 							</div>	
 							
@@ -99,36 +101,33 @@
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-						<button type="submit" class="btn btn-primary">Submit</button>
+						<button type="submit" class="btn btn-primary" onclick="saveTopic();">Submit</button>
 					</div>
 				</form>
 			</div>
 		</div>
 	</div>
-
-	
-</div>
+	</div>
 </div>
 <div class="modal fade" id="topicEditModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-		<div class="modal-dialog modal-lg" role="document">
-			<div class="modal-content">
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+			<form method="post" id="updatetopicfrm" name="updatetopicfrm"  data-parsley-validate data-parsley-trigger="keyup">
+			@csrf
 				<div class="modal-header">
 					<h5 class="modal-title" id="exampleModalLabel">Update Topic</h5>
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 					</button>
 				</div>
-				<form method="post" id="updatetopicfrm" name="updatetopicfrm"  data-parsley-validate data-parsley-trigger="keyup">
-					@csrf
 				<div id="edit_topic_data"></div>
 				<div class="modal-footer">
-						<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-						<button type="submit" class="btn btn-primary">Submit</button>
-					</div>
-				</form>
-				
-			</div>
+					<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+					<button type="submit" class="btn btn-primary" onclick="updateTopic();">Submit</button>
+				</div>
+			</form>	
 		</div>
+	</div>
 </div>
 <div class="modal" id="viewDocModal" style="display:none;">
     <div class="modal-dialog modal-lg">
@@ -163,6 +162,7 @@ function backTo_tble()
 	$("#topicdetail").hide();
 	$("#topic_view_div").html("");
 }
+
 function view_description(id)
 {
 	var url = '{{ route("topic_view_topic") }}';
@@ -177,9 +177,9 @@ function view_description(id)
 			$("#tbl_list").hide();
 			$("#topicdetail").show();
 		}
-	});
-    
+	});  
 }
+
 $(function () 
 {
 	@if(Session::has('success'))
@@ -212,63 +212,57 @@ $(document).ready(function()
 	CKEDITOR.replace('topic_description');
 	var table = $('#datatable').DataTable({
 		responsive: true,
-		dom: 'l<"toolbar">Bfrtip',
-		buttons: [
-			'excel'
-		],
+		dom: 'l<"toolbar">frtip',
+		// buttons: [
+		// 	'excel'
+		// ],
 		initComplete: function(){
 		$("div.toolbar").html('<button   type="button" class=" ml-2 btn btn-primary" data-toggle="modal" data-target="#topicaddModal"><img class="menuicon" src="{{asset("app-assets/assets/images/add.svg")}}">&nbsp;Add Topic</button><br />');
 		}
 	});
+});
 
-	$('#topicfrm').on('submit', function(event)
+	function saveTopic() 
 	{
-		event.preventDefault();
-		if($('#topicfrm').parsley().isValid())
-		{
-			var url = '{{ route("add_topic") }}';
-			var data = $("#topicfrm").serialize();
-			$.ajax({
-				type: "post",
-				url: url,
-				data: data,
-				success: function(response) {
-					if(response.data =='success')
-					{
-						new PNotify({
-							title: 'Success',
-							text:  response.msg,
-							type: 'success'
-							});
-						setTimeout(function(){  location.reload(); }, 800);
-					}
-					else
-					{
-						new PNotify({
-						title: 'Error',
-						text:  response.msg,
-						type: 'error'
-						});
-					}
-					
-				},
-					
-				error: function(response)
+		if ($("#topicfrm").parsley()) {
+        	if ($("#topicfrm").parsley().validate()) {
+				event.preventDefault();
+				var formData = new FormData($("#topicfrm")[0]);
+				var descValue = CKEDITOR.instances.topic_description.getData();
+				formData.append("descriptionValue", descValue);
+				if($('#topicfrm').parsley().isValid())
 				{
-					var err = "";
-					$.each(response.responseJSON.errors,function(field_name,error){
-						err = err +'<br>' + error;
-					});
-					new PNotify({
-							title: 'Error',
-							text:  err,
-							type: 'error'
-					});
-					
-				},
-			});
+					$.ajax({
+						type: "POST",
+						url: "{{ route('add_topic') }}",
+						data: formData,
+						processData: false,
+						contentType: false,
+						success: function(response) {
+							new PNotify({
+								title: 'Success',
+								text:  response.msg,
+								type: 'success'
+							});
+							setTimeout(function(){  location.reload(); }, 800);
+						},
+						error:function(response) {
+							var err = "";
+							$.each(response.responseJSON.errors,function(field_name,error){
+								err = err +'<br>' + error;
+							});
+							new PNotify({
+								title: 'Error',
+								text:err,
+								type: 'error',
+								delay: 2000
+							});
+						}
+                	});
+				}
+			}
 		}
-	});
+	}
 
 	$(".edit_topic").click(function()
 	{
@@ -284,66 +278,56 @@ $(document).ready(function()
 			{
 				$("#topicEditModal").modal('show');
 				$("#edit_topic_data").html(response);
-
 				CKEDITOR.replace('topic_description1');
-			
 			}
 		});
-		
 	});
 
-	$('#updatetopicfrm').on('submit', function(event)
+	function updateTopic()
 	{
-		event.preventDefault();
-		if($('#updatetopicfrm').parsley().isValid())
-		{
-			var url = '{{ route("update_topic") }}';
-			var data = $("#updatetopicfrm").serialize();
-			$.ajax({
-				type: "post",
-				url: url,
-				data: data,
-				success: function(response) 
-				{
-					if(response.data =='success')
-					{
-						new PNotify({
-							title: 'Success',
-							text:  response.msg,
-							type: 'success'
+		var url = '{{ route("update_topic") }}';
+		if ($("#updatetopicfrm").parsley()) {
+			if ($("#updatetopicfrm").parsley().validate()) {
+				event.preventDefault();
+				var formData = new FormData($("#updatetopicfrm")[0]);
+				$descriptionValue = CKEDITOR.instances.topic_description1.getData();
+				formData.append("descriptionValue", $descriptionValue);
+				if ($("#updatetopicfrm").parsley().isValid()) {
+					$.ajax({
+						type: "POST",
+						cache:false,
+						async: false,
+						url: url,
+						data: formData,
+						processData: false,
+						contentType: false,
+						success: function(response) {
+							new PNotify({
+								title: 'Success',
+								text:  response.msg,
+								type: 'success'
 							});
-						setTimeout(function(){  location.reload(); }, 800);
-					}
-					else
-					{
-						new PNotify({
-						title: 'Error',
-						text:  response.msg,
-						type: 'error'
-						});
-					}	
-				},
-					
-				error: function(response)
-				{
-					var err = "";
-					$.each(response.responseJSON.errors,function(field_name,error){
-					err = err +'<br>' + error;
+							setTimeout(function(){  location.reload(); }, 800);
+						},
+						error:function(response) {
+							var err = "";
+							$.each(response.responseJSON.errors,function(field_name,error){
+								err = err +'<br>' + error;
+							});
+							new PNotify({
+								title: 'Error',
+								text:err,
+								type: 'error',
+								delay: 2000
+							});
+						}
 					});
-					new PNotify({
-							title: 'Error',
-							text:  err,
-							type: 'error'
-							});
-					
-				},
-			});
+				}
+			}
 		}
-	});
-});
+	}
 $(document).ready(function()
 {
-	
 	//has uppercase
 	window.Parsley.addValidator('uppercase', {
 	  requirementType: 'number',

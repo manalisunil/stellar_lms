@@ -29,11 +29,15 @@
                                 <td>{{$course->course_name}}</td>
                                 <td>{{$course->course_duration}}</td>
                                 <td>{{$course->course_price}}</td>
-                                <td>                                                    
-                                    <button onClick="ReadBanner({{$course->id}})" type="button" class="btn btn-success btn-sm">View</button>
-                                </td>
-                                <td>                                                   
-                                    <button onClick="ReadDocument({{$course->id}})" type="button" class="btn btn-primary btn-sm">View</button>
+                                <td>       
+                                    @if(!empty($course->course_banner))                                             
+                                        <button onClick="ReadBanner({{$course->id}})" type="button" class="btn btn-success btn-sm">View</button>
+                                    @endif
+                                    </td>
+                                <td>       
+                                    @if(!empty($course->course_doc))                                             
+                                        <button onClick="ReadDocument({{$course->id}})" type="button" class="btn btn-primary btn-sm">View</button>
+                                    @endif
                                 </td>
                                 <td>
                                     <div class="custom-control custom-switch">
@@ -74,7 +78,7 @@
                             <label for="unique-id-input" class="col-form-label">Course Id<span class="text-danger"> * <span></label>
                         </div>
                         <div class="col-lg-3">
-                            <input name="course_id" id="course_id" type="text" class="form-control" placeholder="COURS-0001" required data-parsley-trigger="focusout" data-parsley-trigger="keyup" data-parsley-pattern="^[A-Za-z _0-9][A-Za-z 0-9]*$"/>
+                            <input name="course_id" id="course_id" type="text" class="form-control" placeholder="COURS0001" required data-parsley-trigger="focusout" data-parsley-trigger="keyup" data-parsley-pattern="^[A-Za-z _0-9][A-Za-z 0-9]*$"/>
                         </div>
                         <div class="col-lg-1 pr-0">
                             <label for="name-input" class="col-form-label px-0 mx-0" style="width: 114%;text-align: left;">Company Name<span class="text-danger"> * <span></label>
@@ -92,7 +96,7 @@
                             <label for="address-input" class="col-form-label">Course Name<span class="text-danger"> * <span></label>
                         </div>
                         <div class="col-lg-3">
-                            <input name="course_name" id="course_name" type="text" class="form-control" placeholder="Enter Course Name" required data-parsley-trigger="focusout" data-parsley-trigger="keyup" data-parsley-pattern="^[A-Za-z ][A-Za-z ]*$"/>
+                            <input name="course_name" id="course_name" type="text" class="form-control" placeholder="Enter Course Name" required data-parsley-trigger="focusout" data-parsley-trigger="keyup" data-parsley-pattern="^[A-Za-z _0-9][A-Za-z 0-9]*$"/>
                         </div>
                     </div>
                     <div class="row">
@@ -100,7 +104,7 @@
                             <label for="city-input" class="col-form-label px-0 mx-0" style="width: 114%;text-align: left;">Course Duration <span class="text-danger"> * <span></label>
                         </div>
                         <div class="col-lg-3">
-                            <input name="course_duration" id="course_duration" type="text" class="form-control" placeholder="Enter Course Duration" required/>
+                            <input name="course_duration" id="course_duration" type="text" class="form-control" placeholder="Enter Course Duration" required data-parsley-trigger="focusout" data-parsley-trigger="keyup" data-parsley-pattern="^[A-Za-z _0-9][A-Za-z 0-9]*$"/>
                         </div>
                         <div class="col-lg-1 pr-0">
                             <label for="state-input" class="col-form-label">Course Price</label>

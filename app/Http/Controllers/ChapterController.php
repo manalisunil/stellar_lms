@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Subject;
 use App\Models\Chapter;
+use Carbon\Carbon;
 
 class ChapterController extends Controller
 {
@@ -20,17 +21,17 @@ class ChapterController extends Controller
     	$request->validate([
     		'subject_id'  =>'required',
             'chapter_id' => 'required|unique:mdblms_chapters,chapter_id',
-            'chapter_name' => 'required|unique:mdblms_chapters,chapter_name'
-            
+            'chapter_name' => 'required|unique:mdblms_chapters,chapter_name',
+            'descriptionValue' => 'required',
         ]);
 
         $chapt = new Chapter();
         $chapt->subject_id = $request->subject_id;
         $chapt->chapter_id = $request->chapter_id;
         $chapt->chapter_name = $request->chapter_name;
-        $chapt->chapter_description = $request->chapter_description;
+        $chapt->chapter_description = $request->descriptionValue;
         $chapt->added_by = auth()->user()->id;
-        $chapt->added_datetime = \Carbon\Carbon::now();
+        $chapt->added_datetime = Carbon::now();
         $chapt->is_active = isset($request->is_active) ? 1 : 0;
         $res = $chapt->save();
         if($res)
@@ -48,7 +49,6 @@ class ChapterController extends Controller
     {
         $id =$request->id;
         $subjectList  = Subject::where('is_active',1)->get();
-
         $chapterDetail = Chapter::where('id',$id)->first();
        	$output="";
        	$output .= '<div class="modal-body">
@@ -83,13 +83,13 @@ class ChapterController extends Controller
 						</div>
 						<div class="row mt-1">
 							<div class="col-lg-12">
-								<label for="example-email-input" class="col-form-label">Desacription </label><br>
+								<label for="example-email-input" class="col-form-label">Description <span class="text-danger"> * </span></label><br>
 								<textarea class="form-control" name="chapter_description1" id="chapter_description1" required>'.$chapterDetail->chapter_description.'</textarea>
 							</div>	
 							
 							<div class="col-lg-3">
 								<label for="example-email-input" class="col-form-label pr-3">Status </label> 
-								<input type="checkbox" checked class="" value="1" id="is_active" name="is_active"';
+								<input type="checkbox" class="" value="1" id="is_active" name="is_active"';
 								if ($chapterDetail->is_active == 1)
 			                    $output.='checked';
 			                else {
@@ -106,17 +106,17 @@ class ChapterController extends Controller
     	$request->validate([
     		'subject_id'  =>'required',
             'chapter_id' => 'required|unique:mdblms_chapters,chapter_id,'.$request->id,
-            'chapter_name' => 'required|unique:mdblms_chapters,chapter_name,'.$request->id
-            
+            'chapter_name' => 'required|unique:mdblms_chapters,chapter_name,'.$request->id,
+            'descriptionValue' => 'required'
         ]);
 
         $chapt = Chapter::find($request->id);
         $chapt->subject_id = $request->subject_id;
         $chapt->chapter_id = $request->chapter_id;
         $chapt->chapter_name = $request->chapter_name;
-        $chapt->chapter_description = $request->chapter_description1;
+        $chapt->chapter_description = $request->descriptionValue;
         $chapt->added_by = auth()->user()->id;
-        $chapt->added_datetime = \Carbon\Carbon::now();
+        $chapt->added_datetime = Carbon::now();
         $chapt->is_active = isset($request->is_active) ? 1 : 0;
         $res = $chapt->save();
         if($res)
@@ -162,10 +162,10 @@ class ChapterController extends Controller
             <div class="card-body">
                 <div class="row mb-2">
                 <div class="col-lg-1">
-                    <label for="city-input" class="">Topic Desacription :</b> </label>
+                    <label for="city-input" class="">Chapter Description :</b> </label>
                 </div>
                     <div class="col-lg-12">
-                       '.$detail->chapter_name.'
+                       '.$detail->chapter_description.'
                     </div> 
                 </div>  
             </div>

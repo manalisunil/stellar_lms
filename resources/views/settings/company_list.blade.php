@@ -65,7 +65,7 @@
                             <label for="unique-id-input" class="col-form-label px-0 mx-0" style="width: 114%;text-align: left;">Company Name<span class="text-danger"> * <span></label>
                         </div>
                         <div class="col-lg-3">
-                            <input name="company_name" id="company_name" type="text" class="form-control" placeholder="Enter Company Name" required data-parsley-trigger="focusout" data-parsley-trigger="keyup" data-parsley-pattern="^[A-Za-z ][A-Za-z ]*$"/>
+                            <input name="company_name" id="company_name" type="text" class="form-control" placeholder="Enter Company Name" required data-parsley-trigger="focusout" data-parsley-trigger="keyup" data-parsley-pattern="^[A-Za-z ][A-Za-z \.]*$"/>
                         </div>
                         <div class="col-lg-1 pr-0">
                             <label for="name-input" class="col-form-label px-0 mx-0" style="width: 114%;text-align: left;">Address<span class="text-danger"> * <span></label>
@@ -78,7 +78,8 @@
                         </div>
                         <div class="col-lg-3">
                             <input required data-parsley-type="number" data-parsley-trigger="change" data-parsley-minlength="10" 
-								data-parsley-maxlength="10" id="phone_no" name="phone_no" type="text" class="form-control" autocomplete="off" placeholder="Enter Phone Number" >                        </div>
+								data-parsley-maxlength="10" id="phone_no" name="phone_no" type="text" class="form-control" autocomplete="off" placeholder="Enter Phone Number" >                        
+                        </div>
                     </div>
                     <div class="row mt-2">
                         <div class="col-lg-1 pr-0">

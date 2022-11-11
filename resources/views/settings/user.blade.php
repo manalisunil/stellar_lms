@@ -35,10 +35,11 @@
 											<label class="custom-control-label" for="customSwitch{{ $userDt->id }}">@if($userDt->is_active==1) Active @else Inactive @endif</label>
 										</div>
 									</td>
-									<th>
-										<span  class="btn-primary btn-sm edit_icon"  onClick="view_detail({{ $userDt->id}})">View</span>
-									</th>
-									<td> <span   class="edit_icon edit_user ml-2"  data-id="{{ $userDt->id }}"><img class="menuicon tbl_editbtn" src="{{asset("app-assets/assets/images/edit.svg")}}" >&nbsp;</span>
+									<td>
+										<span class="btn-primary btn-sm edit_icon"  onClick="view_detail({{ $userDt->id}})">View</span>
+									</td>
+									<td> 
+										<span class="edit_icon edit_user ml-2"  data-id="{{ $userDt->id }}"><img class="menuicon tbl_editbtn" src="{{asset("app-assets/assets/images/edit.svg")}}" >&nbsp;</span>
 									</td>
 								</tr>
 								@empty
@@ -127,7 +128,6 @@
 								<label for="example-email-input" class="col-form-label">Email <span class="text-danger"> * </span></label>
 								<input autocomplete="off" required value="" name="email" id="email" type="email" class="form-control" placeholder="Enter Email"/>
 							</div>
-							
 							<div class="col-lg-3">
 								<label for="example-email-input" class="col-form-label"> Password<span class="text-danger"> * </span> </label>
 								
@@ -165,32 +165,24 @@
 								<label for="name-input" class="col-form-label">Institution<span class="text-danger"> <span></label>
 									 <input id="institution" name="institution" type="text" class="form-control" autocomplete="off" placeholder="Enter institution"  data-parsley-trigger="focusout" data-parsley-trigger="keyup" data-parsley-pattern="^[A-Za-z ][A-Za-z ]*$">
 							</div>
-							
-			
-						<div class="col-lg-3 tutor_div">
-							<label for="example-email-input" class="col-form-label">Is Content Writer </label><br>
-							<input type="checkbox"  value="1" id="is_content_writer" name="is_content_writer" />
-						</div>	
-							
-						<div class="col-lg-3">
-							<label for="example-email-input" class="col-form-label">Status </label><br>
-							<input type="checkbox" checked value="1" id="is_active" name="is_active" />
+							<div class="col-lg-3 tutor_div">
+								<label for="example-email-input" class="col-form-label">Is Content Writer </label><br>
+								<input type="checkbox"  value="1" id="is_content_writer" name="is_content_writer" />
+							</div>	
+							<div class="col-lg-3">
+								<label for="example-email-input" class="col-form-label">Status </label><br>
+								<input type="checkbox" checked value="1" id="is_active" name="is_active" />
+							</div>
 						</div>
-							
-							
-						
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-						<button type="submit" class="btn btn-primary">Submit</button>
-					</div>
-				</form>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+							<button type="submit" class="btn btn-primary">Submit</button>
+						</div>
+					</form>
+				</div>
 			</div>
 		</div>
 	</div>
-
-	
-</div>
 </div>
 <div class="modal fade" id="userEditModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 		<div class="modal-dialog modal-xl" role="document">
@@ -300,17 +292,14 @@ $(document).ready(function()
 
 	var table = $('#datatable').DataTable({
 		responsive: true,
-		dom: 'l<"toolbar">Bfrtip',
-		buttons: [
-			'excel'
-		],
+		dom: 'l<"toolbar">frtip',
+		// buttons: [
+		// 	'excel'
+		// ],
 		initComplete: function(){
 		$("div.toolbar").html('<button   type="button" class=" ml-2 btn btn-primary" data-toggle="modal" data-target="#useraddModal"><img class="menuicon" src="{{asset("app-assets/assets/images/add.svg")}}">&nbsp;Add User</button><br />');
 		}
 	});
-
-	
-
 
 	$('#userfrm').on('submit', function(event)
 	{

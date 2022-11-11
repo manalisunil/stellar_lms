@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 use App\Models\Company;
 use App\Models\Course;
 use Illuminate\Support\Facades\Crypt;
@@ -13,16 +14,16 @@ class CourseController extends Controller
     public function viewCourse()
     {
         $courses = Course::all();
-        $company_list = Company::all();
+        $company_list = Company::where('is_active',1)->get();
         return view('settings.course_list',compact('courses','company_list'));
     }
 
     public function submitCourse(Request $request)
     {
         $request->validate([
-            'course_id' => 'required',
+            'course_id' => 'required|unique:mdblms_courses,course_id',
             'company_id' => 'required',
-            'course_name' => 'required',
+            'course_name' => 'required|unique:mdblms_courses,course_name',
             'descriptionValue' => 'required',
             'course_duration' =>'required',
             'deliverableValue' => 'required',
@@ -68,7 +69,7 @@ class CourseController extends Controller
         $course->course_banner = $banner;
         $course->course_banner_type = $banner_type;
         $course->is_active = ($request->is_active == 1)? 1 :0;
-        $course->course_added_datetime = date('Y-m-d H:i:s');
+        $course->course_added_datetime = Carbon::now();
         if($course->save())
         {
             return response()->json(['data'=>'success','msg'=>'Course Added Successfully!']);
@@ -103,7 +104,7 @@ class CourseController extends Controller
                         '<label for="unique-id-input" class="col-form-label">Course Id<span class="text-danger"> * <span></label>'.
                     '</div>'.
                     '<div class="col-lg-3">'.
-                        '<input name="course_id" id="ed_course_id" value="'.$courseData->course_id.'" type="text" class="form-control" placeholder="COURS-0001" required data-parsley-trigger="focusout" data-parsley-trigger="keyup" data-parsley-pattern="^[A-Za-z _0-9][A-Za-z 0-9]*$"/>'.
+                        '<input name="course_id" id="ed_course_id" value="'.$courseData->course_id.'" type="text" class="form-control" placeholder="COURS0001" required data-parsley-trigger="focusout" data-parsley-trigger="keyup" data-parsley-pattern="^[A-Za-z _0-9][A-Za-z 0-9]*$"/>'.
                     '</div>'.
                     '<div class="col-lg-1 pr-0">'.
                         '<label for="name-input" class="col-form-label px-0 mx-0" style="width: 114%;text-align: left;">Company Name<span class="text-danger"> * <span></label>'.
@@ -124,7 +125,7 @@ class CourseController extends Controller
                         '<label for="address-input" class="col-form-label">Course Name<span class="text-danger"> * <span></label>'.
                     '</div>'.
                     '<div class="col-lg-3">'.
-                        '<input name="course_name" id="ed_course_name" type="text" class="form-control" value="'.$courseData->course_name.'" placeholder="Enter Course Name" required data-parsley-trigger="focusout" data-parsley-trigger="keyup" data-parsley-pattern="^[A-Za-z ][A-Za-z ]*$"/>'.
+                        '<input name="course_name" id="ed_course_name" type="text" class="form-control" value="'.$courseData->course_name.'" placeholder="Enter Course Name" required data-parsley-trigger="focusout" data-parsley-trigger="keyup" data-parsley-pattern="^[A-Za-z _0-9][A-Za-z 0-9]*$"/>'.
                     '</div>'.
                 '</div>'.
                 '<div class="row">'.
@@ -132,7 +133,7 @@ class CourseController extends Controller
                         '<label for="city-input" class="col-form-label px-0 mx-0" style="width: 114%;text-align: left;">Course Duration <span class="text-danger"> * <span></label>'.
                     '</div>'.
                     '<div class="col-lg-3">'.
-                        '<input name="course_duration" id="ed_course_duration" type="text" class="form-control" value="'.$courseData->course_duration.'" placeholder="Enter Course Duration" required/>'.
+                        '<input name="course_duration" id="ed_course_duration" type="text" class="form-control" value="'.$courseData->course_duration.'" placeholder="Enter Course Duration" required data-parsley-trigger="focusout" data-parsley-trigger="keyup" data-parsley-pattern="^[A-Za-z _0-9][A-Za-z 0-9]*$" />'.
                     '</div>'.
                     '<div class="col-lg-1 pr-0">'.
                         '<label for="state-input" class="col-form-label">Course Price</label>'.
@@ -199,9 +200,9 @@ class CourseController extends Controller
     public function updateCourse(Request $request)
     {
          $request->validate([
-            'course_id' => 'required',
+            'course_id' => 'required|unique:mdblms_courses,course_id,'.$request->id,
             'company_id' => 'required',
-            'course_name' => 'required',
+            'course_name' => 'required|unique:mdblms_courses,course_name,'.$request->id,
             'course_duration' =>'required',
             'descriptionValue' => 'required',
             'deliverableValue' => 'required',
@@ -238,7 +239,7 @@ class CourseController extends Controller
         $course->course_added_by = Auth::user()->id;
         $course->course_price = $request->course_price;
         $course->is_active = ($request->is_active == 1)? 1 :0;
-        $course->course_added_datetime = date('Y-m-d H:i:s');
+        $course->course_added_datetime = Carbon::now();
         $res = $course->save();
         if($res)
         {
