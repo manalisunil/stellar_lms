@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use DB;
 use Carbon\Carbon;
 use App\Models\Subject;
 use App\Models\Course;
@@ -69,31 +70,72 @@ class SubjectController extends Controller
 
     public function submitCousreSubjectMapping(Request $request)
     {
+        // dd($request);
         $request->validate([
             'subject_id' => 'required',
             'course_id' => 'required',
         ]);
 
-        $check_mapping = CourseSubjectMapping::Where('subject_id','=',$request->subject_id)->where('course_id','=',$request->course_id)->first();
-        if(isset($check_mapping))
+        $course_cnt = count($request->course_id);
+        $courses = $request->course_id;
+
+        $course_ids = implode(',',$courses);
+        // dd($courses);
+        $delet_old = CourseSubjectMapping::where('subject_id',$request->subject_id)->pluck('course_id')->toArray();
+
+        $del = array_diff($delet_old ,$courses);
+        if(!empty($del))
         {
-            return response()->json(['data'=>'error','msg'=>'Mapping Already Exists!']);
+            CourseSubjectMapping::where('subject_id',$request->subject_id)->whereIn('course_id',$del)->delete();
         }
 
-        $csmapping = new CourseSubjectMapping();
-        $csmapping->subject_id = $request->subject_id;
-        $csmapping->course_id = $request->course_id;
-        $csmapping->added_by = Auth::user()->id;
-        $csmapping->is_active = ($request->is_active == 1)? 1 :0;
-        $csmapping->added_datetime = Carbon::now();
-        if($csmapping->save())
+        if($course_cnt > 0) 
         {
+            foreach ($courses as $k => $val) 
+            {
+               $new_course = $val;
+                $check_mapping = CourseSubjectMapping::Where('subject_id','=',$request->subject_id)->where('course_id','=',$new_course)->first();
+                if(!isset($check_mapping))
+                {
+                    // $csmapping = new CourseSubjectMapping();
+                    // $csmapping->subject_id = $request->subject_id;
+                    // $csmapping->course_id = $new_course;
+                    // $csmapping->added_by = Auth::user()->id;
+                    // $csmapping->is_active = ($request->is_active == 1)? 1 :0;
+                    // $csmapping->added_datetime = Carbon::now();
+                    // $res =  $csmapping->save();
+                    // DB::enableQueryLog();
+                    $csmapping = CourseSubjectMapping::updateOrCreate(
+                            [
+                                'course_id'=>$new_course,
+                                'added_by'    => Auth::user()->id,
+                                'subject_id'  => $request->subject_id,
+                               
+                            ],
+                            [
+                                'added_datetime'=>Carbon::now(),
+                                 'is_active'  => 1
+                            ]
+                        );
+                    // dd(DB::getQueryLog());
+
+                }
+
+               
+            }
+            
+
+        }
             return response()->json(['data'=>'success','msg'=>'Mapping Added Successfully!']);
-        }
-        else
-        {
-            return response()->json(['data'=>'error','msg'=>$validator->errors()->all()]);
-        }
+            
+        // if($csmapping)
+        // {
+            // return response()->json(['data'=>'success','msg'=>'Mapping Added Successfully!']);
+        // }
+        // else
+        // {
+        //     return response()->json(['data'=>'error','msg'=>$validator->errors()->all()]);
+        // }
     }
 
     public function mappingStatus($mappingid) 
@@ -147,12 +189,14 @@ class SubjectController extends Controller
 
     public function updateMapping(Request $request)
     {
-         $request->validate([
+        $request->validate([
             'subject_id' => 'required',
             'course_id' => 'required',
         ]);
 
+
         $check_mapping = CourseSubjectMapping::Where('subject_id','=',$request->subject_id)->where('course_id','=',$request->course_id)->where('id','!=',$request->id)->first();
+
         if(isset($check_mapping))
         {
             return response()->json(['data'=>'error','msg'=>'Mapping Already Exists!']);
@@ -200,5 +244,11 @@ class SubjectController extends Controller
             </div>
         </div>';
         echo $output;
+    }
+    public function get_courses_maped(Request $request)
+    {
+        $sub_id =$request->sub_id;
+        $mappingDetail = CourseSubjectMapping::where('subject_id',$sub_id)->pluck('course_id')->toArray();
+        return response()->json(['data'=>$mappingDetail]);
     }
 }

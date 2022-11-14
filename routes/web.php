@@ -84,4 +84,5 @@ Route::post('/course_subject_mapping', [App\Http\Controllers\SubjectController::
 Route::any('/mappingStatus/{mappingid?}', [App\Http\Controllers\SubjectController::class, 'mappingStatus'])->name('mapping_status');
 Route::post('/edit_mapping',[\App\Http\Controllers\SubjectController::class, 'editMapping'])->name('edit_mapping');
 Route::post('/update_mapping',[\App\Http\Controllers\SubjectController::class, 'updateMapping'])->name('update_mapping');
+Route::post('get_courses_maped',[\App\Http\Controllers\SubjectController::class, 'get_courses_maped'])->name('get_courses_maped');
 
