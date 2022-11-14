@@ -85,7 +85,7 @@
 							</div>
 
 							<div class="col-lg-4">
-								<label for="example-firstname-input" class="col-form-label">Subject Name <span class="text-danger"> * </span></label>
+								<label for="example-firstname-input" class="col-form-label">Chapter Name <span class="text-danger"> * </span></label>
 								<input required name="chapter_name" value="" id="chapter_name" type="text" class="form-control" placeholder="Enter Chapter Name" required data-parsley-trigger="focusout" data-parsley-trigger="keyup" data-parsley-pattern="^[A-Za-z ][A-Za-z ]*$" />
 							</div>
 							
