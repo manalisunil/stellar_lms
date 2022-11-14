@@ -1,7 +1,6 @@
 @extends('layouts.app')
 @section('title', 'Topic')
 @section('content')
-</style>
 <div class="container-fluid mt-1">
 		@include('settings.common_tabs')
 		<div class="col-lg-12">
@@ -53,7 +52,7 @@
 		</div>
 	</div>
 	<div class="modal fade" id="topicaddModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-		<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-dialog modal-xl" role="document">
 			<div class="modal-content">
 				<form method="post" id="topicfrm" name="topicfrm"  data-parsley-validate data-parsley-trigger="keyup">
 				@csrf
@@ -65,39 +64,47 @@
 					</div>
 					<div class="modal-body">
 						<div class="row">
-							<div class="col-lg-4">
+							<div class="col-lg-1 pr-0">
 								<label for="company_select" class="col-form-label"> Chapter  <span class="text-danger"> * </span></label>
+							</div>
+							<div class="col-lg-3">
 								<select required class="form-control" name="chapter_id" id="chapter_id">
 									<option value="">Select Chapter</option>
 									@forelse($chapterList as $chpt)
 									<option value="{{$chpt->id}}"> {{$chpt->chapter_name}}</option>
 									@empty
 									@endforelse
-								</select>
-								
+								</select>							
 							</div>
-							<div class="col-lg-4">
+							<div class="col-lg-1 pr-0">
 								<label for="company_select" class="col-form-label"> Topic Id <span class="text-danger"> * </span></label>
-								<input required name="topic_id" value="" id="topic_id" type="text" class="form-control" placeholder="Enter Topic Id" required data-parsley-trigger="focusout" data-parsley-trigger="keyup" data-parsley-pattern="^[A-Za-z _0-9][A-Za-z 0-9]*$" />
-								
 							</div>
-
-							<div class="col-lg-4">
+							<div class="col-lg-3">
+								<input required name="topic_id" value="" id="topic_id" type="text" class="form-control" placeholder="Enter Topic Id" required data-parsley-trigger="focusout" data-parsley-trigger="keyup" data-parsley-pattern="^[A-Za-z _0-9][A-Za-z 0-9]*$" />
+							</div>
+							<div class="col-lg-1 pr-0">
 								<label for="example-firstname-input" class="col-form-label">Topic Name <span class="text-danger"> * </span></label>
+							</div>
+							<div class="col-lg-3">
 								<input required name="topic_name" value="" id="topic_name" type="text" class="form-control" placeholder="Enter Topic Name" required data-parsley-trigger="focusout" data-parsley-trigger="keyup" data-parsley-pattern="^[A-Za-z ][A-Za-z ]*$" />
 							</div>
-							
 						</div>
-						<div class="row mt-1">
-							<div class="col-lg-12">
+						<div class="row mt-2">
+							<div class="col-lg-1 pr-0">
 								<label for="example-email-input" class="col-form-label">Description <span class="text-danger"> * </span></label><br>
+							</div>
+							<div class="col-lg-10">
 								<textarea class="form-control" name="topic_description" id="topic_description" required></textarea>
 							</div>	
-							
-							<div class="col-lg-3">
+						</div>
+						<div class="row mt-2">
+							<div class="col-lg-1 pr-0">
 								<label for="example-email-input" class="col-form-label pr-3">Status </label> 
+							</div>
+							<div class="col-lg-3 mt-3">
 								<input type="checkbox" checked class="" value="1" id="is_active" name="is_active" />
 							</div>
+						</div>
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
@@ -110,7 +117,7 @@
 	</div>
 </div>
 <div class="modal fade" id="topicEditModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-	<div class="modal-dialog modal-lg" role="document">
+	<div class="modal-dialog modal-xl" role="document">
 		<div class="modal-content">
 			<form method="post" id="updatetopicfrm" name="updatetopicfrm"  data-parsley-validate data-parsley-trigger="keyup">
 			@csrf

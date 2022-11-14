@@ -3,8 +3,8 @@
 @section('content')
 <div class="container-fluid mt-1">
     @include('settings.common_tabs')
-    <div class="col-lg-12" >
-        <div class="card" >
+    <div class="col-lg-12">
+        <div class="card">
             <div class="card-body">
                 <div class="p-0" id="tbl_list">
                     <table id="datatable" class="table table-bordered mb-0" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
@@ -26,7 +26,7 @@
                                 <td>{{$subject->subject_name}}</td>
                                 <td>
                                     @if(!empty($subject->subject_description))
-                                        <span  class="btn-primary btn-sm edit_icon"  onClick="view_description({{ $subject->id}})">View</span>
+                                        <span class="btn-primary btn-sm edit_icon"  onClick="view_description({{ $subject->id}})">View</span>
                                     @endif
                                 </td>
                                 <td>
@@ -36,7 +36,7 @@
                                     </div>
                                 </td>
                                 <td> 
-                                    <button type="button" class="edit_icon edit_subject ml-2 btn btn-sm"  data-id="{{ $subject->id }}"><img class="menuicon tbl_editbtn" src="{{asset("app-assets/assets/images/edit.svg")}}" >&nbsp;</button>
+                                    <span class="edit_icon edit_subject ml-2"  data-id="{{ $subject->id }}"><img class="menuicon tbl_editbtn" src="{{asset("app-assets/assets/images/edit.svg")}}" >&nbsp;</span>
                                 </td>
                             </tr>
                             @empty
@@ -196,7 +196,7 @@ $(document).ready(function()
 		    $("div.toolbar").html('<button id="addSubject" type="button" class="ml-2 btn btn-primary" data-toggle="modal" data-target="#addSubjectModal"><img class="menuicon" src="{{asset("app-assets/assets/images/add.svg")}}">&nbsp;Add Subject</button><br />');
 		}, 
         'columnDefs': [ {
-            'targets': [4],
+            'targets': [5],
             'orderable': false,
         }]
     });
@@ -325,7 +325,7 @@ function backTo_tble()
 {
 	$("#tbl_list").show();
 	$("#subdetail").hide();
-	$("#topic_view_div").html("");
+	$("#sub_view_div").html("");
 }
 
 function view_description(id)

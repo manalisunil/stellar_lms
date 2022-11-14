@@ -56,52 +56,59 @@ class TopicsController extends Controller
        	$output .= '<div class="modal-body">
 						<input type="hidden" name="id" id="id" value="'.$topicDetail->id.'">
 						<div class="row">
-							<div class="col-lg-4">
-								<label for="company_select" class="col-form-label"> Chapter  <span class="text-danger"> * </span></label>
-								<select required class="form-control" name="chapter_id" id="chapter_id">
-									<option value="">Select Chapter</option>';
-									foreach($chapterList as $chpdt) 
-									{
-										$output.='<option value="'.$chpdt->id.'"';
-										if($chpdt->id == $topicDetail->chapter_id) {
-										$output.='selected="selected"';
-										}
-										$output.= '>'.$chpdt->chapter_name.'</option>';
-									}
-			$output .='</select>
-								
+                            <div class="col-lg-1 pr-0">
+                                <label for="company_select" class="col-form-label"> Chapter  <span class="text-danger"> * </span></label>
 							</div>
-							<div class="col-lg-4">
-								<label for="company_select" class="col-form-label"> Topic Id <span class="text-danger"> * </span></label>
-								<input required name="topic_id" value="'.$topicDetail->topic_id.'" id="topic_id" type="text" class="form-control" placeholder="Enter Topic Id" required data-parsley-trigger="focusout" data-parsley-trigger="keyup" data-parsley-pattern="^[A-Za-z _0-9][A-Za-z 0-9]*$" />
-								
-							</div>
-
-							<div class="col-lg-4">
-								<label for="example-firstname-input" class="col-form-label">Topic Name <span class="text-danger"> * </span></label>
-								<input required name="topic_name" value="'.$topicDetail->topic_name.'" id="topic_name" type="text" class="form-control" placeholder="Enter Topic Name" required data-parsley-trigger="focusout" data-parsley-trigger="keyup" data-parsley-pattern="^[A-Za-z ][A-Za-z ]*$" />
-							</div>
-							
-						</div>
-						<div class="row mt-1">
-							<div class="col-lg-12">
-								<label for="example-email-input" class="col-form-label">Desacription </label><br>
-								<textarea class="form-control" name="topic_description1" id="topic_description1" required>'.$topicDetail->topic_description.'</textarea>
-							</div>	
-							
 							<div class="col-lg-3">
-								<label for="example-email-input" class="col-form-label pr-3">Status </label> 
-								<input type="checkbox" value="1" id="is_active" name="is_active"';
-								if ($topicDetail->is_active == 1)
-			                    $output.='checked';
-			                else {
-			                    $output.='';
-			                }
-			                $output .='/>
+                                <select required class="form-control" name="chapter_id" id="chapter_id">
+                                <option value="">Select Chapter</option>';
+                                foreach($chapterList as $chpdt) 
+                                {
+                                    $output.='<option value="'.$chpdt->id.'"';
+                                    if($chpdt->id == $topicDetail->chapter_id) {
+                                    $output.='selected="selected"';
+                                    }
+                                    $output.= '>'.$chpdt->chapter_name.'</option>';
+                                }
+                                $output .='</select>						
 							</div>
+                            <div class="col-lg-1 pr-0">
+                                <label for="company_select" class="col-form-label"> Topic Id <span class="text-danger"> * </span></label>
+							</div>
+							<div class="col-lg-3">
+                                <input required name="topic_id" value="'.$topicDetail->topic_id.'" id="topic_id" type="text" class="form-control" placeholder="Enter Topic Id" required data-parsley-trigger="focusout" data-parsley-trigger="keyup" data-parsley-pattern="^[A-Za-z _0-9][A-Za-z 0-9]*$" />
+							</div>
+							<div class="col-lg-1 pr-0">
+                                <label for="example-firstname-input" class="col-form-label">Topic Name <span class="text-danger"> * </span></label>
+							</div>
+							<div class="col-lg-3">
+                                <input required name="topic_name" value="'.$topicDetail->topic_name.'" id="topic_name" type="text" class="form-control" placeholder="Enter Topic Name" required data-parsley-trigger="focusout" data-parsley-trigger="keyup" data-parsley-pattern="^[A-Za-z ][A-Za-z ]*$" />
+							</div>
+						</div>
+						<div class="row mt-2">
+							<div class="col-lg-1 pr-0">
+                                <label for="example-email-input" class="col-form-label">Description </label><br>
+							</div>
+							<div class="col-lg-10">
+                                <textarea class="form-control" name="topic_description1" id="topic_description1" required>'.$topicDetail->topic_description.'</textarea>
+							</div>	
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-lg-1 pr-0">
+                                <label for="example-email-input" class="col-form-label pr-3">Status </label> 
+							</div>
+							<div class="col-lg-3 mt-3">
+                                <input type="checkbox" value="1" id="is_active" name="is_active"';
+                                if ($topicDetail->is_active == 1)
+                                    $output.='checked';
+                                else {
+                                    $output.='';
+                                }
+                                $output .='/>							
+                            </div>
+						</div>
 					</div>';
 		echo $output;
-
     }
     public function updatetopic(Request $request)
     {
@@ -160,9 +167,9 @@ class TopicsController extends Controller
         <div class="card  card_top_orenge" >
             <div class="card-body">
                 <div class="row mb-2">
-                <div class="col-lg-2">
-                    <label for="city-input" class="">Topic Description :</b> </label>
-                </div>
+                    <div class="col-lg-2">
+                        <label for="city-input" class="">Topic Description :</b> </label>
+                    </div>
                     <div class="col-lg-12">
                        '.$detail->topic_description.'
                     </div> 

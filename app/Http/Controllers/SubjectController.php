@@ -234,9 +234,9 @@ class SubjectController extends Controller
         <div class="card  card_top_orenge" >
             <div class="card-body">
                 <div class="row mb-2">
-                <div class="col-lg-2">
-                    <label for="city-input" class="">Subject Description :</b> </label>
-                </div>
+                    <div class="col-lg-2">
+                        <label for="city-input" class="">Subject Description :</b> </label>
+                    </div>
                     <div class="col-lg-12">
                        '.$detail->subject_description.'
                     </div> 
@@ -245,6 +245,7 @@ class SubjectController extends Controller
         </div>';
         echo $output;
     }
+    
     public function get_courses_maped(Request $request)
     {
         $sub_id =$request->sub_id;

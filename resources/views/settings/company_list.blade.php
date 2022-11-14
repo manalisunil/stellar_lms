@@ -3,8 +3,8 @@
 @section('content')
 <div class="container-fluid mt-1">
     @include('settings.common_tabs')
-    <div class="col-lg-12" >
-        <div class="card" >
+    <div class="col-lg-12">
+        <div class="card">
             <div class="card-body">
                 <div class="p-0">
                     <table id="datatable" class="table table-bordered mb-0" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
@@ -32,7 +32,7 @@
                                     </div>
                                 </td>
                                 <td> 
-                                    <button type="button" class="edit_icon edit_company ml-2 btn btn-sm"  data-id="{{ $company->id }}" onclick="editCompany({{ $company->id }})"><img class="menuicon tbl_editbtn" src="{{asset("app-assets/assets/images/edit.svg")}}" >&nbsp;</button>
+                                    <span class="edit_icon edit_company ml-2"  data-id="{{ $company->id }}" onclick="editCompany({{ $company->id }})"><img class="menuicon tbl_editbtn" src="{{asset("app-assets/assets/images/edit.svg")}}" >&nbsp;</span>
                                 </td>
                             </tr>
                             @empty

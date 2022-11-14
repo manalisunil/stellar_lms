@@ -31,7 +31,7 @@
                                     </div>
                                 </td>
                                 <td> 
-                                    <button type="button" class="edit_icon edit_mapping ml-2 btn btn-sm"  data-id="{{ $map->id }}"><img class="menuicon tbl_editbtn" src="{{asset("app-assets/assets/images/edit.svg")}}" >&nbsp;</button>
+                                    <span class="edit_icon edit_mapping ml-2"  data-id="{{ $map->id }}"><img class="menuicon tbl_editbtn" src="{{asset("app-assets/assets/images/edit.svg")}}" >&nbsp;</span>
                                 </td>
                             </tr>
                             @empty
@@ -76,22 +76,19 @@
                         <div class="col-lg-3 mt-2">
                             <input type="checkbox" checked value="1" id="is_active" name="is_active" />
                         </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-1 pr-0">
+                            <label for="address-input" class="col-form-label">Course<span class="text-danger"> * </span></label>
                         </div>
-                        <div class="row">
-                            <div class="col-lg-1 pr-0">
-                                <label for="address-input" class="col-form-label">Course<span class="text-danger"> * </span></label>
-                            </div>
-                            <div class="col-lg-10">
-
-                                <select multiple="multiple" size="10" id="course_id" name="course_id[]" title="client_ids[]" >
-                                                @forelse($cources as $course)
-                                                <option value="{{$course->id}}"  >{{$course->course_name}}</option>
-                                                @empty
-                                                @endforelse
-                                        </select>  
-                            </div>
-                        
-                        
+                        <div class="col-lg-10 demo">
+                            <select multiple="multiple" size="10" id="course_id" name="course_id[]" title="client_ids[]" >
+                                    @forelse($cources as $course)
+                                    <option value="{{$course->id}}"  >{{$course->course_name}}</option>
+                                    @empty
+                                    @endforelse
+                            </select>  
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -182,8 +179,7 @@ $(document).ready(function()
 
                            });
                         }
-                          
-                           $('[name="course_id[]"]').bootstrapDualListbox('refresh', true);
+                        $('[name="course_id[]"]').bootstrapDualListbox('refresh', true);
                     }
                 });
         }

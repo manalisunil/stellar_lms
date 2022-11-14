@@ -300,4 +300,31 @@ class CourseController extends Controller
             return response()->json(['data' => $output]);
         }
     }
+
+    public function viewCourseDescription(Request $request)
+    {
+        $id = $request->id;
+        $detail = Course::find($id);
+        $output ='<div class="row ">
+            <div class="col-lg-9 text-left">
+                <h5 class="modal-title pl-3" id="exampleModalLabel">
+                    <img class="mensuicon " src="'.asset('app-assets/assets/images/backs.png').'" style="width:1.3rem;height:1.3rem;margin-right: 10px; cursor:pointer;" onclick=backTo_tble()>
+                        '.$detail->course_name.'
+                </h5>
+            </div>
+        </div>
+        <div class="card  card_top_orenge" >
+            <div class="card-body">
+                <div class="row mb-2">
+                    <div class="col-lg-2">
+                        <label for="city-input" class="">Course Description :</b> </label>
+                    </div>
+                    <div class="col-lg-12">
+                       '.$detail->course_description.'
+                    </div> 
+                </div>  
+            </div>
+        </div>';
+        echo $output;
+    }
 }

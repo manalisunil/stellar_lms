@@ -88,8 +88,10 @@ class UserController extends Controller
 					<div class="modal-body">
 						<input type="hidden" name="id" id="id" value="'.$userDetail->id.'">
 						<div class="row">
-							<div class="col-lg-3">
+							<div class="col-lg-1 pr-0">
 								<label for="company_select" class="col-form-label"> Company <span class="text-danger"> * </span></label>
+							</div>
+							<div class="col-lg-3">
 								<select required class="form-control" name="company_id" id="company_id">
 									<option value="">Select Company</option>';
 									foreach($companyList as $compDt) 
@@ -103,23 +105,30 @@ class UserController extends Controller
 
 							$output .='</select>
 							</div>
-
-							<div class="col-lg-3">
+							<div class="col-lg-1 pr-0">
 								<label for="example-firstname-input" class="col-form-label">First Name <span class="text-danger"> * </span></label>
+							</div>
+							<div class="col-lg-3">
 								<input required name="first_name" value="'.$userDetail->first_name.'" id="first_name" type="text" class="form-control" placeholder="Enter First Name" required data-parsley-trigger="focusout" data-parsley-trigger="keyup" data-parsley-pattern="^[A-Za-z ][A-Za-z ]*$" />
 							</div>
-							<div class="col-lg-3">
+							<div class="col-lg-1 pr-0">
 								<label for="example-mname-input" class="col-form-label">Middel Name</label>
-								<input autocomplete="off"  value="'.$userDetail->middle_name.'" name="middle_name" id="middle_name" type="text" class="form-control" placeholder="Enter Middle Name" data-parsley-trigger="focusout" data-parsley-trigger="keyup" data-parsley-pattern="^[A-Za-z ][A-Za-z ]*$"/>
 							</div>
 							<div class="col-lg-3">
-								<label for="example-firstname-input" class="col-form-label">Last Name</label>
-								<input autocomplete="off"  value="'.$userDetail->last_name.'" name="last_name" id="last_name" type="text" class="form-control" placeholder="Enter Last Name" data-parsley-trigger="focusout" data-parsley-trigger="keyup" data-parsley-pattern="^[A-Za-z ][A-Za-z ]*$"/>
+								<input autocomplete="off"  value="'.$userDetail->middle_name.'" name="middle_name" id="middle_name" type="text" class="form-control" placeholder="Enter Middle Name" data-parsley-trigger="focusout" data-parsley-trigger="keyup" data-parsley-pattern="^[A-Za-z ][A-Za-z ]*$"/>
 							</div>
 						</div>
 						<div class="row mt-1">
+							<div class="col-lg-1 pr-0">
+								<label for="example-firstname-input" class="col-form-label">Last Name</label>
+							</div>
 							<div class="col-lg-3">
+								<input autocomplete="off"  value="'.$userDetail->last_name.'" name="last_name" id="last_name" type="text" class="form-control" placeholder="Enter Last Name" data-parsley-trigger="focusout" data-parsley-trigger="keyup" data-parsley-pattern="^[A-Za-z ][A-Za-z ]*$"/>
+							</div>
+							<div class="col-lg-1 pr-0">
 								<label for="company_select" class="col-form-label"> User Type <span class="text-danger"> * </span></label>
+							</div>
+							<div class="col-lg-3">
 								<select required class="form-control user_type_change" name="user_type_id" id="ed_user_type_id">
 									<option value="">Select User Type</option>';
 								
@@ -133,8 +142,10 @@ class UserController extends Controller
 									}
 							$output.='</select>
 							</div>
+							<div class="col-lg-1 pr-0">
+								<label for="active-input" class="col-form-label">Gender </label>
+							</div>
 							<div class="col-lg-3">
-	                            <label for="active-input" class="col-form-label">Gender </label>
 	                            <div class="mt-2">
 		                            <input type="radio" id="gender" name="gender" value="1"';
 		                             if ($userDetail->gender == 1)
@@ -151,34 +162,47 @@ class UserController extends Controller
 			                		$output.='>Female
 	                        	</div>
                         	</div>
+						</div>
+						<div class="row mt-1">
+							<div class="col-lg-1 pr-0">
+								<label for="name-input" class="col-form-label">Contact Number<span class="text-danger">  <span></label>
+							</div>
                         	<div class="col-lg-3">
-		                        <label for="name-input" class="col-form-label">Contact Number<span class="text-danger">  <span></label>
 								<input data-parsley-type="number" data-parsley-trigger="change" data-parsley-minlength="10" 
 								data-parsley-maxlength="10" id="contact_no" name="contact_no" type="text" class="form-control" autocomplete="off" placeholder="Enter Contact Number" value="'.$userDetail->contact_no.'" >
 		                	</div>
+							<div class="col-lg-1 pr-0">
+								<label for="active-input" class="col-form-label">Date of Birth </label>
+							</div>
                         	<div class="col-lg-3">
-                                <label for="active-input" class="col-form-label">Date of Birth </label>
-                                    <input class="form-control date-picker" name="dob" id="dob" type="text" value="'.$userDetail->dob.'"/>
+                                <input class="form-control date-picker" name="dob" id="dob" type="text" value="'.$userDetail->dob.'"/>
                             </div>
+							<div class="col-lg-1 pr-0">
+								<label for="name-input" class="col-form-label">Address 1<span class="text-danger">  <span></label>
+							</div>
                             <div class="col-lg-3">
-							    <label for="name-input" class="col-form-label">Address 1<span class="text-danger">  <span></label>
 								<input id="address_line1" name="address_line1" type="text" class="form-control" autocomplete="off" placeholder="Enter Address" value="'.$userDetail->address_line1.'" >
 							</div>
+						</div>
+						<div class="row mt-1">
+							<div class="col-lg-1 pr-0">
+								<label for="name-input" class="col-form-label">Address 2<span class="text-danger">  <span></label>
+							</div>
 							 <div class="col-lg-3">
-							    <label for="name-input" class="col-form-label">Address 2<span class="text-danger">  <span></label>
 								<input id="address_line2" name="address_line2" type="text" class="form-control" autocomplete="off" placeholder="Enter Address" value="'.$userDetail->address_line2.'" >
 							</div>
-							<div class="col-lg-3">
+							<div class="col-lg-1 pr-0">
 								<label for="example-email-input" class="col-form-label">Email <span class="text-danger"> * </span></label>
+							</div>
+							<div class="col-lg-3">
 								<input autocomplete="off" required value="'.$userDetail->email.'" name="email" id="email" type="email" class="form-control" placeholder="Enter Email"/>
 							</div>
-							
-							<div class="col-lg-3">
+							<div class="col-lg-1 pr-0">
 								<label for="example-email-input" class="col-form-label"> New Password<span class="text-danger"> * </span> </label>
-								
+							</div>
+							<div class="col-lg-3">
 								<input id="password" name="password" type="text" class="form-control" autocomplete="off" 	placeholder="Enter Password"   data-parsley-minlength="8"
 								data-parsley-errors-container=".errorspannewpassinput"
-								
 								data-parsley-uppercase="1"
 								data-parsley-lowercase="1"
 								data-parsley-number="1"
@@ -186,58 +210,74 @@ class UserController extends Controller
 								>
 								<span class="errorspannewpassinput" style="font-weight: 400;"></span>
 							</div>
-							<div class="col-lg-3">
-		                        <label for="name-input" class="col-form-label">City<span class="text-danger"><span></label>
-		                            <input id="city" name="city" type="text" class="form-control" autocomplete="off" placeholder="Enter City"  data-parsley-trigger="focusout" data-parsley-trigger="keyup" data-parsley-pattern="^[A-Za-z ][A-Za-z ]*$" value="'.$userDetail->city.'">
-			                </div>
-			                <div class="col-lg-3">
-		                        <label for="name-input" class="col-form-label">State<span class="text-danger"><span></label>
-		                            <input id="state" name="state" type="text" class="form-control" autocomplete="off" placeholder="Enter State"  data-parsley-trigger="focusout" data-parsley-trigger="keyup" data-parsley-pattern="^[A-Za-z ][A-Za-z ]*$" value="'.$userDetail->state.'">
-			                </div>
-			                <div class="col-lg-3">
-		                        <label for="name-input" class="col-form-label">Country<span class="text-danger"><span></label>
-		                            <input id="country" name="country" type="text" class="form-control" autocomplete="off" placeholder="Enter Country"  data-parsley-trigger="focusout" data-parsley-trigger="keyup" data-parsley-pattern="^[A-Za-z ][A-Za-z ]*$" value="'.$userDetail->country.'">
-			                </div>
-							<div class="col-lg-3">
-								<label for="name-input" class="col-form-label">Zip<span class="text-danger"> <span></label>
-									<input data-parsley-type="integer" data-parsley-trigger="keyup" id="zip" name="zip" type="text" class="form-control" autocomplete="off" placeholder="Enter Zipcode" data-parsley-type-message ="This value should be a valid number" value="'.$userDetail->zip.'">
-							</div>
-							<div class="col-lg-3 user_type_div">
-								<label for="name-input" class="col-form-label">Qualification<span class="text-danger"> <span></label>
-									 <input id="qualification" name="qualification" type="text" class="form-control" autocomplete="off" placeholder="Enter qualification"  data-parsley-trigger="focusout" data-parsley-trigger="keyup" data-parsley-pattern="^[A-Za-z ][A-Za-z ]*$" value="'.$userDetail->qualification.'">
-							</div>
-							<div class="col-lg-3 user_type_div">
-								<label for="name-input" class="col-form-label">Institution<span class="text-danger"> <span></label>
-									 <input id="institution" name="institution" type="text" class="form-control" autocomplete="off" placeholder="Enter institution"  data-parsley-trigger="focusout" data-parsley-trigger="keyup" data-parsley-pattern="^[A-Za-z ][A-Za-z ]*$" value="'.$userDetail->institution.'">
-							</div>
-							
-			
-						<div class="col-lg-3 tutor_div">
-							<label for="example-email-input" class="col-form-label">Is Content Writer </label><br>
-							<input type="checkbox"  value="1" id="is_content_writer" name="is_content_writer" ';
-							 if ($userDetail->is_content_writer == 1)
-			                    $output.='checked';
-			                else {
-			                    $output.='';
-			                }
-			                $output.='>
-						</div>	
-							
-						<div class="col-lg-3">
-							<label for="example-email-input" class="col-form-label">Status </label><br>
-							<input type="checkbox" value="1" id="is_active" name="is_active"';
-							if ($userDetail->is_active == 1)
-			                    $output.='checked';
-			                else {
-			                    $output.='';
-			                }
-			                $output.='>
 						</div>
-							
-							
-						
-					</div>
-						';
+						<div class="row mt-1">
+							<div class="col-lg-1 pr-0">
+								<label for="name-input" class="col-form-label">City<span class="text-danger"><span></label>
+							</div>
+							<div class="col-lg-3">
+		                        <input id="city" name="city" type="text" class="form-control" autocomplete="off" placeholder="Enter City"  data-parsley-trigger="focusout" data-parsley-trigger="keyup" data-parsley-pattern="^[A-Za-z ][A-Za-z ]*$" value="'.$userDetail->city.'">
+			                </div>
+							<div class="col-lg-1 pr-0">
+								<label for="name-input" class="col-form-label">State<span class="text-danger"><span></label>
+							</div>
+			                <div class="col-lg-3">
+		                        <input id="state" name="state" type="text" class="form-control" autocomplete="off" placeholder="Enter State"  data-parsley-trigger="focusout" data-parsley-trigger="keyup" data-parsley-pattern="^[A-Za-z ][A-Za-z ]*$" value="'.$userDetail->state.'">
+			                </div>
+							<div class="col-lg-1 pr-0">
+								<label for="name-input" class="col-form-label">Country<span class="text-danger"><span></label>
+							</div>
+			                <div class="col-lg-3">
+		                        <input id="country" name="country" type="text" class="form-control" autocomplete="off" placeholder="Enter Country"  data-parsley-trigger="focusout" data-parsley-trigger="keyup" data-parsley-pattern="^[A-Za-z ][A-Za-z ]*$" value="'.$userDetail->country.'">
+			                </div>
+						</div>
+						<div class="row mt-1">
+							<div class="col-lg-1 pr-0">
+								<label for="name-input" class="col-form-label">Zip<span class="text-danger"><span></label>
+							</div>
+							<div class="col-lg-3">
+								<input data-parsley-type="integer" data-parsley-trigger="keyup" id="zip" name="zip" type="text" class="form-control" autocomplete="off" placeholder="Enter Zipcode" data-parsley-type-message ="This value should be a valid number" value="'.$userDetail->zip.'">
+							</div>
+							<div class="col-lg-1 pr-0 user_type_div">
+								<label for="name-input" class="col-form-label">Qualification<span class="text-danger"> <span></label>
+							</div>
+							<div class="col-lg-3 user_type_div">
+								<input id="qualification" name="qualification" type="text" class="form-control" autocomplete="off" placeholder="Enter qualification"  data-parsley-trigger="focusout" data-parsley-trigger="keyup" data-parsley-pattern="^[A-Za-z ][A-Za-z ]*$" value="'.$userDetail->qualification.'">
+							</div>
+							<div class="col-lg-1 pr-0 user_type_div">
+								<label for="name-input" class="col-form-label">Institution<span class="text-danger"> <span></label>
+							</div>
+							<div class="col-lg-3 user_type_div">
+								<input id="institution" name="institution" type="text" class="form-control" autocomplete="off" placeholder="Enter institution"  data-parsley-trigger="focusout" data-parsley-trigger="keyup" data-parsley-pattern="^[A-Za-z ][A-Za-z ]*$" value="'.$userDetail->institution.'">
+							</div>
+						</div>
+						<div class="row mt-1">
+							<div class="col-lg-1 pr-0 tutor_div">
+								<label for="example-email-input" class="col-form-label px-0 mx-0" style="width: 114%;text-align: left;">Is Content Writer </label><br>
+							</div>
+							<div class="col-lg-3 mt-3 tutor_div">
+								<input type="checkbox"  value="1" id="is_content_writer" name="is_content_writer" ';
+								if ($userDetail->is_content_writer == 1)
+									$output.='checked';
+								else {
+									$output.='';
+								}
+								$output.='>
+							</div>
+							<div class="col-lg-1 pr-0">
+								<label for="example-email-input" class="col-form-label">Status </label><br>
+							</div>	
+							<div class="col-lg-3 mt-3">
+								<input type="checkbox" value="1" id="is_active" name="is_active"';
+								if ($userDetail->is_active == 1)
+									$output.='checked';
+								else {
+									$output.='';
+								}
+								$output.='>
+							</div>
+						</div>
+					</div>';
        echo $output;
     }
     public function updateUser(Request $request)
@@ -311,7 +351,6 @@ class UserController extends Controller
 	    	<div class="row">
 				<div class="col-lg-4">
 					<label class="col-form-label"> Company </label> : <?php echo ($userdetails->getCompany != null)?$userdetails->getCompany['company_name']:"";?>
-					
 				</div>
 				<div class="col-lg-4">
 					<label  class="col-form-label">Address 1</label> 

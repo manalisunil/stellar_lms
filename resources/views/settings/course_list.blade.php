@@ -6,13 +6,14 @@
     <div class="col-lg-12" >
         <div class="card" >
             <div class="card-body">
-                <div class="p-0">
+                <div class="p-0" id="tbl_list">
                     <table id="datatable" class="table table-bordered mb-0" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                         <thead>
                             <tr>
                                 <th>Sl No</th>
                                 <th>Course Id</th>
                                 <th>Course Name</th>
+                                <th>Course Description</th>
                                 <th>Course Duration</th>
                                 <th>Course Price</th>
                                 <th>Course Banner</th>
@@ -27,16 +28,21 @@
                                 <td>{{++$k}}</td>
                                 <td>{{$course->course_id}}</td>
                                 <td>{{$course->course_name}}</td>
+                                <td>
+                                    @if(!empty($course->course_description))
+                                        <span  class="btn-primary btn-sm edit_icon" onClick="view_description({{ $course->id}})">View</span>
+                                    @endif
+                                </td>
                                 <td>{{$course->course_duration}}</td>
                                 <td>{{$course->course_price}}</td>
                                 <td>       
                                     @if(!empty($course->course_banner))                                             
-                                        <button onClick="ReadBanner({{$course->id}})" type="button" class="btn btn-success btn-sm">View</button>
+                                        <span onClick="ReadBanner({{$course->id}})" class="btn-primary btn-sm edit_icon">View</span>
                                     @endif
                                     </td>
                                 <td>       
                                     @if(!empty($course->course_doc))                                             
-                                        <button onClick="ReadDocument({{$course->id}})" type="button" class="btn btn-primary btn-sm">View</button>
+                                        <span onClick="ReadDocument({{$course->id}})" class="btn-primary btn-sm edit_icon">View</span>
                                     @endif
                                 </td>
                                 <td>
@@ -46,7 +52,7 @@
                                     </div>
                                 </td>
                                 <td> 
-                                    <button type="button" class="edit_icon edit_course ml-2 btn btn-sm"  data-id="{{ $course->id }}" onclick="editCourse({{ $course->id }})"><img class="menuicon tbl_editbtn" src="{{asset("app-assets/assets/images/edit.svg")}}" >&nbsp;</button>
+                                    <span class="edit_icon edit_course ml-2"  data-id="{{ $course->id }}" onclick="editCourse({{ $course->id }})"><img class="menuicon tbl_editbtn" src="{{asset("app-assets/assets/images/edit.svg")}}" >&nbsp;</span>
                                 </td>
                             </tr>
                             @empty
@@ -54,6 +60,9 @@
                         </tbody>
                     </table>
                 </div>
+                <div class="p-0" id="coursedetail">
+					<div id="course_view_div"></div>
+				</div>
             </div>
         </div>
     </div>
@@ -270,7 +279,7 @@ $(document).ready(function()
 		    $("div.toolbar").html('<button id="addCourse" type="button" class="ml-2 btn btn-primary" data-toggle="modal" data-target="#addCourseModal"><img class="menuicon" src="{{asset("app-assets/assets/images/add.svg")}}">&nbsp;Add Course</button><br />');
 		}, 
         'columnDefs': [ {
-            'targets': [6],
+            'targets': [9],
             'orderable': false,
         }]
     });
@@ -420,6 +429,31 @@ function courseUpdate()
         }
     }
     return false;
+}
+
+function backTo_tble()
+{
+	$("#tbl_list").show();
+	$("#coursedetail").hide();
+	$("#course_view_div").html("");
+}
+
+function view_description(id)
+{
+    event.stopPropagation();
+	var url = '{{ route("course_view") }}';
+	$.ajax({
+		type: "post",
+		url: url,
+		data: { id:id , _token: '{{csrf_token()}}'},
+		dataType:'html',
+		success: function(response)
+		{
+			$("#course_view_div").html(response);
+			$("#tbl_list").hide();
+			$("#coursedetail").show();
+		}
+	});  
 }
 </script>
 @endsection

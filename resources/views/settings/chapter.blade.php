@@ -1,140 +1,140 @@
 @extends('layouts.app')
 @section('title', 'Chapter')
 @section('content')
-</style>
 <div class="container-fluid mt-1">
 	@include('settings.common_tabs')
-		<div class="col-lg-12">
-			<div class="card">
-				<div class="card-body">
-					<div class="p-0" id="tbl_list">
-						<table id="datatable" class="table table-bordered mb-0" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
-							<thead>
-								<tr>
-									<th> Sl no</th>
-									<th> Subject Name</th>
-									<th> Chapter Id</th>
-									<th>Name</th>
-									<th> Status</th>
-									<th>Description</th>
-									<th>Action</th>
-								</tr>
-							</thead>
-							<tbody>
-								@forelse($chapterList as $k=> $chpDt)
-								<tr>
-									<td> {{++$k}}</td>
-									<td> @if($chpDt->getSubject != null) {{$chpDt->getSubject['subject_name']}} @endif</td>
-									<td> {{$chpDt->chapter_id}}</td>
-									<td> {{$chpDt->chapter_name}}</td>
-									
-									<td>
-										<div class="custom-control custom-switch">
-											<input type="checkbox"  class="custom-control-input" id="customSwitch{{ $chpDt->id }}"  value="{{ $chpDt->id }}" onclick="chapterstatus(this.value)" @if($chpDt->is_active==1) checked @endif>
-											<label class="custom-control-label" for="customSwitch{{ $chpDt->id }}">@if($chpDt->is_active==1) Active @else Inactive @endif</label>
-										</div>
-									</td>
-									<td>
-                                        <span  class="btn-primary btn-sm edit_icon"  onClick="view_description({{ $chpDt->id}})">View</span>
-                                    </td>
-
-									<td> <span   class="edit_icon edit_chapter ml-2"  data-id="{{ $chpDt->id }}"><img class="menuicon tbl_editbtn" src="{{asset("app-assets/assets/images/edit.svg")}}" >&nbsp;</span>
-									</td>
-								</tr>
-								@empty
-								@endforelse
-							</tbody>
-						</table>
-					</div>
-					<div class="p-0" id="chapterdetail">
-						<div id="chapter_view_div"></div>
-					</div>
+	<div class="col-lg-12">
+		<div class="card">
+			<div class="card-body">
+				<div class="p-0" id="tbl_list">
+					<table id="datatable" class="table table-bordered mb-0" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+						<thead>
+							<tr>
+								<th>Sl no</th>
+								<th>Subject Name</th>
+								<th>Chapter Id</th>
+								<th>Name</th>
+								<th>Status</th>
+								<th>Description</th>
+								<th>Action</th>
+							</tr>
+						</thead>
+						<tbody>
+							@forelse($chapterList as $k=> $chpDt)
+							<tr>
+								<td> {{++$k}}</td>
+								<td> @if($chpDt->getSubject != null) {{$chpDt->getSubject['subject_name']}} @endif</td>
+								<td> {{$chpDt->chapter_id}}</td>
+								<td> {{$chpDt->chapter_name}}</td>
+								<td>
+									<div class="custom-control custom-switch">
+										<input type="checkbox"  class="custom-control-input" id="customSwitch{{ $chpDt->id }}"  value="{{ $chpDt->id }}" onclick="chapterstatus(this.value)" @if($chpDt->is_active==1) checked @endif>
+										<label class="custom-control-label" for="customSwitch{{ $chpDt->id }}">@if($chpDt->is_active==1) Active @else Inactive @endif</label>
+									</div>
+								</td>
+								<td>
+									<span class="btn-primary btn-sm edit_icon"  onClick="view_description({{ $chpDt->id}})">View</span>
+								</td>
+								<td> 
+									<span class="edit_icon edit_chapter ml-2"  data-id="{{ $chpDt->id }}"><img class="menuicon tbl_editbtn" src="{{asset("app-assets/assets/images/edit.svg")}}" >&nbsp;</span>
+								</td>
+							</tr>
+							@empty
+							@endforelse
+						</tbody>
+					</table>
+				</div>
+				<div class="p-0" id="chapterdetail">
+					<div id="chapter_view_div"></div>
 				</div>
 			</div>
 		</div>
 	</div>
-	<div class="modal fade" id="chapteraddModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-		<div class="modal-dialog modal-lg" role="document">
-			<div class="modal-content">
-				<form method="post" id="chptfrm" name="chptfrm"  data-parsley-validate data-parsley-trigger="keyup">
-				@csrf
-					<div class="modal-header">
-						<h5 class="modal-title" id="exampleModalLabel">Add Chapter</h5>
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-						</button>
-					</div>
-					<div class="modal-body">
-						
-						<div class="row">
-							<div class="col-lg-4">
-								<label for="company_select" class="col-form-label"> Subject  <span class="text-danger"> * </span></label>
-								<select required class="form-control" name="subject_id" id="subject_id">
-									<option value="">Select Subject</option>
-									@forelse($subjectList as $subDt)
-									<option value="{{$subDt->id}}"> {{$subDt->subject_name}}</option>
-									@empty
-									@endforelse
-								</select>
-								
-							</div>
-							<div class="col-lg-4">
-								<label for="company_select" class="col-form-label"> Chapter Id <span class="text-danger"> * </span></label>
-								<input required name="chapter_id" value="" id="chapter_id" type="text" class="form-control" placeholder="Enter Chapter Id" required data-parsley-trigger="focusout" data-parsley-trigger="keyup" data-parsley-pattern="^[A-Za-z _0-9][A-Za-z 0-9]*$" />
-								
-							</div>
-
-							<div class="col-lg-4">
-								<label for="example-firstname-input" class="col-form-label">Chapter Name <span class="text-danger"> * </span></label>
-								<input required name="chapter_name" value="" id="chapter_name" type="text" class="form-control" placeholder="Enter Chapter Name" required data-parsley-trigger="focusout" data-parsley-trigger="keyup" data-parsley-pattern="^[A-Za-z ][A-Za-z ]*$" />
-							</div>
-							
-						</div>
-						<div class="row mt-1">
-							<div class="col-lg-12">
-								<label for="example-email-input" class="col-form-label">Description <span class="text-danger"> * </span></label><br>
-								<textarea class="form-control" name="chapter_description" id="chapter_description" required></textarea>
-							</div>	
-							
-							<div class="col-lg-3">
-								<label for="example-email-input" class="col-form-label pr-3">Status </label> 
-								<input type="checkbox" checked class="" value="1" id="is_active" name="is_active" />
-							</div>
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-						<button type="submit" class="btn btn-primary" onclick="saveChapter();">Submit</button>
-					</div>
-				</form>
-			</div>
-		</div>
-	</div>
-
-	
 </div>
-</div>
-<div class="modal fade" id="chapterEditModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-		<div class="modal-dialog modal-lg" role="document">
-			<div class="modal-content">
+<div class="modal fade" id="chapteraddModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-xl" role="document">
+		<div class="modal-content">
+			<form method="post" id="chptfrm" name="chptfrm"  data-parsley-validate data-parsley-trigger="keyup">
+			@csrf
 				<div class="modal-header">
-					<h5 class="modal-title" id="exampleModalLabel">Update Chapter</h5>
+					<h5 class="modal-title" id="exampleModalLabel">Add Chapter</h5>
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
+						<span aria-hidden="true">&times;</span>
 					</button>
 				</div>
-				<form method="post" id="updatechapterfrm" name="updatechapterfrm"  data-parsley-validate data-parsley-trigger="keyup">
-					@csrf
-				<div id="edit_chapter_data"></div>
-				<div class="modal-footer">
-						<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-						<button type="submit" class="btn btn-primary" onclick="updateChapter();">Submit</button>
+				<div class="modal-body">
+					<div class="row">
+						<div class="col-lg-1 pr-0">
+							<label for="company_select" class="col-form-label"> Subject  <span class="text-danger"> * </span></label>
+						</div>
+						<div class="col-lg-3">
+							<select required class="form-control" name="subject_id" id="subject_id">
+								<option value="">Select Subject</option>
+								@forelse($subjectList as $subDt)
+								<option value="{{$subDt->id}}"> {{$subDt->subject_name}}</option>
+								@empty
+								@endforelse
+							</select>						
+						</div>
+						<div class="col-lg-1 pr-0">
+							<label for="company_select" class="col-form-label"> Chapter Id <span class="text-danger"> * </span></label>
+						</div>
+						<div class="col-lg-3">
+							<input required name="chapter_id" value="" id="chapter_id" type="text" class="form-control" placeholder="Enter Chapter Id" required data-parsley-trigger="focusout" data-parsley-trigger="keyup" data-parsley-pattern="^[A-Za-z _0-9][A-Za-z 0-9]*$" />
+						</div>
+						<div class="col-lg-1 pr-0">
+							<label for="example-firstname-input" class="col-form-label">Chapter Name <span class="text-danger"> * </span></label>
+						</div>
+						<div class="col-lg-3">
+							<input required name="chapter_name" value="" id="chapter_name" type="text" class="form-control" placeholder="Enter Chapter Name" required data-parsley-trigger="focusout" data-parsley-trigger="keyup" data-parsley-pattern="^[A-Za-z ][A-Za-z ]*$" />
+						</div>
 					</div>
-				</form>
-				
-			</div>
+					<div class="row mt-2">
+						<div class="col-lg-1 pr-0">
+							<label for="example-email-input" class="col-form-label">Description <span class="text-danger"> * </span></label><br>
+						</div>
+						<div class="col-lg-10">
+							<textarea class="form-control" name="chapter_description" id="chapter_description" required></textarea>
+						</div>	
+					</div>
+					<div class="row mt-2">
+						<div class="col-lg-1 pr-0">
+							<label for="example-email-input" class="col-form-label pr-3">Status </label> 
+						</div>
+						<div class="col-lg-3 mt-3">
+							<input type="checkbox" checked class="" value="1" id="is_active" name="is_active" />
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+					<button type="submit" class="btn btn-primary" onclick="saveChapter();">Submit</button>
+				</div>
+			</form>
 		</div>
 	</div>
-
+</div>
+<div class="modal fade" id="chapterEditModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-xl" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLabel">Update Chapter</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<form method="post" id="updatechapterfrm" name="updatechapterfrm"  data-parsley-validate data-parsley-trigger="keyup">
+				@csrf
+			<div id="edit_chapter_data"></div>
+			<div class="modal-footer">
+					<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+					<button type="submit" class="btn btn-primary" onclick="updateChapter();">Submit</button>
+				</div>
+			</form>
+			
+		</div>
+	</div>
+</div>
 <div class="modal" id="viewDocModal" style="display:none;">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -146,11 +146,11 @@
                 <div id="supportingDoc">
                     <div class="row" id="append_stdoc_view"></div>
                 </div>
-            </div>
-            
+            </div> 
         </div>
     </div>
 </div>
+
 <script type="text/javascript">
 function backTo_tble()
 {

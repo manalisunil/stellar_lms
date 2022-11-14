@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () 
 {
 	if(Auth::check())
-		return redirect('/dashboard');
+		return redirect('/home');
 	else
         return redirect('/login');
 });
@@ -68,6 +68,7 @@ Route::post('/update_course',[\App\Http\Controllers\CourseController::class, 'up
 Route::get('/course_details_view/{courseid}', [App\Http\Controllers\CourseController::class, 'courseDetails'])->name('detailsview');
 Route::get('/view_course_banner/{id}',[\App\Http\Controllers\CourseController::class, 'viewBanner'])->name('view_banner');
 Route::get('/view_course_document/{id}',[\App\Http\Controllers\CourseController::class, 'viewDocument'])->name('view_document');
+Route::post('/course_view',[\App\Http\Controllers\CourseController::class, 'viewCourseDescription'])->name('course_view');
 
 //Subject
 Route::get('settings/view_subjects', [App\Http\Controllers\SubjectController::class, 'viewSubject'])->name('subject_list');
