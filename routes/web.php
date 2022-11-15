@@ -91,3 +91,5 @@ Route::post('get_courses_maped',[\App\Http\Controllers\SubjectController::class,
 //mycourses
 Route::get('mycourses/index', [App\Http\Controllers\MycoursesController::class, 'index'])->name('mycourses_index');
 Route::get('/course_detail/{id}',[\App\Http\Controllers\MycoursesController::class, 'course_detail'])->name('course_detail');
+Route::post('get_topic_detail',[\App\Http\Controllers\MycoursesController::class, 'get_topic_detail'])->name('get_topic_detail');
+
