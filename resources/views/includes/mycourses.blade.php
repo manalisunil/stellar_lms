@@ -104,8 +104,92 @@
    </div>
 </div>
 
+<!-- Add Video Modal -->
+<div class="modal fade" id="videoAddModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-xl" role="document">
+		<div class="modal-content">
+			<form method="post" id="addvideoform" name="addvideoform"  data-parsley-validate data-parsley-trigger="keyup">
+			@csrf
+                <input type="hidden" id="topic_id1" name="topic_id" value="">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">Add Video Link</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="row">
+						<div class="col-lg-1 pr-0">
+							<label for="company_select" class="col-form-label"> Video Link <span class="text-danger"> * </span></label>
+						</div>
+						<div class="col-lg-3">
+							<input required name="video_link" value="" id="video_link" type="text" class="form-control" placeholder="Enter Video Link" required />
+						</div>
+						<div class="col-lg-1 pr-0">
+							<label for="example-email-input" class="col-form-label pr-3">Status </label> 
+						</div>
+						<div class="col-lg-3 mt-3">
+							<input type="checkbox" checked class="" value="1" id="is_active" name="is_active" />
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+					<button type="submit" class="btn btn-primary" onclick="saveVideo();">Submit</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+<!-- End  Modal -->
+
+<!-- Add Content Modal -->
+<div class="modal fade" id="contentAddModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-xl" role="document">
+		<div class="modal-content">
+			<form method="post" id="addcontentform" name="addcontentform"  data-parsley-validate data-parsley-trigger="keyup">
+			@csrf
+                <input type="hidden" id="topic_id2" name="topic_id" value="">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">Add Content</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="row">
+						<div class="col-lg-1 pr-0">
+							<label for="company_select" class="col-form-label"> Content <span class="text-danger"> * </span></label>
+						</div>
+						<div class="col-lg-10">
+                            <textarea  name="content" id="content" type="text" class="form-control" placeholder="Enter content" ></textarea>
+						</div>
+                    </div>
+                    <div class="row mt-1">
+						<div class="col-lg-1 pr-0">
+							<label for="example-email-input" class="col-form-label pr-3">Status </label> 
+						</div>
+						<div class="col-lg-3 mt-3">
+							<input type="checkbox" checked class="" value="1" id="is_active" name="is_active" />
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+					<button type="submit" class="btn btn-primary" onclick="saveContent();">Submit</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+<!-- End  Modal -->
 
 <script type="text/javascript">
+$(document).ready(function()
+{
+    CKEDITOR.replace('content');
+});
+
 function get_topic_detail(id)
 {
    $.ajax({
@@ -119,6 +203,100 @@ function get_topic_detail(id)
         });
 }
 
+// $('#videoAddModal').on('shown.bs.modal', function () {
+//     var id = $(this).data('id');
+//     $("#topic_id1").val(id);
+// });
+
+// $('#contentAddModal').on('shown.bs.modal', function () {
+//     var id = $(this).data('id');
+//     console.log(id);
+//     $("#topic_id2").val(id);
+// });
+
+function saveVideo() 
+{
+    if($("#addvideoform").parsley()) {
+        if ($("#addvideoform").parsley().validate()) {
+            event.preventDefault();
+            var formData = new FormData($("#addvideoform")[0]);
+            if($("#addvideoform").parsley().isValid()) {
+                $.ajax({
+                    type: "POST",
+                    cache:false,
+                    async: false,
+                    url: "{{ route('add_video_link') }}",
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        new PNotify({
+                            title: 'Success',
+                            text:  response.msg,
+                            type: 'success'
+                        });
+                        setTimeout(function(){  location.reload(); }, 800);
+                    },
+                    error:function(response) {
+                        var err = "";
+                        $.each(response.responseJSON.errors,function(field_name,error){
+                            err = err +'<br>' + error;
+                        });
+                        new PNotify({
+                            title: 'Error',
+                            text:err,
+                            type: 'error',
+                            delay: 2000
+                        });
+                    }
+                });
+            }
+        }
+    }
+} 
+
+function saveContent() 
+{
+    if($("#addcontentform").parsley()) {
+        if ($("#addcontentform").parsley().validate()) {
+            event.preventDefault();
+            var formData = new FormData($("#addcontentform")[0]);
+            var contentValue = CKEDITOR.instances.content.getData();
+            formData.append("contentvalue", contentValue);
+            if($("#addcontentform").parsley().isValid()) {
+                $.ajax({
+                    type: "POST",
+                    cache:false,
+                    async: false,
+                    url: "{{ route('add_content') }}",
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        new PNotify({
+                            title: 'Success',
+                            text:  response.msg,
+                            type: 'success'
+                        });
+                        setTimeout(function(){  location.reload(); }, 800);
+                    },
+                    error:function(response) {
+                        var err = "";
+                        $.each(response.responseJSON.errors,function(field_name,error){
+                            err = err +'<br>' + error;
+                        });
+                        new PNotify({
+                            title: 'Error',
+                            text:err,
+                            type: 'error',
+                            delay: 2000
+                        });
+                    }
+                });
+            }
+        }
+    }
+} 
 
 </script>
 @endsection

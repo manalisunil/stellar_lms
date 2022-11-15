@@ -92,4 +92,6 @@ Route::post('get_courses_maped',[\App\Http\Controllers\SubjectController::class,
 Route::get('mycourses/index', [App\Http\Controllers\MycoursesController::class, 'index'])->name('mycourses_index');
 Route::get('/course_detail/{id}',[\App\Http\Controllers\MycoursesController::class, 'course_detail'])->name('course_detail');
 Route::post('get_topic_detail',[\App\Http\Controllers\MycoursesController::class, 'get_topic_detail'])->name('get_topic_detail');
+Route::post('/add_video_link',[\App\Http\Controllers\MycoursesController::class, 'addVideoLink'])->name('add_video_link');
+Route::post('/add_content',[\App\Http\Controllers\MycoursesController::class, 'addContent'])->name('add_content');
 
