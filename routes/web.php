@@ -87,3 +87,7 @@ Route::post('/edit_mapping',[\App\Http\Controllers\SubjectController::class, 'ed
 Route::post('/update_mapping',[\App\Http\Controllers\SubjectController::class, 'updateMapping'])->name('update_mapping');
 Route::post('get_courses_maped',[\App\Http\Controllers\SubjectController::class, 'get_courses_maped'])->name('get_courses_maped');
 
+
+//mycourses
+Route::get('mycourses/index', [App\Http\Controllers\MycoursesController::class, 'index'])->name('mycourses_index');
+Route::get('/course_detail/{id}',[\App\Http\Controllers\MycoursesController::class, 'course_detail'])->name('course_detail');

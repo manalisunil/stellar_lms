@@ -17,4 +17,9 @@ class CourseSubjectMapping extends Model
         'added_datetime',
         'is_active'
     ];
+
+    public function getSubject()
+    {
+        return $this->hasOne('App\Models\Subject','id','subject_id')->select(['id', 'subject_name','subject_id'])->where('is_active',1);
+    }
 }

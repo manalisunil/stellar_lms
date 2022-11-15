@@ -58,6 +58,12 @@
                                     Dashboard
                                 </a>
                         </li>
+                        <li class="{{ Request::is('mycourses/*') ? 'submenuactive' : '' }}">
+                                <a href="{{ route('mycourses_index') }}">
+                                    <i class="dripicons-basketball {{ Request::is('mycourses/*') ? 'submenuactivei' : '' }}"></i>
+                                    My Courses
+                                </a>
+                        </li>
                       
                         <li class="{{ Request::is('settings/*') ? 'submenuactive' : '' }}">
                                 <a href="{{ route('user') }}">
@@ -87,9 +93,10 @@
                             </a>
                             <div class="dropdown-menu dropdown-menu-right">
                                 
-                                <a class="dropdown-item" href="{{ route('logout') }}"><i class="ti-power-off text-muted mr-2"></i> Logout</a>
+                              
                                    
                                 <a class="dropdown-item" href=""><i class="fa fa-user ti-power-off text-muted mr-2"></i> Profile</a>
+                                  <a class="dropdown-item border-top" href="{{ route('logout') }}"><i class="ti-power-off text-muted mr-2"></i> Logout</a>
                             </div>
                         </li>
                         <li class="menu-item">
