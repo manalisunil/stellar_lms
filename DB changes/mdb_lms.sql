@@ -87,6 +87,7 @@ CREATE TABLE `mdb_topic_content` (
 CREATE TABLE `mdb_topic_docs` (
   `id` int(11) NOT NULL,
   `topic_id` int(11) NOT NULL,
+  `doc_name` varchar(80) DEFAULT NULL,
   `doc` longblob DEFAULT NULL,
   `doc_type` varchar(80) DEFAULT NULL,
   `is_active` tinyint(4) DEFAULT NULL,

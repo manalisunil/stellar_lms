@@ -92,9 +92,7 @@ Route::post('get_courses_maped',[\App\Http\Controllers\SubjectController::class,
 Route::get('mycourses/index', [App\Http\Controllers\MycoursesController::class, 'index'])->name('mycourses_index');
 Route::get('/course_detail/{id}',[\App\Http\Controllers\MycoursesController::class, 'course_detail'])->name('course_detail');
 Route::post('get_topic_detail',[\App\Http\Controllers\MycoursesController::class, 'get_topic_detail'])->name('get_topic_detail');
-
 Route::post('get_topic_question',[\App\Http\Controllers\MycoursesController::class, 'get_topic_question'])->name('get_topic_question');
-
 Route::post('/add_video_link',[\App\Http\Controllers\MycoursesController::class, 'addVideoLink'])->name('add_video_link');
 Route::post('/edit_video_link',[\App\Http\Controllers\MycoursesController::class, 'updateVideoLink'])->name('update_video_link');
 Route::post('/add_content',[\App\Http\Controllers\MycoursesController::class, 'addContent'])->name('add_content');
@@ -102,4 +100,7 @@ Route::post('/edit_content',[\App\Http\Controllers\MycoursesController::class, '
 Route::post('/add_document',[\App\Http\Controllers\MycoursesController::class, 'addDocument'])->name('add_document');
 Route::post('/edit_document',[\App\Http\Controllers\MycoursesController::class, 'updateDocument'])->name('update_document');
 
-
+Route::post('/add_true_or_false',[\App\Http\Controllers\MycoursesController::class, 'addTrueOrFalse'])->name('add_true_or_false');
+Route::post('/edit_true_or_false',[\App\Http\Controllers\MycoursesController::class, 'updateTrueOrFalse'])->name('update_true_or_false');
+Route::post('/add_mcq',[\App\Http\Controllers\MycoursesController::class, 'addMcq'])->name('add_mcq');
+Route::post('/edit_mcq',[\App\Http\Controllers\MycoursesController::class, 'updateMcq'])->name('update_mcq');

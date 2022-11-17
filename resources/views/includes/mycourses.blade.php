@@ -353,6 +353,318 @@
 </div>
 <!-- End  Modal -->
 
+<!-- Add MCQ Modal -->
+<div class="modal fade" id="mcqAddModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-xl" role="document">
+		<div class="modal-content">
+			<form method="post" id="addmcqform" name="addmcqform"  data-parsley-validate data-parsley-trigger="keyup">
+			@csrf
+                <input type="hidden" id="topic_id5" name="topic_id" value="">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">Add MCQ</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="row">
+						<div class="col-lg-1 pr-0">
+							<label for="company_select" class="col-form-label"> Question <span class="text-danger"> * </span></label>
+						</div>
+						<div class="col-lg-11">
+                            <textarea  name="question" id="question" type="text" class="form-control" placeholder="Enter Question" required></textarea>
+						</div>
+                    </div>
+                    <div class="row mt-2">
+						<div class="col-lg-1 pr-0">
+                            <label for="company_select" class="col-form-label px-0 mx-0" style="width: 114%;text-align: left;"> Option 1 <span class="text-danger"> * </span></label>
+						</div>
+						<div class="col-lg-5">
+                            <textarea  name="opt1" id="opt1" type="text" class="form-control" placeholder="Enter Option 1" required></textarea>
+						</div>
+                        <div class="col-lg-1 pr-0">
+                            <label for="company_select" class="col-form-label px-0 mx-0" style="width: 114%;text-align: left;"> Option 2 <span class="text-danger"> * </span></label>
+						</div>
+						<div class="col-lg-5">
+                            <textarea  name="opt2" id="opt2" type="text" class="form-control" placeholder="Enter Option 2" required></textarea>
+						</div>
+					</div>
+                    <div class="row mt-2">
+                        <div class="col-lg-1 pr-0">
+                            <label for="company_select" class="col-form-label px-0 mx-0" style="width: 114%;text-align: left;"> Option 3 <span class="text-danger"> * </span></label>
+						</div>
+						<div class="col-lg-5">
+                            <textarea  name="opt3" id="opt3" type="text" class="form-control" placeholder="Enter Option 3" required></textarea>
+						</div>
+                        <div class="col-lg-1 pr-0">
+                            <label for="company_select" class="col-form-label px-0 mx-0" style="width: 114%;text-align: left;"> Option 4 <span class="text-danger"> * </span></label>
+						</div>
+						<div class="col-lg-5">
+                            <textarea  name="opt4" id="opt4" type="text" class="form-control" placeholder="Enter Option 4" required></textarea>
+						</div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-lg-1 pr-0">
+                            <label for="company_select" class="col-form-label px-0 mx-0" style="width: 114%;text-align: left;"> Correct Answer <span class="text-danger"> * </span></label>
+						</div>
+						<div class="col-lg-5">
+                            <input id="answer" name="answer" type="text" placeholder="Enter Correct Option" class="form-control" data-parsley-trigger="keyup" data-parsley-type="number" required>
+						</div>
+                        <div class="col-lg-1 pr-0">
+							<label for="example-email-input" class="col-form-label pr-3">Tags </label> 
+						</div>
+						<div class="col-lg-5">
+                            <textarea  name="tags" id="tags" type="text" class="form-control" placeholder="Enter Tags" ></textarea>
+						</div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-lg-1 pr-0">
+                            <label for="company_select" class="col-form-label"> Reason <span class="text-danger"> * </span></label>
+						</div>
+						<div class="col-lg-11">
+                            <textarea  name="reason" id="reason" type="text" class="form-control" placeholder="Enter Reason" required></textarea>
+						</div>
+					</div>
+                    <div class="row mt-2">
+                        <div class="col-lg-1 pr-0">
+							<label for="example-email-input" class="col-form-label pr-3">Status </label> 
+						</div>
+						<div class="col-lg-5 mt-3">
+							<input type="checkbox" checked value="1" id="is_active" name="is_active" />
+						</div>
+                    </div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+					<button type="submit" class="btn btn-primary" onclick="saveMCQ();">Submit</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+<!-- End  Modal -->
+
+<!-- Edit MCQ Modal -->
+<div class="modal fade" id="mcqEditModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-xl" role="document">
+		<div class="modal-content">
+			<form method="post" id="editmcqform" name="editmcqform"  data-parsley-validate data-parsley-trigger="keyup">
+			@csrf
+                <input type="hidden" id="mcq_edit_id" name="mcq_edit_id" value="">
+                <input type="hidden" id="mcq_topic_id" name="mcq_topic_id" value="">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">Edit MCQ</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+                    <div class="row">
+						<div class="col-lg-1 pr-0">
+							<label for="company_select" class="col-form-label"> Question <span class="text-danger"> * </span></label>
+						</div>
+						<div class="col-lg-11">
+                            <textarea  name="question" id="ed_question" type="text" class="form-control" placeholder="Enter Question" required></textarea>
+						</div>
+                    </div>
+                    <div class="row mt-2">
+						<div class="col-lg-1 pr-0">
+                            <label for="company_select" class="col-form-label px-0 mx-0" style="width: 114%;text-align: left;"> Option 1 <span class="text-danger"> * </span></label>
+						</div>
+						<div class="col-lg-5">
+                            <textarea  name="opt1" id="ed_opt1" type="text" class="form-control" placeholder="Enter Option 1" required></textarea>
+						</div>
+                        <div class="col-lg-1 pr-0">
+                            <label for="company_select" class="col-form-label px-0 mx-0" style="width: 114%;text-align: left;"> Option 2 <span class="text-danger"> * </span></label>
+						</div>
+						<div class="col-lg-5">
+                            <textarea  name="opt2" id="ed_opt2" type="text" class="form-control" placeholder="Enter Option 2" required></textarea>
+						</div>
+					</div>
+                    <div class="row mt-1">
+                        <div class="col-lg-1 pr-0">
+                            <label for="company_select" class="col-form-label px-0 mx-0" style="width: 114%;text-align: left;"> Option 3 <span class="text-danger"> * </span></label>
+						</div>
+						<div class="col-lg-5">
+                            <textarea  name="opt3" id="ed_opt3" type="text" class="form-control" placeholder="Enter Option 3" required></textarea>
+						</div>
+                        <div class="col-lg-1 pr-0">
+                            <label for="company_select" class="col-form-label px-0 mx-0" style="width: 114%;text-align: left;"> Option 4 <span class="text-danger"> * </span></label>
+						</div>
+						<div class="col-lg-5">
+                            <textarea  name="opt4" id="ed_opt4" type="text" class="form-control" placeholder="Enter Option 4" required></textarea>
+						</div>
+                    </div>
+                    <div class="row mt-2">
+						<div class="col-lg-1 pr-0">
+                            <label for="company_select" class="col-form-label px-0 mx-0" style="width: 114%;text-align: left;"> Correct Answer <span class="text-danger"> * </span></label>
+						</div>
+						<div class="col-lg-5">
+                            <input id="ed_answer" name="answer" type="text" placeholder="Enter Correct Option" class="form-control" data-parsley-trigger="keyup" data-parsley-type="number" required>
+						</div>
+                        <div class="col-lg-1 pr-0">
+							<label for="example-email-input" class="col-form-label pr-3">Tags </label> 
+						</div>
+						<div class="col-lg-5">
+                            <textarea  name="tags" id="ed_tags" type="text" class="form-control" placeholder="Enter Tags" ></textarea>
+						</div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-lg-1 pr-0">
+                            <label for="company_select" class="col-form-label"> Reason <span class="text-danger"> * </span></label>
+						</div>
+						<div class="col-lg-11">
+                            <textarea  name="reason" id="ed_reason" type="text" class="form-control" placeholder="Enter Reason" required></textarea>
+						</div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-lg-1 pr-0">
+							<label for="example-email-input" class="col-form-label pr-3">Status </label> 
+						</div>
+						<div class="col-lg-5 mt-3">
+							<input type="checkbox" checked value="1" id="ed_is_active" name="is_active" />
+						</div>
+                    </div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+					<button type="submit" class="btn btn-primary" onclick="updateMcq();">Submit</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+<!-- End  Modal -->
+
+<!-- Add True or False Modal -->
+<div class="modal fade" id="tofAddModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-xl" role="document">
+		<div class="modal-content">
+			<form method="post" id="addtofform" name="addtofform"  data-parsley-validate data-parsley-trigger="keyup">
+			@csrf
+                <input type="hidden" id="topic_id4" name="topic_id" value="">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">Add True Or False</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="row">
+						<div class="col-lg-1 pr-0">
+							<label for="company_select" class="col-form-label"> Question <span class="text-danger"> * </span></label>
+						</div>
+						<div class="col-lg-11">
+                            <textarea  name="question" id="question" type="text" class="form-control" placeholder="Enter Question" required></textarea>
+						</div>
+                    </div>
+                    <div class="row mt-2">
+						<div class="col-lg-1 pr-0">
+                            <label for="company_select" class="col-form-label px-0 mx-0" style="width: 114%;text-align: left;"> Correct Answer <span class="text-danger"> * </span></label>
+						</div>
+						<div class="col-lg-5 mt-3">
+                            <input type="radio" id="answer" name="answer" value="1" checked>True &nbsp;&nbsp;
+							<input type="radio" id="answer" name="answer" value="2" >False	
+						</div>
+                        <div class="col-lg-1 pr-0">
+							<label for="example-email-input" class="col-form-label pr-3">Tags </label> 
+						</div>
+						<div class="col-lg-5">
+                            <textarea  name="tags" id="tags" type="text" class="form-control" placeholder="Enter Tags" ></textarea>
+						</div>
+					</div>
+                    <div class="row mt-2">
+                        <div class="col-lg-1 pr-0">
+                            <label for="company_select" class="col-form-label"> Reason <span class="text-danger"> * </span></label>
+						</div>
+						<div class="col-lg-11">
+                            <textarea  name="reason" id="reason" type="text" class="form-control" placeholder="Enter Reason" required></textarea>
+						</div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-lg-1 pr-0">
+							<label for="example-email-input" class="col-form-label pr-3">Status </label> 
+						</div>
+						<div class="col-lg-5 mt-3">
+							<input type="checkbox" checked value="1" id="is_active" name="is_active" />
+						</div>
+                    </div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+					<button type="submit" class="btn btn-primary" onclick="saveTrueOrFalse();">Submit</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+<!-- End  Modal -->
+
+<!-- Edit True or False Modal -->
+<div class="modal fade" id="tofEditModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-xl" role="document">
+		<div class="modal-content">
+			<form method="post" id="edittofform" name="edittofform"  data-parsley-validate data-parsley-trigger="keyup">
+			@csrf
+                <input type="hidden" id="tof_edit_id" name="tof_edit_id" value="">
+                <input type="hidden" id="tof_topic_id" name="tof_topic_id" value="">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">Edit True Or False</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+                    <div class="row">
+						<div class="col-lg-1 pr-0">
+							<label for="company_select" class="col-form-label"> Question <span class="text-danger"> * </span></label>
+						</div>
+						<div class="col-lg-11">
+                            <textarea  name="question" id="ed_tf_question" type="text" class="form-control" placeholder="Enter Question" required></textarea>
+						</div>
+                    </div>
+                    <div class="row mt-2">
+						<div class="col-lg-1 pr-0">
+                            <label for="company_select" class="col-form-label px-0 mx-0" style="width: 114%;text-align: left;"> Correct Answer <span class="text-danger"> * </span></label>
+						</div>
+						<div class="col-lg-5 mt-3">
+                            <input type="radio" id="ed_tf_answer" name="answer" value="1" >True &nbsp;&nbsp;
+							<input type="radio" id="ed_tf_answer" name="answer" value="2" >False	
+						</div>
+                        <div class="col-lg-1 pr-0">
+							<label for="example-email-input" class="col-form-label pr-3">Tags </label> 
+						</div>
+						<div class="col-lg-5">
+                            <textarea  name="tags" id="ed_tf_tags" type="text" class="form-control" placeholder="Enter Tags" ></textarea>
+						</div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-lg-1 pr-0">
+                            <label for="company_select" class="col-form-label"> Reason <span class="text-danger"> * </span></label>
+						</div>
+						<div class="col-lg-11">
+                            <textarea  name="reason" id="ed_tf_reason" type="text" class="form-control" placeholder="Enter Reason" required></textarea>
+						</div>
+					</div>
+                    <div class="row mt-2">
+                        <div class="col-lg-1 pr-0">
+							<label for="example-email-input" class="col-form-label pr-3">Status </label> 
+						</div>
+						<div class="col-lg-3 mt-3">
+							<input type="checkbox" checked value="1" id="ed_tf_is_active" name="is_active" />
+						</div>
+                    </div>
+                </div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+					<button type="submit" class="btn btn-primary" onclick="updateTrueOrFalse();">Submit</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+<!-- End  Modal -->
+
 <script type="text/javascript">
 $(function () {
 	@if(Session::has('success'))
@@ -376,6 +688,7 @@ $(function () {
 		@endforeach
 	@endif
 });
+
 $(document).ready(function()
 {
     CKEDITOR.replace('content');
@@ -429,8 +742,19 @@ $('#contentAddModal').on('shown.bs.modal', function () {
     $("#topic_id3").val(id3);
 });
 
+$('#tofAddModal').on('shown.bs.modal', function () {
+    var id4 = $('#tof_id').data('id');
+    $("#topic_id4").val(id4);
+});
+
+$('#mcqAddModal').on('shown.bs.modal', function () {
+    var id5 = $('#mcq_id').data('id');
+    $("#topic_id5").val(id5);
+});
+
 function saveVideo() 
 {
+    var id = $('#topic_id1').val();
     if($("#addvideoform").parsley()) {
         if ($("#addvideoform").parsley().validate()) {
             event.preventDefault();
@@ -448,9 +772,12 @@ function saveVideo()
                         new PNotify({
                             title: 'Success',
                             text:  response.msg,
-                            type: 'success'
+                            type: 'success',
+                            delay: 1000
                         });
-                        setTimeout(function(){  location.reload(); }, 800);
+                        $('#videoAddModal').modal('hide');
+                        $('#addvideoform')[0].reset();
+                        get_topic_content(id);
                     },
                     error:function(response) {
                         var err = "";
@@ -492,6 +819,7 @@ function editVideo(id)
 
 function updateVideo()
 {
+    var id = $('#video_topic_id').val();
     if ($("#editvideoform").parsley()) {
         if ($("#editvideoform").parsley().validate()) {
             event.preventDefault();
@@ -509,9 +837,12 @@ function updateVideo()
                         new PNotify({
                             title: 'Success',
                             text:  response.msg,
-                            type: 'success'
+                            type: 'success',
+                            delay: 1000
                         });
-                        setTimeout(function(){  location.reload(); }, 800);
+                        $('#videoEditModal').modal('hide');
+                        $('#editvideoform')[0].reset();
+                        get_topic_content(id);
                     },
                     error:function(response) {
                         var err = "";
@@ -534,6 +865,7 @@ function updateVideo()
 
 function saveContent() 
 {
+    var id=$('#topic_id3').val();
     if($("#addcontentform").parsley()) {
         if ($("#addcontentform").parsley().validate()) {
             event.preventDefault();
@@ -553,9 +885,12 @@ function saveContent()
                         new PNotify({
                             title: 'Success',
                             text:  response.msg,
-                            type: 'success'
+                            type: 'success',
+                            delay: 1000
                         });
-                        setTimeout(function(){  location.reload(); }, 800);
+                        $('#contentAddModal').modal('hide');
+                        $('#addcontentform')[0].reset();
+                        get_topic_content(id);
                     },
                     error:function(response) {
                         var err = "";
@@ -599,6 +934,7 @@ function editContent(id)
 
 function updateContent()
 {
+    var id=$('#content_topic_id').val();
     if ($("#editcontentform").parsley()) {
         if ($("#editcontentform").parsley().validate()) {
             event.preventDefault();
@@ -618,9 +954,12 @@ function updateContent()
                         new PNotify({
                             title: 'Success',
                             text:  response.msg,
-                            type: 'success'
+                            type: 'success',
+                            delay: 1000
                         });
-                        setTimeout(function(){  location.reload(); }, 800);
+                        $('#contentEditModal').modal('hide');
+                        $('#editcontentform')[0].reset();
+                        get_topic_content(id);
                     },
                     error:function(response) {
                         var err = "";
@@ -643,6 +982,7 @@ function updateContent()
 
 function saveDocument() 
 {
+    var id=$('#topic_id2').val();
     if($("#adddocumentform").parsley()) {
         if ($("#adddocumentform").parsley().validate()) {
             event.preventDefault();
@@ -660,9 +1000,12 @@ function saveDocument()
                         new PNotify({
                             title: 'Success',
                             text:  response.msg,
-                            type: 'success'
+                            type: 'success',
+                            delay: 1000
                         });
-                        setTimeout(function(){  location.reload(); }, 800);
+                        $('#documentAddModal').modal('hide');
+                        $('#adddocumentform')[0].reset();
+                        get_topic_content(id);
                     },
                     error:function(response) {
                         var err = "";
@@ -702,6 +1045,7 @@ function editDocument(id)
 
 function updateDocument()
 {
+    var id=$('#doc_topic_id').val();
     if ($("#editdocumentform").parsley()) {
         if ($("#editdocumentform").parsley().validate()) {
             event.preventDefault();
@@ -719,9 +1063,254 @@ function updateDocument()
                         new PNotify({
                             title: 'Success',
                             text:  response.msg,
-                            type: 'success'
+                            type: 'success',
+                            delay: 1000
                         });
-                        setTimeout(function(){  location.reload(); }, 800);
+                        $('#documentEditModal').modal('hide');
+                        $('#editdocumentform')[0].reset();
+                        get_topic_content(id);
+                    },
+                    error:function(response) {
+                        var err = "";
+                        $.each(response.responseJSON.errors,function(field_name,error){
+                            err = err +'<br>' + error;
+                        });
+                        new PNotify({
+                            title: 'Error',
+                            text:err,
+                            type: 'error',
+                            delay: 2000
+                        });
+                    }
+                });
+            }
+        }
+    }
+    return false;
+}
+
+function saveMCQ() 
+{
+    var id = $('#topic_id5').val();
+    if($("#addmcqform").parsley()) {
+        if ($("#addmcqform").parsley().validate()) {
+            event.preventDefault();
+            var formData = new FormData($("#addmcqform")[0]);
+            if($("#addmcqform").parsley().isValid()) {
+                $.ajax({
+                    type: "POST",
+                    cache:false,
+                    async: false,
+                    url: "{{ route('add_mcq') }}",
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        new PNotify({
+                            title: 'Success',
+                            text:  response.msg,
+                            type: 'success',
+                            delay: 1000
+                        });
+                        $('#mcqAddModal').modal('hide');
+                        $('#addmcqform')[0].reset();
+                        get_topic_question(id);
+                    },
+                    error:function(response) {
+                        var err = "";
+                        $.each(response.responseJSON.errors,function(field_name,error){
+                            err = err +'<br>' + error;
+                        });
+                        new PNotify({
+                            title: 'Error',
+                            text:err,
+                            type: 'error',
+                            delay: 2000
+                        });
+                    }
+                });
+            }
+        }
+    }
+} 
+
+function editMcq(id)
+{
+    var id = $('#edit_mcq'+id).data('id');
+    var topic_id = $('#edit_mcq'+id).data('topic-id');
+    var question = $('#edit_mcq'+id).data('question');
+    var answer = $('#edit_mcq'+id).data('answer');
+    var opt1 = $('#edit_mcq'+id).data('opt1');
+    var opt2 = $('#edit_mcq'+id).data('opt2');
+    var opt3 = $('#edit_mcq'+id).data('opt3');
+    var opt4 = $('#edit_mcq'+id).data('opt4');
+    var reason = $('#edit_mcq'+id).data('reason');
+    var tags = $('#edit_mcq'+id).data('tags');
+    var status = $('#edit_mcq'+id).data('is-active');
+    $("#mcq_edit_id").val(id);
+    $("#mcq_topic_id").val(topic_id);
+    $("#ed_question").text(question);
+    $("#ed_answer").val(answer);
+    $("#ed_opt1").text(opt1);
+    $("#ed_opt2").text(opt2);
+    $("#ed_opt3").text(opt3);
+    $("#ed_opt4").text(opt4);
+    $("#ed_reason").text(reason);
+    $("#ed_tags").text(tags);
+    if(status == 1)
+    {
+        $("#ed_is_active").attr('checked', 'checked');
+    }
+    else
+    {
+        $("#ed_is_active").removeAttr('checked', 'checked');
+    }
+    $("#mcqEditModal").modal('show');
+}
+
+function updateMcq()
+{
+    var id=$('#mcq_topic_id').val();
+    if ($("#editmcqform").parsley()) {
+        if ($("#editmcqform").parsley().validate()) {
+            event.preventDefault();
+            var formData = new FormData($("#editmcqform")[0]);
+            if ($("#editmcqform").parsley().isValid()) {
+                $.ajax({	
+                    type: "POST",
+                    cache:false,
+                    async: false,
+                    url: "{{ url('/edit_mcq') }}",
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        new PNotify({
+                            title: 'Success',
+                            text:  response.msg,
+                            type: 'success',
+                            delay: 1000
+                        });
+                        $('#mcqEditModal').modal('hide');
+                        $('#editmcqform')[0].reset();
+                        get_topic_question(id);
+                    },
+                    error:function(response) {
+                        var err = "";
+                        $.each(response.responseJSON.errors,function(field_name,error){
+                            err = err +'<br>' + error;
+                        });
+                        new PNotify({
+                            title: 'Error',
+                            text:err,
+                            type: 'error',
+                            delay: 2000
+                        });
+                    }
+                });
+            }
+        }
+    }
+    return false;
+}
+
+function saveTrueOrFalse() 
+{
+    var id = $('#topic_id4').val();
+    if($("#addtofform").parsley()) {
+        if ($("#addtofform").parsley().validate()) {
+            event.preventDefault();
+            var formData = new FormData($("#addtofform")[0]);
+            if($("#addtofform").parsley().isValid()) {
+                $.ajax({
+                    type: "POST",
+                    cache:false,
+                    async: false,
+                    url: "{{ route('add_true_or_false') }}",
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        new PNotify({
+                            title: 'Success',
+                            text:  response.msg,
+                            type: 'success',
+                            delay: 1000
+                        });
+                        $('#tofAddModal').modal('hide');
+                        $('#addtofform')[0].reset();
+                        get_topic_question(id);
+                    },
+                    error:function(response) {
+                        var err = "";
+                        $.each(response.responseJSON.errors,function(field_name,error){
+                            err = err +'<br>' + error;
+                        });
+                        new PNotify({
+                            title: 'Error',
+                            text:err,
+                            type: 'error',
+                            delay: 2000
+                        });
+                    }
+                });
+            }
+        }
+    }
+} 
+
+function editTrueOrFalse(id)
+{
+    var id = $('#edit_tof'+id).data('id');
+    var topic_id = $('#edit_tof'+id).data('topic-id');
+    var question = $('#edit_tof'+id).data('question');
+    var answer = $('#edit_tof'+id).data('answer');
+    var reason = $('#edit_tof'+id).data('reason');
+    var tags = $('#edit_tof'+id).data('tags');
+    var status = $('#edit_tof'+id).data('is-active');
+    $("#tof_edit_id").val(id);
+    $("#tof_topic_id").val(topic_id);
+    $("#ed_tf_question").text(question);
+    $("input[name=answer][value=" + answer + "]").prop('checked', true);
+    $("#ed_tf_reason").text(reason);
+    $("#ed_tf_tags").text(tags);
+    if(status == 1)
+    {
+        $("#ed_tf_is_active").attr('checked', 'checked');
+    }
+    else
+    {
+        $("#ed_tf_is_active").removeAttr('checked', 'checked');
+    }
+    $("#tofEditModal").modal('show');
+}
+
+function updateTrueOrFalse()
+{
+    var id=$('#tof_topic_id').val();
+    if ($("#edittofform").parsley()) {
+        if ($("#edittofform").parsley().validate()) {
+            event.preventDefault();
+            var formData = new FormData($("#edittofform")[0]);
+            if ($("#edittofform").parsley().isValid()) {
+                $.ajax({	
+                    type: "POST",
+                    cache:false,
+                    async: false,
+                    url: "{{ url('/edit_true_or_false') }}",
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        new PNotify({
+                            title: 'Success',
+                            text:  response.msg,
+                            type: 'success',
+                            delay: 1000
+                        });
+                        $('#tofEditModal').modal('hide');
+                        $('#edittofform')[0].reset();
+                        get_topic_question(id);
                     },
                     error:function(response) {
                         var err = "";
