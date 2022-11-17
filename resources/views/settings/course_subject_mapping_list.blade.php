@@ -60,14 +60,15 @@
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-lg-1">
-                            <label for="unique-id-input" class="col-form-label">Subject<span class="text-danger"> * </span></label>
+                            <label for="unique-id-input" class="col-form-label">Course<span class="text-danger"> * </span></label>
                         </div>
                         <div class="col-lg-3">
-                            <select required class="form-control" name="subject_id" id="subject_id" required >
-                                <option value="">Select Subject</option>
-                                @foreach($subjects as $subject)
-                                    <option value="{{ $subject->id }}">{{ $subject->subject_name }}</option>
-                                @endforeach
+                            <select required class="form-control" name="course_id" id="course_id" required >
+                                <option value="">Select Course</option>
+                               @forelse($cources as $course)
+                                    <option value="{{$course->id}}"  >{{$course->course_name}}</option>
+                                    @empty
+                                    @endforelse
                             </select>                                        
                         </div>
                         <div class="col-lg-1 pr-0">
@@ -79,14 +80,14 @@
                     </div>
                     <div class="row">
                         <div class="col-lg-1 pr-0">
-                            <label for="address-input" class="col-form-label">Course<span class="text-danger"> * </span></label>
+                            <label for="address-input" class="col-form-label">Subject<span class="text-danger"> * </span></label>
                         </div>
                         <div class="col-lg-10 demo">
-                            <select multiple="multiple" size="10" id="course_id" name="course_id[]" title="client_ids[]" >
-                                    @forelse($cources as $course)
-                                    <option value="{{$course->id}}"  >{{$course->course_name}}</option>
-                                    @empty
-                                    @endforelse
+                            <select multiple="multiple" size="10" id="subject_id" name="subject_id[]" title="subject_id[]" >
+                                    
+                                     @foreach($subjects as $subject)
+                                    <option value="{{ $subject->id }}">{{ $subject->subject_name }}</option>
+                                @endforeach
                             </select>  
                         </div>
                     </div>
@@ -147,7 +148,7 @@ $(document).ready(function()
         }]
     });
 
-    var demo1 = $('select[name="course_id[]"]').bootstrapDualListbox({
+    var demo1 = $('select[name="subject_id[]"]').bootstrapDualListbox({
         nonSelectedListLabel: 'Non-selected Courses',
         selectedListLabel: 'Selected Courses',
         moveOnSelect: false,
@@ -155,7 +156,7 @@ $(document).ready(function()
         removeAllLabel:"",
         removeSelectedLabel:""
     });
-    $("#subject_id").change(function()
+    $("#course_id").change(function()
     {
         var sub_id = $(this).val();
 
@@ -167,19 +168,20 @@ $(document).ready(function()
                     data: {sub_id:sub_id ,_token: '{{csrf_token()}}'},
                     success: function(response) {
                         var dt = response.data;
-                        $('[name="course_id[]"] option').prop('selected', false);
+                        $('[name="subject_id[]"] option').prop('selected', false);
                         if(dt.length === 0 )
                         {
-                             $('[name="course_id[]"] option').prop('selected', false);
-                        }else
+                            $('[name="subject_id[]"] option').prop('selected', false);
+                        }
+                        else
                         {
                             $.each(dt, function (i, item) 
                             {
-                                $('[name="course_id[]"] option[value="'+item+'"]').prop('selected', true);
+                                $('[name="subject_id[]"] option[value="'+item+'"]').prop('selected', true);
 
                            });
                         }
-                        $('[name="course_id[]"]').bootstrapDualListbox('refresh', true);
+                        $('[name="subject_id[]"]').bootstrapDualListbox('refresh', true);
                     }
                 });
         }
@@ -252,7 +254,7 @@ $(".edit_mapping").click(function() {
         {
             $("#addMappingModal").modal('show');
             var res =response.data[0];
-            $("#subject_id").val(res['subject_id']).change();
+            $("#course_id").val(res['course_id']).change();
 
         }
     });

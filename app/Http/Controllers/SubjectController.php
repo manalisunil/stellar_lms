@@ -76,17 +76,18 @@ class SubjectController extends Controller
             'course_id' => 'required',
         ]);
 
-        $course_cnt = count($request->course_id);
-        $courses = $request->course_id;
+        $course_cnt = count($request->subject_id);
+        $courses = $request->subject_id;
 
         $course_ids = implode(',',$courses);
         // dd($courses);
-        $delet_old = CourseSubjectMapping::where('subject_id',$request->subject_id)->pluck('course_id')->toArray();
-
+        $delet_old = CourseSubjectMapping::where('course_id',$request->course_id)->pluck('subject_id')->toArray();
         $del = array_diff($delet_old ,$courses);
+        // dd($del);
+        
         if(!empty($del))
         {
-            CourseSubjectMapping::where('subject_id',$request->subject_id)->whereIn('course_id',$del)->delete();
+            CourseSubjectMapping::where('course_id',$request->course_id)->whereIn('subject_id',$del)->delete();
         }
 
         if($course_cnt > 0) 
@@ -94,7 +95,7 @@ class SubjectController extends Controller
             foreach ($courses as $k => $val) 
             {
                $new_course = $val;
-                $check_mapping = CourseSubjectMapping::Where('subject_id','=',$request->subject_id)->where('course_id','=',$new_course)->first();
+                $check_mapping = CourseSubjectMapping::Where('course_id','=',$request->course_id)->where('subject_id','=',$new_course)->first();
                 if(!isset($check_mapping))
                 {
                     // $csmapping = new CourseSubjectMapping();
@@ -107,9 +108,9 @@ class SubjectController extends Controller
                     // DB::enableQueryLog();
                     $csmapping = CourseSubjectMapping::updateOrCreate(
                             [
-                                'course_id'=>$new_course,
+                                'course_id'=>$request->course_id,
                                 'added_by'    => Auth::user()->id,
-                                'subject_id'  => $request->subject_id,
+                                'subject_id'  => $new_course,
                                
                             ],
                             [
@@ -249,7 +250,7 @@ class SubjectController extends Controller
     public function get_courses_maped(Request $request)
     {
         $sub_id =$request->sub_id;
-        $mappingDetail = CourseSubjectMapping::where('subject_id',$sub_id)->pluck('course_id')->toArray();
+        $mappingDetail = CourseSubjectMapping::where('course_id',$sub_id)->pluck('subject_id')->toArray();
         return response()->json(['data'=>$mappingDetail]);
     }
 }
