@@ -259,4 +259,41 @@ class MycoursesController extends Controller
 			return response()->json(['data'=>'error','msg'=>$validator->errors()->all()]);
 		}
 	}
+   public function get_topic_question(Request $request)
+    {
+      ?>
+      <div class="col-md-12">
+       <div class="row  pr-4">
+          <button class="mx-1 btn btn-sm btn-primary">ADD MCQ</button>
+          <button class="mx-1 btn btn-sm btn-primary">Add True/False</button>
+       </div>
+      </div>
+      <div class="col-md-12 p-2   ">
+
+       <div class="card">
+         <div class="card-header">
+          MCQ
+         </div>
+         <div class="card-body">
+           <blockquote class="blockquote mb-0">
+             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>
+             <footer class="blockquote-footer">Someone famous in <cite title="Source Title">Source Title</cite></footer>
+           </blockquote>
+         </div>
+       </div>
+       <div class="card">
+         <div class="card-header">
+           True/false
+         </div>
+         <div class="card-body">
+           <blockquote class="blockquote mb-0">
+             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>
+             <footer class="blockquote-footer">Someone famous in <cite title="Source Title">Source Title</cite></footer>
+           </blockquote>
+         </div>
+       </div>
+      
+      </div>
+        <?php
+    }
 }

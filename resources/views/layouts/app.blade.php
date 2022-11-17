@@ -60,7 +60,7 @@
                         </li>
                         <li class="{{ Request::is('mycourses/*') ? 'submenuactive' : '' }}">
                                 <a href="{{ route('mycourses_index') }}">
-                                    <i class="dripicons-basketball {{ Request::is('mycourses/*') ? 'submenuactivei' : '' }}"></i>
+                                    <i class="dripicons-archive {{ Request::is('mycourses/*') ? 'submenuactivei' : '' }}"></i>
                                     My Courses
                                 </a>
                         </li>

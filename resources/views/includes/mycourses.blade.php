@@ -21,6 +21,12 @@
 {
    font-size: 17px
 }
+.main_btn
+{
+  /* width: 10%;
+   align-items: center;*/
+   padding-right: 10px!important;
+}
 
 </style>
 <div class="container-fluid mt-1">
@@ -76,15 +82,14 @@
               </div>
               <div class="col-10 content">
 
-                  <div id="">
+                  <div id="right_side" class="d-none">
                      <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
-                       <li class="nav-item">
-                         <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true">Content</a>
-                       </li>
-                       <li class="nav-item">
-                         <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false">Question</a>
-                       </li>
-                      
+                           <li class="nav-item main_btn">
+                           <a class="nav-link  active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true">Content</a>
+                           </li>
+                           <li class="nav-item main_btn">
+                           <a class="nav-link " id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false">Question</a>
+                           </li>
                      </ul>
                      <div class="tab-content" id="pills-tabContent">
                        <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
@@ -93,6 +98,9 @@
                            </div>
                         </div>
                        <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+                           <div id="topic_question">
+                              
+                           </div>
                           
                        </div>
                       
@@ -373,7 +381,8 @@ $(document).ready(function()
     CKEDITOR.replace('content');
 });
 
-function get_topic_detail(id)
+
+function get_topic_content(id)
 {
    $.ajax({
            type: "POST",
@@ -381,7 +390,26 @@ function get_topic_detail(id)
            data: { id:id , _token: '{{csrf_token()}}'},
            success: function(response) 
            {
+               $("#right_side").removeClass('d-none');
                $("#topic_content").html(response);
+           }
+        });
+}
+function get_topic_detail(id)
+{
+   get_topic_content(id);
+   get_topic_question(id);
+}
+function get_topic_question(id)
+{
+   $.ajax({
+           type: "POST",
+           url: "{{ route('get_topic_question') }}",
+           data: { id:id , _token: '{{csrf_token()}}'},
+           success: function(response) 
+           {
+               $("#right_side").removeClass('d-none');
+               $("#topic_question").html(response);
            }
         });
 }
