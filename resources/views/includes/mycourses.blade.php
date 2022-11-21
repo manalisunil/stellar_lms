@@ -408,7 +408,13 @@
                             <label for="company_select" class="col-form-label px-0 mx-0" style="width: 114%;text-align: left;"> Correct Answer <span class="text-danger"> * </span></label>
 						</div>
 						<div class="col-lg-5">
-                            <input id="answer" name="answer" type="text" placeholder="Enter Correct Option" class="form-control" data-parsley-trigger="keyup" data-parsley-type="number" required>
+                            <select required class="form-control" name="answer" id="answer">
+								<option value="" selected disabled>Select Correct Option</option>
+                                <option value="1" >Option 1</option>
+                                <option value="2" >Option 2</option>
+                                <option value="3" >Option 3</option>
+                                <option value="4" >Option 4</option>
+							</select>	
 						</div>
                         <div class="col-lg-1 pr-0">
 							<label for="example-email-input" class="col-form-label pr-3">Tags </label> 
@@ -500,7 +506,13 @@
                             <label for="company_select" class="col-form-label px-0 mx-0" style="width: 114%;text-align: left;"> Correct Answer <span class="text-danger"> * </span></label>
 						</div>
 						<div class="col-lg-5">
-                            <input id="ed_answer" name="answer" type="text" placeholder="Enter Correct Option" class="form-control" data-parsley-trigger="keyup" data-parsley-type="number" required>
+                            <select required class="form-control" name="answer" id="ed_answer">
+								<option value="" selected disabled>Select Correct Option</option>
+                                <option value="1" >Option 1</option>
+                                <option value="2" >Option 2</option>
+                                <option value="3" >Option 3</option>
+                                <option value="4" >Option 4</option>
+							</select>	
 						</div>
                         <div class="col-lg-1 pr-0">
 							<label for="example-email-input" class="col-form-label pr-3">Tags </label> 
