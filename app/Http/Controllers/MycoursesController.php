@@ -57,59 +57,59 @@ class MycoursesController extends Controller
     		</div>
     	</div>
       	<div class="row p-2">
-      		<div class="col-md-6  h-100 " >
-			<div class="card">
-			   <div class="card-header">
-			    	<b>Video Links</b>	
-			   </div>
-			   <div class="card-body" style="max-height:200px;overflow-y:auto;">
-			     <table id="video_table">
-					<?php foreach($videos as $video)
-						{
-							echo '<tr>'.$video->video_link. '<span style="float:right;" id="edit_video'.$video->id.'" class="edit_icon ml-2" onclick="editVideo('.$video->id.')"  data-is-active="'.$video->is_active.'" data-video-link="'.$video->video_link.'" data-topic-id="'.$topic->id.'" data-toggle="modal" data-id="'.$video->id.'">
-								<img class="menuicon tbl_editbtn" src="'.asset("app-assets/assets/images/edit.svg").'" >&nbsp;</span></tr></br>';
-						}
-					?>
-			     </table>
-			   </div>
+      		<div class="col-md-6">
+				<div class="card h-100">
+					<div class="card-header">
+							<b>Video Links</b>	
+					</div>
+					<div class="card-body" style="max-height:200px;overflow-y:auto;">
+						<table id="video_table">
+							<?php foreach($videos as $video)
+								{
+									echo '<tr>'.$video->video_link. '<span style="float:right;" id="edit_video'.$video->id.'" class="edit_icon ml-2" onclick="editVideo('.$video->id.')"  data-is-active="'.$video->is_active.'" data-video-link="'.$video->video_link.'" data-topic-id="'.$topic->id.'" data-toggle="modal" data-id="'.$video->id.'">
+										<img class="menuicon tbl_editbtn" src="'.asset("app-assets/assets/images/edit.svg").'" >&nbsp;</span></tr></br>';
+								}
+							?>
+						</table>
+					</div>
+				</div>
 			</div>
-		</div>
-			<div class="col-md-6  h-100 " >
-             <div class="card">
-               <div class="card-header">
-                 	<b>Documents</b>
-               </div>
-               <div class="card-body" style="max-height:200px;overflow-y:auto;">
-			   		<table id="document_table">
-					   <?php foreach($documents as $document)
-						{
-							echo '<tr>'.$document->doc_name.'<span id="edit_document'.$document->id.'" class="edit_icon ml-2" onclick="editDocument('.$document->id.')" data-is-active="'.$document->is_active.'" data-topic-id="'.$topic->id.'" data-toggle="modal" data-id="'.$document->id.'">
-								<img class="menuicon tbl_editbtn" src="'.asset("app-assets/assets/images/edit.svg").'" >&nbsp;</span></tr>&nbsp;&nbsp;';
-						}
-						?>
-                 	</table>
-               </div>
-             </div>
-         </div>
-         <div class="col-md-12">
-            <div class=" card ">
-               <div class="card-header">
-                 	<b>Content</b>
-               </div>
-               <div class="card-body" style="max-height:400px;overflow-y:auto;">
-			   		<table id="content_table">
-					<?php foreach($contents as $content)
-						{
-							echo '<tr>'.$content->content.'<span style="float:right;" id="edit_content'.$content->id.'" class="edit_icon ml-2" onclick="editContent('.$content->id.')" data-is-active="'.$content->is_active.'" data-topic-id="'.$topic->id.'" data-toggle="modal" data-id="'.$content->id.'" data-content="'.$content->content.'">
-								<img class="menuicon tbl_editbtn" src="'.asset("app-assets/assets/images/edit.svg").'" >&nbsp;</span></tr></br>';
-						}
-					?>
-                 	</table>
-               </div>
-             </div>
-         </div>
-                 </div>
-                 <?php
+			<div class="col-md-6">
+             	<div class="card h-100">
+					<div class="card-header">
+							<b>Documents</b>
+					</div>
+					<div class="card-body" style="max-height:200px;overflow-y:auto;">
+						<table id="document_table">
+							<?php foreach($documents as $document)
+							{
+								echo '<tr>'.$document->doc_name.'<span id="edit_document'.$document->id.'" class="edit_icon ml-2" onclick="editDocument('.$document->id.')" data-is-active="'.$document->is_active.'" data-topic-id="'.$topic->id.'" data-toggle="modal" data-id="'.$document->id.'">
+									<img class="menuicon tbl_editbtn" src="'.asset("app-assets/assets/images/edit.svg").'" >&nbsp;</span></tr>&nbsp;';
+							}
+							?>
+						</table>
+					</div>
+             	</div>
+			</div>
+         	<div class="col-md-12 mt-2">
+            	<div class="card">
+					<div class="card-header">
+							<b>Content</b>
+					</div>
+					<div class="card-body" style="max-height:400px;overflow-y:auto;">
+							<table id="content_table">
+							<?php foreach($contents as $content)
+								{
+									echo '<tr>'.$content->content.'<span style="float:right;" id="edit_content'.$content->id.'" class="edit_icon ml-2" onclick="editContent('.$content->id.')" data-is-active="'.$content->is_active.'" data-topic-id="'.$topic->id.'" data-toggle="modal" data-id="'.$content->id.'" data-content="'.$content->content.'">
+										<img class="menuicon tbl_editbtn" src="'.asset("app-assets/assets/images/edit.svg").'" >&nbsp;</span></tr></br>';
+								}
+							?>
+							</table>
+					</div>
+             	</div>
+         	</div>
+        </div>
+    <?php
     }
 
     public function addVideoLink(Request $request)
@@ -293,13 +293,38 @@ class MycoursesController extends Controller
 					MCQ
 				</div>
 				<div class="card-body">
-					<table id="mcq_table">
-						<?php foreach($mcqs as $mcq)
+					<table id="mcq_table" class="table table-bordered mb-0" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+						<thead>
+							<tr>
+								<th>Sl No</th>
+								<th>Question</th>
+								<th>Option 1</th>
+								<th>Option 2</th>
+								<th>Option 3</th>
+								<th>Option 4</th>
+								<th>Answer</th>
+								<th>Action</th>
+							</tr>
+						</thead>
+						<tbody>
+							<?php foreach($mcqs as $k=>$mcq)
 							{
-								echo '<tr>'.$mcq->question.'<span style="float:right;" id="edit_mcq'.$mcq->id.'" class="edit_icon ml-2" onclick="editMcq('.$mcq->id.')" data-topic-id="'.$topic->id.'" data-toggle="modal" data-id="'.$mcq->id.'" data-question="'.$mcq->question.'" data-answer="'.$mcq->correct_answer.'" data-opt1="'.$mcq->option_1.'" data-opt2="'.$mcq->option_2.'" data-opt3="'.$mcq->option_3.'" data-opt4="'.$mcq->option_4.'" data-reason="'.$mcq->reason.'" data-tags="'.$mcq->tags.'" data-is-active="'.$mcq->is_active.'">
-									<img class="menuicon tbl_editbtn" src="'.asset("app-assets/assets/images/edit.svg").'" >&nbsp;</span></tr></br>';
+								echo '<tr>
+									<td>'.++$k.'</td>
+									<td>'.$mcq->question.'</td>
+									<td>'.$mcq->option_1.'</td>
+									<td>'.$mcq->option_2.'</td>
+									<td>'.$mcq->option_3.'</td>
+									<td>'.$mcq->option_4.'</td>
+									<td>'.$mcq->correct_answer.'</td>
+									<td> 
+										<span id="edit_mcq'.$mcq->id.'" class="edit_icon ml-2" onclick="editMcq('.$mcq->id.')" data-topic-id="'.$topic->id.'" data-toggle="modal" data-id="'.$mcq->id.'" data-question="'.$mcq->question.'" data-answer="'.$mcq->correct_answer.'" data-opt1="'.$mcq->option_1.'" data-opt2="'.$mcq->option_2.'" data-opt3="'.$mcq->option_3.'" data-opt4="'.$mcq->option_4.'" data-reason="'.$mcq->reason.'" data-tags="'.$mcq->tags.'" data-is-active="'.$mcq->is_active.'">
+										<img class="menuicon tbl_editbtn" src="'.asset("app-assets/assets/images/edit.svg").'" >&nbsp;</span>
+									</td>
+								</tr>';	
 							}
-						?>
+							?>
+						</tbody>
 					</table>
 				</div>
 			</div>
@@ -308,18 +333,37 @@ class MycoursesController extends Controller
 					True/false
 				</div>
 				<div class="card-body">
-					<table id="tof_table">
-						<?php foreach($tofs as $tof)
+					<table id="tof_table" class="table table-bordered mb-0" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+						<thead>
+							<tr>
+								<th>Sl No</th>
+								<th>Question</th>
+								<th>Answer</th>
+								<th>Reason</th>
+								<th>Action</th>
+							</tr>
+						</thead>
+						<tbody>
+							<?php foreach($tofs as $k=>$tof)
 							{
-								echo '<tr>'.$tof->question.'<span style="float:right;" id="edit_tof'.$tof->id.'" class="edit_icon ml-2" onclick="editTrueOrFalse('.$tof->id.')" data-topic-id="'.$topic->id.'" data-toggle="modal" data-id="'.$tof->id.'" data-question="'.$tof->question.'" data-answer="'.$tof->correct_answer.'" data-reason="'.$tof->reason.'" data-tags="'.$tof->tags.'" data-is-active="'.$tof->is_active.'">
-									<img class="menuicon tbl_editbtn" src="'.asset("app-assets/assets/images/edit.svg").'" >&nbsp;</span></tr></br>';
+								echo '<tr>
+									<td>'.++$k.'</td>
+									<td>'.$tof->question.'</td>
+									<td>'.($tof->correct_answer==1 ? "True" : "False").'</td>
+									<td>'.$tof->reason.'</td>
+									<td> 
+										<span id="edit_tof'.$tof->id.'" class="edit_icon ml-2" onclick="editTrueOrFalse('.$tof->id.')" data-topic-id="'.$topic->id.'" data-toggle="modal" data-id="'.$tof->id.'" data-question="'.$tof->question.'" data-answer="'.$tof->correct_answer.'" data-reason="'.$tof->reason.'" data-tags="'.$tof->tags.'" data-is-active="'.$tof->is_active.'">
+										<img class="menuicon tbl_editbtn" src="'.asset("app-assets/assets/images/edit.svg").'" >&nbsp;</span>
+									</td>
+								</tr>';	
 							}
-						?>
+							?>
+						</tbody>
 					</table>
 				</div>
 			</div>
 		</div>
-		<?php
+	<?php
     }
 
 	public function addMcq(Request $request)
@@ -455,4 +499,26 @@ class MycoursesController extends Controller
 			return response()->json(['data'=>'error','msg'=>$validator->errors()->all()]);
 		}
 	}
+
+	public function mcqStatus($mcqid) 
+    {
+        $mcqdetails = MCQ::find($mcqid);
+        if ($mcqdetails->is_active == 1) {
+            MCQ::where('id', $mcqid)->update(['is_active' => 0]);
+        } else {
+            MCQ::where('id', $mcqid)->update(['is_active' => 1]);
+        }
+        return redirect()->back()->with('success', "Status Changed Successfully!");
+    }
+
+	public function tofStatus($tofid) 
+    {
+        $tofdetails = TrueOrFalse::find($tofid);
+        if ($tofdetails->is_active == 1) {
+            TrueOrFalse::where('id', $tofid)->update(['is_active' => 0]);
+        } else {
+            TrueOrFalse::where('id', $tofid)->update(['is_active' => 1]);
+        }
+        return redirect()->back()->with('success', "Status Changed Successfully!");
+    }
 }

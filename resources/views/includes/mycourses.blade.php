@@ -571,7 +571,7 @@
 							<label for="example-email-input" class="col-form-label pr-3">Status </label> 
 						</div>
 						<div class="col-lg-5 mt-3">
-							<input type="checkbox" checked value="1" id="ed_is_active" name="is_active" />
+							<input type="checkbox" checked value="1" id="ed_mcq_is_active" name="is_active" />
 						</div>
                     </div>
 				</div>
@@ -774,9 +774,15 @@ function get_topic_question(id)
            data: { id:id , _token: '{{csrf_token()}}'},
            success: function(response) 
            {
-               $("#right_side").removeClass('d-none');
-               $("#topic_question").html(response);
-           }
+                $("#right_side").removeClass('d-none');
+                $("#topic_question").html(response);
+                var table1 = $('#mcq_table').DataTable({
+                    responsive: true
+                });
+                var table2 = $('#tof_table').DataTable({
+                    responsive: true
+                });
+            }
         });
 }
 $('.mycourse_link li a').click(function(){
@@ -1229,11 +1235,11 @@ function editMcq(id)
     $("#ed_tags").text(tags);
     if(status == 1)
     {
-        $("#ed_is_active").attr('checked', 'checked');
+        $("#ed_mcq_is_active").attr('checked', 'checked');
     }
     else
     {
-        $("#ed_is_active").removeAttr('checked', 'checked');
+        $("#ed_mcq_is_active").removeAttr('checked', 'checked');
     }
     $("#mcqEditModal").modal('show');
 }
@@ -1355,7 +1361,7 @@ function editTrueOrFalse(id)
     $("#tofEditModal").modal('show');
 }
 
-function updateTrueOrFalse()
+function updateTrueOrFalse() 
 {
     var id=$('#tof_topic_id').val();
     if ($("#edittofform").parsley()) {
@@ -1400,6 +1406,16 @@ function updateTrueOrFalse()
     }
     return false;
 }
+
+// function mcqStatus(value)
+// {
+//     window.location.href = '/mcqStatus/' + value;
+// }
+
+// function tofStatus(value)
+// {
+//     window.location.href = '/tofStatus/' + value;
+// }
 
 </script>
 @endsection

@@ -99,8 +99,10 @@ Route::post('/add_content',[\App\Http\Controllers\MycoursesController::class, 'a
 Route::post('/edit_content',[\App\Http\Controllers\MycoursesController::class, 'updateContent'])->name('update_content');
 Route::post('/add_document',[\App\Http\Controllers\MycoursesController::class, 'addDocument'])->name('add_document');
 Route::post('/edit_document',[\App\Http\Controllers\MycoursesController::class, 'updateDocument'])->name('update_document');
-
+//mycourses - Questions
 Route::post('/add_true_or_false',[\App\Http\Controllers\MycoursesController::class, 'addTrueOrFalse'])->name('add_true_or_false');
 Route::post('/edit_true_or_false',[\App\Http\Controllers\MycoursesController::class, 'updateTrueOrFalse'])->name('update_true_or_false');
+// Route::any('/tofStatus/{tofid?}', [App\Http\Controllers\MycoursesController::class, 'tofStatus'])->name('tof_status');
 Route::post('/add_mcq',[\App\Http\Controllers\MycoursesController::class, 'addMcq'])->name('add_mcq');
 Route::post('/edit_mcq',[\App\Http\Controllers\MycoursesController::class, 'updateMcq'])->name('update_mcq');
+// Route::any('/mcqStatus/{mcqid?}', [App\Http\Controllers\MycoursesController::class, 'mcqStatus'])->name('mcq_status');
