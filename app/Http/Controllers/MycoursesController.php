@@ -46,59 +46,68 @@ class MycoursesController extends Controller
 		$contents = TopicContent::where('topic_id', $topic->id)->get();
 		$documents = TopicDocument::where('topic_id', $topic->id)->get();
     	?>
-    	<div class="col-md-12">
-                    <div class="row  pr-4">
-                        <button class="mx-1 btn btn-sm btn-primary" id="video_id" data-toggle="modal" data-id="<?php echo $topic->id; ?>" data-target="#videoAddModal">Add Video Link</button>
-                        <button class="mx-1 btn btn-sm btn-primary" id="doc_id" data-toggle="modal" data-id="<?php echo $topic->id; ?>" data-target="#documentAddModal">Add Document</button>
-                        <button class="mx-1 btn btn-sm btn-primary" id="content_id" data-toggle="modal" data-id="<?php echo $topic->id; ?>" data-target="#contentAddModal">Add Content</button>
-                     </div>
-                  </div>
-                  <div class="col-md-12 p-2">
-                     <div class="card">
-                       <div class="card-header">
-                        	<b>Video Links</b>	
-                       </div>
-                       <div class="card-body">
-                         <table id="video_table">
-							<?php foreach($videos as $video)
-								{
-									echo '<tr>'.$video->video_link. '<span style="float:right;" id="edit_video'.$video->id.'" class="edit_icon ml-2" onclick="editVideo('.$video->id.')"  data-is-active="'.$video->is_active.'" data-video-link="'.$video->video_link.'" data-topic-id="'.$topic->id.'" data-toggle="modal" data-id="'.$video->id.'">
-										<img class="menuicon tbl_editbtn" src="'.asset("app-assets/assets/images/edit.svg").'" >&nbsp;</span></tr></br>';
-								}
-							?>
-                         </table>
-                       </div>
-                     </div>
-                     <div class="card">
-                       <div class="card-header">
-                         	<b>Documents</b>
-                       </div>
-                       <div class="card-body">
-					   		<table id="document_table">
-							   <?php foreach($documents as $document)
-								{
-									echo '<tr>'.$document->doc_name.'<span id="edit_document'.$document->id.'" class="edit_icon ml-2" onclick="editDocument('.$document->id.')" data-is-active="'.$document->is_active.'" data-topic-id="'.$topic->id.'" data-toggle="modal" data-id="'.$document->id.'">
-										<img class="menuicon tbl_editbtn" src="'.asset("app-assets/assets/images/edit.svg").'" >&nbsp;</span></tr>&nbsp;&nbsp;';
-								}
-								?>
-                         	</table>
-                       </div>
-                     </div>
-                    <div class="card">
-                       <div class="card-header">
-                         	<b>Content</b>
-                       </div>
-                       <div class="card-body">
-					   		<table id="content_table">
-							<?php foreach($contents as $content)
-								{
-									echo '<tr>'.$content->content.'<span style="float:right;" id="edit_content'.$content->id.'" class="edit_icon ml-2" onclick="editContent('.$content->id.')" data-is-active="'.$content->is_active.'" data-topic-id="'.$topic->id.'" data-toggle="modal" data-id="'.$content->id.'" data-content="'.$content->content.'">
-										<img class="menuicon tbl_editbtn" src="'.asset("app-assets/assets/images/edit.svg").'" >&nbsp;</span></tr></br>';
-								}
-							?>
-                         	</table>
-                       </div>
-                     </div>
+    	<div class="col-md-12 row ">
+    		<div class="col-md-6">
+    			<label class="lbl">Topic Name </label>
+    			<span class="lbl_text">:&nbsp; <?php echo $topic->topic_name;?></span>
+    		</div>
+    		<div class="col-md-6">
+    			<label class="lbl">Chapter Name</label>
+    			<span  class="lbl_text">:&nbsp; <?php echo $topic->getChapter['chapter_name'];?></span>
+    		</div>
+    	</div>
+      	<div class="row p-2">
+      		<div class="col-md-6  h-100 " >
+			<div class="card">
+			   <div class="card-header">
+			    	<b>Video Links</b>	
+			   </div>
+			   <div class="card-body" style="max-height:200px;overflow-y:auto;">
+			     <table id="video_table">
+					<?php foreach($videos as $video)
+						{
+							echo '<tr>'.$video->video_link. '<span style="float:right;" id="edit_video'.$video->id.'" class="edit_icon ml-2" onclick="editVideo('.$video->id.')"  data-is-active="'.$video->is_active.'" data-video-link="'.$video->video_link.'" data-topic-id="'.$topic->id.'" data-toggle="modal" data-id="'.$video->id.'">
+								<img class="menuicon tbl_editbtn" src="'.asset("app-assets/assets/images/edit.svg").'" >&nbsp;</span></tr></br>';
+						}
+					?>
+			     </table>
+			   </div>
+			</div>
+		</div>
+			<div class="col-md-6  h-100 " >
+             <div class="card">
+               <div class="card-header">
+                 	<b>Documents</b>
+               </div>
+               <div class="card-body" style="max-height:200px;overflow-y:auto;">
+			   		<table id="document_table">
+					   <?php foreach($documents as $document)
+						{
+							echo '<tr>'.$document->doc_name.'<span id="edit_document'.$document->id.'" class="edit_icon ml-2" onclick="editDocument('.$document->id.')" data-is-active="'.$document->is_active.'" data-topic-id="'.$topic->id.'" data-toggle="modal" data-id="'.$document->id.'">
+								<img class="menuicon tbl_editbtn" src="'.asset("app-assets/assets/images/edit.svg").'" >&nbsp;</span></tr>&nbsp;&nbsp;';
+						}
+						?>
+                 	</table>
+               </div>
+             </div>
+         </div>
+         <div class="col-md-12">
+            <div class=" card ">
+               <div class="card-header">
+                 	<b>Content</b>
+               </div>
+               <div class="card-body" style="max-height:400px;overflow-y:auto;">
+			   		<table id="content_table">
+					<?php foreach($contents as $content)
+						{
+							echo '<tr>'.$content->content.'<span style="float:right;" id="edit_content'.$content->id.'" class="edit_icon ml-2" onclick="editContent('.$content->id.')" data-is-active="'.$content->is_active.'" data-topic-id="'.$topic->id.'" data-toggle="modal" data-id="'.$content->id.'" data-content="'.$content->content.'">
+								<img class="menuicon tbl_editbtn" src="'.asset("app-assets/assets/images/edit.svg").'" >&nbsp;</span></tr></br>';
+						}
+					?>
+                 	</table>
+               </div>
+             </div>
+         </div>
                  </div>
                  <?php
     }
@@ -268,12 +277,16 @@ class MycoursesController extends Controller
 		$mcqs = MCQ::where('topic_id', $topic->id)->get();
 		$tofs = TrueOrFalse::where('topic_id', $topic->id)->get();
 		?>
-		<div class="col-md-12">
-			<div class="row  pr-4">
-				<button class="mx-1 btn btn-sm btn-primary" id="mcq_id" data-toggle="modal" data-id="<?php echo $topic->id; ?>" data-target="#mcqAddModal">Add MCQ</button>
-				<button class="mx-1 btn btn-sm btn-primary" id="tof_id" data-toggle="modal" data-id="<?php echo $topic->id; ?>" data-target="#tofAddModal">Add True/False</button>
-			</div>
-		</div>
+		<div class="col-md-12 row ">
+    		<div class="col-md-6">
+    			<label class="lbl">Topic Name </label>
+    			<span class="lbl_text">:&nbsp; <?php echo $topic->topic_name;?></span>
+    		</div>
+    		<div class="col-md-6">
+    			<label class="lbl">Chapter Name</label>
+    			<span  class="lbl_text">:&nbsp; <?php echo $topic->getChapter['chapter_name'];?></span>
+    		</div>
+    	</div>
 		<div class="col-md-12 p-2">
 			<div class="card">
 				<div class="card-header">

@@ -27,6 +27,25 @@
    align-items: center;*/
    padding-right: 10px!important;
 }
+.left_buttons
+{
+	position: relative;
+	margin-top:-2% !important;
+}
+.lbl
+{
+	font-weight: bold;
+	font-size: 13px !important;
+}
+.lbl_text
+{
+	font-size: 13px !important;
+}
+.active_topic
+{
+	color: #f68c1e !important;
+	font-weight: bold;
+}
 
 </style>
 <div class="container-fluid mt-1">
@@ -36,7 +55,7 @@
          <div class="card-body">
              <div class="row">
               <div class="col-2 collapse show d-md-flex bg-light pt-2 pl-0 min-vh-100" id="sidebar">
-                  <ul class="nav flex-column flex-nowrap overflow-hidden">
+                  <ul class="nav  flex-column flex-nowrap overflow-hidden">
                      <!--  <li class="nav-item">
                           <a class="nav-link text-truncate" href="#"><i class="fa fa-home"></i> <span class=" d-sm-inline">Overview</span></a>
                       </li> -->
@@ -52,7 +71,7 @@
                                          @if(count($all_chapters) > 0)
                                            @foreach($all_chapters as $ch=>$chpter)
                                               <li class="nav-item">
-                                                  <a class="nav-link left_menu collapsed py-1 pl-4" href="#submenu1sub1" data-toggle="collapse" data-target="#submenu1sub{{$ch}}"><span class=""><!-- <i class="fa-regular fa-folder pr-1"></i> --> {{$chpter->chapter_name}}</span></a>
+                                                  <a class="nav-link left_menu collapsed py-1 pl-4" href="#submenu1sub1" data-toggle="collapse" data-target="#submenu1sub{{$ch}}"><span class="chapter-lbl" data-title="{{$chpter->chapter_name}}"><!-- <i class="fa-regular fa-folder pr-1"></i> -->  {{ substr($chpter->chapter_name, 0,28)}}...</span></a>
                                                   <div class="collapse" id="submenu1sub{{$ch}}" aria-expanded="false">
                                                       <ul class="flex-column nav pl-4">
                                                          @php $all_topics = $topic->where('chapter_id',$chpter->id);
@@ -60,8 +79,9 @@
                                                          @if(count($all_topics) > 0)
                                                          @foreach($all_topics as $topc)
                                                           <li class="nav-item">
-                                                              <a class="nav-link  p-1  pl-4 " onclick="get_topic_detail({{$topc->id}})" style="cursor:pointer;"><i class="fa-solid fa-file-lines pr-1"></i>
-                                                                 {{$topc->topic_name}} </a>
+                                                              <a class="nav-link  p-1  pl-5 topic_nm" id="top_{{$topc->id}}"  onclick="get_topic_detail({{$topc->id}})" style="cursor:pointer;"><i class="fa-solid fa-file-lines pr-1"></i>
+                                                              	{{ substr($topc->topic_name, 0,40)}}
+                                                                  </a>
                                                           </li>
                                                           @endforeach
                                                           @endif
@@ -82,22 +102,39 @@
               </div>
               <div class="col-10 content">
 
-                  <div id="right_side" class="d-none">
-                     <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
-                           <li class="nav-item main_btn">
-                           <a class="nav-link  active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true">Content</a>
-                           </li>
-                           <li class="nav-item main_btn">
-                           <a class="nav-link " id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false">Question</a>
-                           </li>
-                     </ul>
+                  <div id="right_side" class="d-none ">
+                  	<div class="row">
+	                  	<div class="col-md-8">
+		                    <ul class="mycourse_link nav nav-pills mb-3" id="pills-tab" role="tablist">
+	                           <li class="nav-item main_btn">
+		                           <a class="nav-link  active" id="pills-home-tab" data-toggle="pill" href="#content_tab" role="tab" aria-controls="pills-home" aria-selected="true">Content</a>
+	                           </li>
+	                           <li class="nav-item main_btn">
+		                           <a class="nav-link " id="pills-profile-tab" data-toggle="pill" href="#question_tab" role="tab" aria-controls="pills-profile" aria-selected="false">Question</a>
+	                           </li>
+		                    </ul>
+	                 	</div>
+	                 	<div class="col-md-4 btn-test">
+	                 		 <div class="left_buttonss pr-4" id="button_content_tab">
+            	
+				                    <button class="mx-1 btn btn-sm btn-primary course_btns" id="video_id" data-toggle="modal" data-id="" data-target="#videoAddModal">Add Video Link</button>
+				                    <button class="mx-1 btn btn-sm btn-primary course_btns" id="doc_id" data-toggle="modal" data-id="" data-target="#documentAddModal">Add Document</button>
+				                    <button class="mx-1 btn btn-sm btn-primary course_btns" id="content_id" data-toggle="modal" data-id="" data-target="#contentAddModal">Add Content</button>
+				             </div>
+				             <div class="left_buttonss d-none pr-4" id="button_question_tab">
+            	
+				                    <button class="mx-1 btn btn-sm btn-primary course_btns" id="mcq_id" data-toggle="modal" data-id="" data-target="#mcqAddModal">Add MCQ</button>
+									<button class="mx-1 btn btn-sm btn-primary course_btns" id="tof_id" data-toggle="modal" data-id="" data-target="#tofAddModal">Add True/False</button>
+				             </div>
+	                 	</div>
+	                 </div>
                      <div class="tab-content" id="pills-tabContent">
-                       <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+                       <div class="tab-pane fade show active" id="content_tab" role="tabpanel" aria-labelledby="pills-home-tab">
                            <div id="topic_content">
                               
                            </div>
                         </div>
-                       <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+                       <div class="tab-pane fade" id="question_tab" role="tabpanel" aria-labelledby="pills-profile-tab">
                            <div id="topic_question">
                               
                            </div>
@@ -722,8 +759,12 @@ function get_topic_content(id)
 }
 function get_topic_detail(id)
 {
-   get_topic_content(id);
-   get_topic_question(id);
+
+	$(".course_btns").attr('data-id',id);
+	$(".topic_nm").removeClass('active_topic');
+	$("#top_"+id).addClass('active_topic');
+  	 get_topic_content(id);
+   	get_topic_question(id);
 }
 function get_topic_question(id)
 {
@@ -738,6 +779,23 @@ function get_topic_question(id)
            }
         });
 }
+$('.mycourse_link li a').click(function(){
+
+	var data = $(this).attr("href");
+	if(data ==="#question_tab")
+	{
+		$("#button_question_tab").removeClass('d-none');
+		$("#button_content_tab").addClass('d-none');
+	}
+	else
+	{
+		$("#button_question_tab").addClass('d-none');
+		$("#button_content_tab").removeClass('d-none');
+	}
+
+	console.log(data);
+
+});
 
 $('#videoAddModal').on('shown.bs.modal', function () {
     var id1 = $('#video_id').data('id');
