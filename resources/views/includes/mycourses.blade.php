@@ -740,6 +740,18 @@ $(function () {
 
 $(document).ready(function()
 {
+    CKEDITOR.on("instanceReady", function(event) {
+        event.editor.on("beforeCommandExec", function(event) {
+            // Show the paste dialog for the paste buttons and right-click paste
+            if (event.data.name == "paste") {
+                event.editor._.forcePasteDialog = true;
+            }
+            // Don't show the paste dialog for Ctrl+Shift+V
+            if (event.data.name == "pastetext" && event.data.commandData.from == "keystrokeHandler") {
+                event.cancel();
+            }
+        })
+    });
     CKEDITOR.replace('content');
 });
 
@@ -773,7 +785,7 @@ function get_topic_question(id)
            url: "{{ route('get_topic_question') }}",
            data: { id:id , _token: '{{csrf_token()}}'},
            success: function(response) 
-           {
+           { 
                 $("#right_side").removeClass('d-none');
                 $("#topic_question").html(response);
                 var table1 = $('#mcq_table').DataTable({
@@ -905,7 +917,7 @@ function updateVideo()
                     type: "POST",
                     cache:false,
                     async: false,
-                    url: "{{ url('/edit_video_link') }}",
+                    url: "{{ url('mycourses/edit_video_link') }}",
                     data: formData,
                     processData: false,
                     contentType: false,
@@ -995,8 +1007,7 @@ function editContent(id)
     var content = $('#edit_content'+id).data('content');
     $("#content_edit_id").val(id);
     $("#content_topic_id").val(topic_id);
-    var contValue = content;
-    var contentValue = CKEDITOR.instances.ed_content.setData(contValue);
+    var contentValue = CKEDITOR.instances.ed_content.setData(content);
     if(status == 1)
     {
         $("#ed_is_active1").attr('checked', 'checked');
@@ -1022,7 +1033,7 @@ function updateContent()
                     type: "POST",
                     cache:false,
                     async: false,
-                    url: "{{ url('/edit_content') }}",
+                    url: "{{ url('mycourses/edit_content') }}",
                     data: formData,
                     processData: false,
                     contentType: false,
@@ -1068,7 +1079,7 @@ function saveDocument()
                     type: "POST",
                     cache:false,
                     async: false,
-                    url: "{{ url('/add_document') }}",
+                    url: "{{ url('mycourses/add_document') }}",
                     data: formData,
                     processData: false,
                     contentType: false,
@@ -1131,7 +1142,7 @@ function updateDocument()
                     type: "POST",
                     cache:false,
                     async: false,
-                    url: "{{ url('/edit_document') }}",
+                    url: "{{ url('mycourses/edit_document') }}",
                     data: formData,
                     processData: false,
                     contentType: false,
@@ -1256,7 +1267,7 @@ function updateMcq()
                     type: "POST",
                     cache:false,
                     async: false,
-                    url: "{{ url('/edit_mcq') }}",
+                    url: "{{ url('mycourses/edit_mcq') }}",
                     data: formData,
                     processData: false,
                     contentType: false,
@@ -1373,7 +1384,7 @@ function updateTrueOrFalse()
                     type: "POST",
                     cache:false,
                     async: false,
-                    url: "{{ url('/edit_true_or_false') }}",
+                    url: "{{ url('mycourses/edit_true_or_false') }}",
                     data: formData,
                     processData: false,
                     contentType: false,

@@ -16,7 +16,7 @@
 								<th>Email</th>
 								<th>User Role</th>
 								<th>Status</th>
-								<th></th>
+								<th>Details</th>
 								<th>Action</th>
 							</tr>
 						</thead>
@@ -82,7 +82,7 @@
 							<input required name="first_name" value="" id="first_name" type="text" class="form-control" placeholder="Enter First Name" required data-parsley-trigger="focusout" data-parsley-trigger="keyup" data-parsley-pattern="^[A-Za-z ][A-Za-z ]*$" />
 						</div>
 						<div class="col-lg-1 pr-0">
-							<label for="example-mname-input" class="col-form-label">Middel Name</label>
+							<label for="example-mname-input" class="col-form-label">Middle Name</label>
 						</div>
 						<div class="col-lg-3">
 							<input autocomplete="off"  value="" name="middle_name" id="middle_name" type="text" class="form-control" placeholder="Enter Middle Name" data-parsley-trigger="focusout" data-parsley-trigger="keyup" data-parsley-pattern="^[A-Za-z ][A-Za-z ]*$"/>
@@ -540,13 +540,14 @@ $(document).ready(function()
 	    en: 'Your password must contain at least (%s) special characters.'
 	  }
 	});
-
-
 });
 $(function() {
 	$('input[name="dob"]').daterangepicker({
 	    singleDatePicker: true,
-	    startDate: new Date(),
+		minDate: new Date(1900,1-1,1), 
+		maxDate: '-18Y',
+		yearRange: '-110:-18',
+	    // startDate: new Date(),
 	    // maxDate: new Date,
 	    showDropdowns: true,
 	    timePicker: false,

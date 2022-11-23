@@ -70,7 +70,6 @@ class SubjectController extends Controller
 
     public function submitCousreSubjectMapping(Request $request)
     {
-        // dd($request);
         $request->validate([
             'subject_id' => 'required',
             'course_id' => 'required',
@@ -80,10 +79,8 @@ class SubjectController extends Controller
         $courses = $request->subject_id;
 
         $course_ids = implode(',',$courses);
-        // dd($courses);
         $delet_old = CourseSubjectMapping::where('course_id',$request->course_id)->pluck('subject_id')->toArray();
         $del = array_diff($delet_old ,$courses);
-        // dd($del);
         
         if(!empty($del))
         {
@@ -119,15 +116,10 @@ class SubjectController extends Controller
                             ]
                         );
                     // dd(DB::getQueryLog());
-
                 }
-
-               
             }
-            
-
         }
-            return response()->json(['data'=>'success','msg'=>'Mapping Added Successfully!']);
+        return response()->json(['data'=>'success','msg'=>'Mapping Added Successfully!']);
             
         // if($csmapping)
         // {

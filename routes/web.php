@@ -90,19 +90,19 @@ Route::post('get_courses_maped',[\App\Http\Controllers\SubjectController::class,
 
 //mycourses
 Route::get('mycourses/index', [App\Http\Controllers\MycoursesController::class, 'index'])->name('mycourses_index');
-Route::get('/course_detail/{id}',[\App\Http\Controllers\MycoursesController::class, 'course_detail'])->name('course_detail');
-Route::post('get_topic_detail',[\App\Http\Controllers\MycoursesController::class, 'get_topic_detail'])->name('get_topic_detail');
-Route::post('get_topic_question',[\App\Http\Controllers\MycoursesController::class, 'get_topic_question'])->name('get_topic_question');
-Route::post('/add_video_link',[\App\Http\Controllers\MycoursesController::class, 'addVideoLink'])->name('add_video_link');
-Route::post('/edit_video_link',[\App\Http\Controllers\MycoursesController::class, 'updateVideoLink'])->name('update_video_link');
-Route::post('/add_content',[\App\Http\Controllers\MycoursesController::class, 'addContent'])->name('add_content');
-Route::post('/edit_content',[\App\Http\Controllers\MycoursesController::class, 'updateContent'])->name('update_content');
-Route::post('/add_document',[\App\Http\Controllers\MycoursesController::class, 'addDocument'])->name('add_document');
-Route::post('/edit_document',[\App\Http\Controllers\MycoursesController::class, 'updateDocument'])->name('update_document');
+Route::get('mycourses/course_detail/{id}',[\App\Http\Controllers\MycoursesController::class, 'course_detail'])->name('course_detail');
+Route::post('mycourses/get_topic_detail',[\App\Http\Controllers\MycoursesController::class, 'get_topic_detail'])->name('get_topic_detail');
+Route::post('mycourses/get_topic_question',[\App\Http\Controllers\MycoursesController::class, 'get_topic_question'])->name('get_topic_question');
+Route::post('mycourses/add_video_link',[\App\Http\Controllers\MycoursesController::class, 'addVideoLink'])->name('add_video_link');
+Route::post('mycourses/edit_video_link',[\App\Http\Controllers\MycoursesController::class, 'updateVideoLink'])->name('update_video_link');
+Route::post('mycourses/add_content',[\App\Http\Controllers\MycoursesController::class, 'addContent'])->name('add_content');
+Route::post('mycourses/edit_content',[\App\Http\Controllers\MycoursesController::class, 'updateContent'])->name('update_content');
+Route::post('mycourses/add_document',[\App\Http\Controllers\MycoursesController::class, 'addDocument'])->name('add_document');
+Route::post('mycourses/edit_document',[\App\Http\Controllers\MycoursesController::class, 'updateDocument'])->name('update_document');
 //mycourses - Questions
-Route::post('/add_true_or_false',[\App\Http\Controllers\MycoursesController::class, 'addTrueOrFalse'])->name('add_true_or_false');
-Route::post('/edit_true_or_false',[\App\Http\Controllers\MycoursesController::class, 'updateTrueOrFalse'])->name('update_true_or_false');
-// Route::any('/tofStatus/{tofid?}', [App\Http\Controllers\MycoursesController::class, 'tofStatus'])->name('tof_status');
-Route::post('/add_mcq',[\App\Http\Controllers\MycoursesController::class, 'addMcq'])->name('add_mcq');
-Route::post('/edit_mcq',[\App\Http\Controllers\MycoursesController::class, 'updateMcq'])->name('update_mcq');
-// Route::any('/mcqStatus/{mcqid?}', [App\Http\Controllers\MycoursesController::class, 'mcqStatus'])->name('mcq_status');
+Route::post('mycourses/add_true_or_false',[\App\Http\Controllers\MycoursesController::class, 'addTrueOrFalse'])->name('add_true_or_false');
+Route::post('mycourses/edit_true_or_false',[\App\Http\Controllers\MycoursesController::class, 'updateTrueOrFalse'])->name('update_true_or_false');
+// Route::any('mycourses/tofStatus/{tofid?}', [App\Http\Controllers\MycoursesController::class, 'tofStatus'])->name('tof_status');
+Route::post('mycourses/add_mcq',[\App\Http\Controllers\MycoursesController::class, 'addMcq'])->name('add_mcq');
+Route::post('mycourses/edit_mcq',[\App\Http\Controllers\MycoursesController::class, 'updateMcq'])->name('update_mcq');
+// Route::any('mycourses/mcqStatus/{mcqid?}', [App\Http\Controllers\MycoursesController::class, 'mcqStatus'])->name('mcq_status');

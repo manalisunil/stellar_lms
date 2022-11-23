@@ -255,7 +255,14 @@ $(".edit_mapping").click(function() {
             $("#addMappingModal").modal('show');
             var res =response.data[0];
             $("#course_id").val(res['course_id']).change();
-
+            if(res['is_active'] == 1)
+            {
+                $( "#is_active" ).attr('checked', 'checked');
+            }
+            else
+            {
+                $( "#is_active" ).removeAttr('checked', 'checked');
+            }
         }
     });
 });

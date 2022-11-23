@@ -24,13 +24,17 @@ class UserController extends Controller
     }
     public function adduser(Request $request)
     {
+		$dt = new Carbon();
+		$before = $dt->subYears(18)->format('Y-m-d');
+
     	$request->validate([
             'company_id'=>'required',
             'first_name' => 'required',
             'email' => 'required|email|unique:mdblms_users,email',
             'password'=>'required',          
             'user_type_id' => 'required',
-            'gender'=>'required'
+            'gender'=>'required',
+			'dob' => 'nullable|before:' .$before
         ]);
     	if(isset($request->dob))
     	{
@@ -112,7 +116,7 @@ class UserController extends Controller
 								<input required name="first_name" value="'.$userDetail->first_name.'" id="first_name" type="text" class="form-control" placeholder="Enter First Name" required data-parsley-trigger="focusout" data-parsley-trigger="keyup" data-parsley-pattern="^[A-Za-z ][A-Za-z ]*$" />
 							</div>
 							<div class="col-lg-1 pr-0">
-								<label for="example-mname-input" class="col-form-label">Middel Name</label>
+								<label for="example-mname-input" class="col-form-label">Middle Name</label>
 							</div>
 							<div class="col-lg-3">
 								<input autocomplete="off"  value="'.$userDetail->middle_name.'" name="middle_name" id="middle_name" type="text" class="form-control" placeholder="Enter Middle Name" data-parsley-trigger="focusout" data-parsley-trigger="keyup" data-parsley-pattern="^[A-Za-z ][A-Za-z ]*$"/>
@@ -282,12 +286,16 @@ class UserController extends Controller
     }
     public function updateUser(Request $request)
     {
+		$dt = new Carbon();
+		$before = $dt->subYears(18)->format('Y-m-d');
+
     	$request->validate([
             'company_id'=>'required',
             'first_name' => 'required',
             'email' => 'required|email|unique:mdblms_users,email,'.$request->id,
             'user_type_id' => 'required',
-            'gender'=>'required'
+            'gender'=>'required',
+			'dob' => 'nullable|before:' .$before
         ]);
     	if(isset($request->dob))
     	{
@@ -360,7 +368,7 @@ class UserController extends Controller
 				
 				<div class="col-lg-4">
 					<label  class="col-form-label">Address 2</label> 
-					: <?php echo $userdetails->address_line1 ;?>
+					: <?php echo $userdetails->address_line2 ;?>
 					
 				</div>
 				<div class="col-lg-4">
