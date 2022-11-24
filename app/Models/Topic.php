@@ -13,6 +13,6 @@ class Topic extends Model
 
     public function getChapter()
     {
-        return $this->hasOne('App\Models\Chapter','id','chapter_id')->select(['id', 'chapter_name'])->where('is_active',1);
+        return $this->hasOne('App\Models\Chapter','id','chapter_id')->select(['id', 'chapter_name']);
     }
 }

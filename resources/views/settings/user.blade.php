@@ -410,6 +410,7 @@ $(document).ready(function()
 				$('input[name="dob"]').daterangepicker({
 				    singleDatePicker: true,
 				    startDate: new Date(),
+					// startDate: new Date(val(response.dob)),
 				    // maxDate: new Date,
 				    showDropdowns: true,
 				    timePicker: false,
