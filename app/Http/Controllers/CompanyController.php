@@ -16,9 +16,9 @@ class CompanyController extends Controller
     public function submitCompany(Request $request)
     {
         $request->validate([
-            'company_name' => 'required',
+            'company_name' => 'required|company_name|unique:mdblms_company,company_name',
             'address' => 'required',
-            'phone_no' =>'required',
+            'phone_no' =>'required|phone_no|unique:mdblms_company,phone_no',
             'email_id' => 'required|email|unique:mdblms_company,email_id',
             'logo' => 'nullable|file|max:50',
         ]);
@@ -65,7 +65,7 @@ class CompanyController extends Controller
                         '<label for="unique-id-input" class="col-form-label px-0 mx-0" style="width: 114%;text-align: left;">Company Name<span class="text-danger"> * <span></label>'.
                     '</div>'.
                     '<div class="col-lg-3">'.
-                        '<input name="company_name" id="ed_company_name" type="text" class="form-control" value="'.$companyData->company_name.'" placeholder="Enter Company Name" required data-parsley-trigger="focusout" data-parsley-trigger="keyup" data-parsley-pattern="^[A-Za-z ][A-Za-z \.]*$"/>'.
+                        '<input name="company_name" id="ed_company_name" type="text" class="form-control" value="'.$companyData->company_name.'" placeholder="Enter Company Name" required data-parsley-trigger="focusout" data-parsley-trigger="keyup" data-parsley-pattern="^[a-zA-Z 0-9\.\&\-\@\:\/\[\]\(\)\_]*$" />'.
                     '</div>'.
                     '<div class="col-lg-1 pr-0">'.
                         '<label for="address-input" class="col-form-label px-0 mx-0" style="width: 114%;text-align: left;">Address<span class="text-danger"> * <span></label>'.

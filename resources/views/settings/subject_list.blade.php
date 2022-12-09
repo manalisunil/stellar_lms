@@ -73,13 +73,13 @@
                             <label for="unique-id-input" class="col-form-label">Subject Id<span class="text-danger"> * <span></label>
                         </div>
                         <div class="col-lg-3">
-                            <input name="subject_id" id="subject_id" type="text" class="form-control" placeholder="SUB0001" required data-parsley-trigger="focusout" data-parsley-trigger="keyup" data-parsley-pattern="^[A-Za-z _0-9][A-Za-z 0-9]*$"/>
+                            <input name="subject_id" id="subject_id" type="text" class="form-control" placeholder="SUB0001" required data-parsley-trigger="focusout" data-parsley-trigger="keyup" data-parsley-pattern="^[a-zA-Z 0-9\.\,\&\-\!\@\;\:\'\/\[\]\(\)\_]*$" />
                         </div>
                         <div class="col-lg-1 pr-0">
                             <label for="address-input" class="col-form-label">Subject Name<span class="text-danger"> * <span></label>
                         </div>
                         <div class="col-lg-3">
-                            <input name="subject_name" id="subject_name" type="text" class="form-control" placeholder="Enter Subject Name" required data-parsley-trigger="focusout" data-parsley-trigger="keyup" data-parsley-pattern="^[A-Za-z _0-9- .]*$"/>
+                            <input name="subject_name" id="subject_name" type="text" class="form-control" placeholder="Enter Subject Name" required data-parsley-trigger="focusout" data-parsley-trigger="keyup" data-parsley-pattern="^[a-zA-Z 0-9\.\,\&\-\!\@\;\:\'\/\[\]\(\)\_]*$" />
                         </div>
                         <div class="col-lg-1 pr-0">
                             <label for="active-input" class="col-forwm-label">Is Active?</label>
@@ -136,13 +136,13 @@
                             <label for="unique-id-input" class="col-form-label">Subject Id<span class="text-danger"> * <span></label>
                         </div>
                         <div class="col-lg-3">
-                            <input name="subject_id" id="ed_subject_id" type="text" class="form-control" placeholder="SUB0001" required data-parsley-trigger="focusout" data-parsley-trigger="keyup" data-parsley-pattern="^[A-Za-z _0-9][A-Za-z 0-9]*$"/>
+                            <input name="subject_id" id="ed_subject_id" type="text" class="form-control" placeholder="SUB0001" required data-parsley-trigger="focusout" data-parsley-trigger="keyup" data-parsley-pattern="^[a-zA-Z 0-9\.\,\&\-\!\@\;\:\'\/\[\]\(\)\_]*$"/>
                         </div>
                         <div class="col-lg-1 pr-0">
                             <label for="address-input" class="col-form-label">Subject Name<span class="text-danger"> * <span></label>
                         </div>
                         <div class="col-lg-3">
-                            <input name="subject_name" id="ed_subject_name" type="text" class="form-control" placeholder="Enter Subject Name" required data-parsley-trigger="focusout" data-parsley-trigger="keyup" data-parsley-pattern="^[A-Za-z _0-9- .]*$"/>
+                            <input name="subject_name" id="ed_subject_name" type="text" class="form-control" placeholder="Enter Subject Name" required data-parsley-trigger="focusout" data-parsley-trigger="keyup" data-parsley-pattern="^[a-zA-Z 0-9\.\,\&\-\!\@\;\:\'\/\[\]\(\)\_]*$"/>
                         </div>
                         <div class="col-lg-1 pr-0">
                             <label for="active-input" class="col-forwm-label">Is Active?</label>
@@ -206,6 +206,10 @@ $(document).ready(function()
 {
     $(".odtabs").not("#tab3").addClass('btn-outline-secondary');
 	$("#tab3").addClass('btn-secondary');
+
+    $('.modal').on('hidden.bs.modal', function() {
+		$(this).find('form')[0].reset();
+  	});
 
     var table = $('#datatable').DataTable({
         responsive: true,

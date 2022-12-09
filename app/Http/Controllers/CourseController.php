@@ -104,7 +104,7 @@ class CourseController extends Controller
                         '<label for="unique-id-input" class="col-form-label">Course Id<span class="text-danger"> * <span></label>'.
                     '</div>'.
                     '<div class="col-lg-3">'.
-                        '<input name="course_id" id="ed_course_id" value="'.$courseData->course_id.'" type="text" class="form-control" placeholder="COURS0001" required data-parsley-trigger="focusout" data-parsley-trigger="keyup" data-parsley-pattern="^[A-Za-z _0-9][A-Za-z 0-9]*$"/>'.
+                        '<input name="course_id" id="ed_course_id" value="'.$courseData->course_id.'" type="text" class="form-control" placeholder="COURS0001" required data-parsley-trigger="focusout" data-parsley-trigger="keyup" data-parsley-pattern="^[a-zA-Z 0-9\.\,\&\-\!\@\;\:\'\/\[\]\(\)\_]*$" />'.
                     '</div>'.
                     '<div class="col-lg-1 pr-0">'.
                         '<label for="name-input" class="col-form-label px-0 mx-0" style="width: 114%;text-align: left;">Company Name<span class="text-danger"> * <span></label>'.
@@ -125,7 +125,7 @@ class CourseController extends Controller
                         '<label for="address-input" class="col-form-label">Course Name<span class="text-danger"> * <span></label>'.
                     '</div>'.
                     '<div class="col-lg-3">'.
-                        '<input name="course_name" id="ed_course_name" type="text" class="form-control" value="'.$courseData->course_name.'" placeholder="Enter Course Name" required data-parsley-trigger="focusout" data-parsley-trigger="keyup" data-parsley-pattern="^[A-Za-z _0-9][A-Za-z 0-9]*$"/>'.
+                        '<input name="course_name" id="ed_course_name" type="text" class="form-control" value="'.$courseData->course_name.'" placeholder="Enter Course Name" required data-parsley-trigger="focusout" data-parsley-trigger="keyup" data-parsley-pattern="^[a-zA-Z 0-9\.\,\&\-\!\@\;\:\'\/\[\]\(\)\_]*$" />'.
                     '</div>'.
                 '</div>'.
                 '<div class="row">'.

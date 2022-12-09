@@ -778,6 +778,10 @@ $(function () {
 
 $(document).ready(function()
 {
+    $('.modal').on('hidden.bs.modal', function() {
+		$(this).find('form')[0].reset();
+  	});
+    
     CKEDITOR.on("instanceReady", function(event) {
         event.editor.on("beforeCommandExec", function(event) {
             // Show the paste dialog for the paste buttons and right-click paste

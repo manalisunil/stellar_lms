@@ -65,7 +65,7 @@
                             <label for="unique-id-input" class="col-form-label px-0 mx-0" style="width: 114%;text-align: left;">Company Name<span class="text-danger"> * <span></label>
                         </div>
                         <div class="col-lg-3">
-                            <input name="company_name" id="company_name" type="text" class="form-control" placeholder="Enter Company Name" required data-parsley-trigger="focusout" data-parsley-trigger="keyup" data-parsley-pattern="^[A-Za-z ][A-Za-z \.]*$"/>
+                            <input name="company_name" id="company_name" type="text" class="form-control" placeholder="Enter Company Name" required data-parsley-trigger="focusout" data-parsley-trigger="keyup" data-parsley-pattern="^[a-zA-Z 0-9\.\&\-\@\:\/\[\]\(\)\_]*$"/>
                         </div>
                         <div class="col-lg-1 pr-0">
                             <label for="name-input" class="col-form-label px-0 mx-0" style="width: 114%;text-align: left;">Address<span class="text-danger"> * <span></label>
@@ -168,6 +168,10 @@ $(document).ready(function()
 {
     $(".odtabs").not("#tab1").addClass('btn-outline-secondary');
 	$("#tab1").addClass('btn-secondary');
+
+	$('.modal').on('hidden.bs.modal', function() {
+		$(this).find('form')[0].reset();
+  	});
 
     var table = $('#datatable').DataTable({
         responsive: true,

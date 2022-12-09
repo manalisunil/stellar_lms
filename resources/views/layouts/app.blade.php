@@ -66,7 +66,7 @@
                         </li>
                       
                         <li class="{{ Request::is('settings/*') ? 'submenuactive' : '' }}">
-                                <a href="{{ route('user') }}">
+                                <a href="{{ route('company_list') }}"> 
                                     <i class="dripicons-basket {{ Request::is('settings/*') ? 'submenuactivei' : '' }}"></i>
                                     Settings
                                 </a>

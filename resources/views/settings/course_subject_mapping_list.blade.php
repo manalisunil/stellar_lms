@@ -146,6 +146,10 @@ $(document).ready(function()
     $(".odtabs").not("#tab7").addClass('btn-outline-secondary');
 	$("#tab7").addClass('btn-secondary');
 
+    $('.modal').on('hidden.bs.modal', function() {
+		$(this).find('form')[0].reset();
+  	});
+    
     var table = $('#datatable').DataTable({
         responsive: true,
         dom: 'l<"toolbar">frtip',

@@ -59,7 +59,7 @@
 				<span aria-hidden="true">&times;</span>
 				</button>
 			</div>
-			<form method="post" id="userfrm" name="userfrm"  data-parsley-validate data-parsley-trigger="keyup">
+			<form method="post" id="userfrm" name="userfrm"  autocomplete="off" data-parsley-validate data-parsley-trigger="keyup">
 				@csrf
 				<div class="modal-body">
 					<div class="row">
@@ -129,7 +129,7 @@
 						<div class="col-lg-3">
 							<input class="form-control date-picker" name="dob" id="dob" type="text" class="js-validate-dob" value="" data-parsley-minimumage="15" 
 							data-parsley-minimumage-message="Applicant must be at least 15 years of age to apply" data-parsley-validdate="" data-parsley-validdate-message="Please enter a valid date" data-parsley-pattern="/[0-9]\d*/"
-	 						data-parsley-pattern-message="Only numbers allowed"   data-parsley-trigger="focusout" data-parsley-trigger="change"  ata-parsley-validation-threshold="0" />							
+	 						data-parsley-pattern-message="Only numbers allowed" data-parsley-trigger="keyup" data-parsley-trigger="focusout"  data-parsley-validation-threshold="0" />							
 						</div>
 						<div class="col-lg-1 pr-0">
 							<label for="name-input" class="col-form-label">Address 1<span class="text-danger">  <span></label>
@@ -334,6 +334,10 @@ $(document).ready(function()
 {
 	$(".odtabs").not("#tab2").addClass('btn-outline-secondary');
 	$("#tab2").addClass('btn-secondary');
+
+	$('.modal').on('hidden.bs.modal', function() {
+		$(this).find('form')[0].reset();
+  	});
 
 	var table = $('#datatable').DataTable({
 		responsive: true,

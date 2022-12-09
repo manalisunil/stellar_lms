@@ -83,13 +83,13 @@
 								<label for="company_select" class="col-form-label"> Topic Id <span class="text-danger"> * </span></label>
 							</div>
 							<div class="col-lg-3">
-								<input required name="topic_id" value="" id="topic_id" type="text" class="form-control" placeholder="Enter Topic Id" required data-parsley-trigger="focusout" data-parsley-trigger="keyup" data-parsley-pattern="^[A-Za-z _0-9][A-Za-z 0-9]*$" />
+								<input required name="topic_id" value="" id="topic_id" type="text" class="form-control" placeholder="Enter Topic Id" required data-parsley-trigger="focusout" data-parsley-trigger="keyup" data-parsley-pattern="^[a-zA-Z 0-9\.\,\&\-\!\@\;\:\'\/\[\]\(\)\_]*$" />
 							</div>
 							<div class="col-lg-1 pr-0">
 								<label for="example-firstname-input" class="col-form-label">Topic Name <span class="text-danger"> * </span></label>
 							</div>
 							<div class="col-lg-3">
-								<input required name="topic_name" value="" id="topic_name" type="text" class="form-control" placeholder="Enter Topic Name" required data-parsley-trigger="focusout" data-parsley-trigger="keyup" data-parsley-pattern="^[A-Za-z ][A-Za-z ]*$" />
+								<input required name="topic_name" value="" id="topic_name" type="text" class="form-control" placeholder="Enter Topic Name" required data-parsley-trigger="focusout" data-parsley-trigger="keyup" data-parsley-pattern="^[a-zA-Z 0-9\.\,\&\-\!\@\;\:\'\/\[\]\(\)\_]*$" />
 							</div>
 						</div>
 						<div class="row mt-2">
@@ -227,6 +227,10 @@ $(document).ready(function()
 	$(".odtabs").not("#tab5").addClass('btn-outline-secondary');
 	$("#tab5").addClass('btn-secondary');
 	
+	$('.modal').on('hidden.bs.modal', function() {
+		$(this).find('form')[0].reset();
+  	});
+
 	CKEDITOR.replace('topic_description');
 	var table = $('#datatable').DataTable({
 		responsive: true,

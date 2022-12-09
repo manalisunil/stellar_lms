@@ -51,7 +51,7 @@
                                     <div class="col">
                                         <!-- Title -->
                                         <h5 class="mb-1 d-flex justify-content-center">
-                                            <b>Cources</b>
+                                            <b>Courses</b>
                                         </h5>
                                         <!-- Heading -->
                                         <span class="h4 d-flex justify-content-center">
