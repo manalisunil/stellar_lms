@@ -117,10 +117,11 @@ border-radius: .25rem;
 border: 1px solid #eceff5;
 }
 .card-header {
-padding: 0.1rem;
+padding: 0.2rem;
 margin-bottom: 0;
-background-color: rgba(0,0,0,0.03);
+background-color: #578dd1 !important;
 border-bottom: 0 solid rgba(0,0,0,0.125);
+color: #fff !important;
 }
 .main-card-header {
 padding: .75rem 1.25rem;

@@ -15,7 +15,9 @@ class UserController extends Controller
 {
      public function index()
     {
+    	// DB::enableQueryLog();
     	$userList  = User::with('getCompany')->whereNotIn('user_type_id',[1])->get();
+    	// dd(DB::getQueryLog());
         $companyList  = Company::where('is_active',1)->get();
         $usertypesList    = DB::table('mdblms_usertypes')->whereNotIn('id', [1])->orderBy('id', 'ASC')->get();
         $allcompanyList  = Company::get();
@@ -34,7 +36,7 @@ class UserController extends Controller
             'password'=>'required',          
             'user_type_id' => 'required',
             'gender'=>'required',
-			'dob' => 'nullable|before:' .$before
+			// 'dob' => 'nullable|before:' .$before
         ]);
     	if(isset($request->dob))
     	{
@@ -87,6 +89,17 @@ class UserController extends Controller
         $userDetail = User::where('id',$id)->first();
         $companyList  = Company::where('is_active',1)->get();
         $usertypesList    = DB::table('mdblms_usertypes')->whereNotIn('id', [1])->orderBy('id', 'ASC')->get();
+        if($userDetail->dob != NULL)
+        {
+
+      
+        	 $dob_date  = \Carbon\Carbon::parse($userDetail->dob)->format('d-m-Y');
+        }
+        else
+        {
+        	 $dob_date  = NULL;
+        }
+        
        	$output="";
         $output .='
 					<div class="modal-body">
@@ -179,7 +192,9 @@ class UserController extends Controller
 								<label for="active-input" class="col-form-label">Date of Birth </label>
 							</div>
                         	<div class="col-lg-3">
-                                <input class="form-control date-picker" name="dob" id="dob" type="text" value="'.$userDetail->dob.'"/>
+                                <input class="form-control date-picker" name="dob" id="eddob" type="text" value="'.$dob_date.'" class="js-validate-dob" data-parsley-minimumage="15" 
+							data-parsley-minimumage-message="Applicant must be at least 15 years of age to apply" data-parsley-validdate="" data-parsley-validdate-message="Please enter a valid date" data-parsley-pattern="/[0-9]\d*/"
+	 						data-parsley-pattern-message="Only numbers allowed"    ata-parsley-validation-threshold="0" />
                             </div>
 							<div class="col-lg-1 pr-0">
 								<label for="name-input" class="col-form-label">Address 1<span class="text-danger">  <span></label>
@@ -295,7 +310,7 @@ class UserController extends Controller
             'email' => 'required|email|unique:mdblms_users,email,'.$request->id,
             'user_type_id' => 'required',
             'gender'=>'required',
-			'dob' => 'nullable|before:' .$before
+			// 'dob' => 'nullable|before:' .$before
         ]);
     	if(isset($request->dob))
     	{

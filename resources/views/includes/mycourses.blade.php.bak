@@ -2,7 +2,7 @@
 @section('title', 'Chapter')
 @section('content')
 <style type="text/css">
-  .nav-link.left_menu[data-toggle].collapsed:before {
+   .left_menu[data-toggle].collapsed:before {
      content: '▶';
      font-size: 14px;
     /*color: #777;*/
@@ -11,17 +11,11 @@
   
     
 }
-/*.left_menu[data-toggle]not(.collapsed):before*/
-.nav-link.left_menu[aria-expanded="true"]::before
-{
-    content: "▼";
-    font-size: 14px;
-      color: #2a39ff;
-    margin-left: 5px;
-}
-.nav-link.left_menu[aria-expanded="true"] span
-{
-	 color: #2a39ff;
+.left_menu[data-toggle]:not(.collapsed):before {
+     content: "▼";
+      font-size: 14px;
+      /*color: #777;*/
+      margin-left: 5px;
 }
 .side_menu
 {
@@ -33,25 +27,6 @@
    align-items: center;*/
    padding-right: 10px!important;
 }
-.left_buttons
-{
-	position: relative;
-	margin-top:-2% !important;
-}
-.lbl
-{
-	font-weight: bold;
-	font-size: 13px !important;
-}
-.lbl_text
-{
-	font-size: 13px !important;
-}
-.active_topic
-{
-	color: #f68c1e !important;
-	font-weight: bold;
-}
 
 </style>
 <div class="container-fluid mt-1">
@@ -61,7 +36,7 @@
          <div class="card-body">
              <div class="row">
               <div class="col-2 collapse show d-md-flex bg-light pt-2 pl-0 min-vh-100" id="sidebar">
-                  <ul class="nav  flex-column flex-nowrap overflow-hidden">
+                  <ul class="nav flex-column flex-nowrap overflow-hidden">
                      <!--  <li class="nav-item">
                           <a class="nav-link text-truncate" href="#"><i class="fa fa-home"></i> <span class=" d-sm-inline">Overview</span></a>
                       </li> -->
@@ -69,25 +44,24 @@
                       @if(isset($courses_subjects))
                        @forelse($courses_subjects as $s1=>$subjects)
                          <li class="nav-item">
-                             <a class="nav-link  left_menu collapsed " href="submenu{{$s1}}" data-toggle="collapse" data-target="#submenu{{$s1}}"><!-- <i class="fa fa-table"></i> --> <span class="font-weight-bold d-sm-inline side_menu">   {{$subjects->getSubject['subject_name']}}</span></a>
+                             <a class="nav-link  left_menu collapsed " href="#submenu1" data-toggle="collapse" data-target="#submenu{{$s1}}"><!-- <i class="fa fa-table"></i> --> <span class="font-weight-bold d-sm-inline side_menu">   {{$subjects->getSubject['subject_name']}}</span></a>
                              <div class="collapse" id="submenu{{$s1}}" aria-expanded="false">
                                  <ul class="flex-column pl-2 nav">
                                      <!-- <li class="nav-item"><a class="nav-link py-0" href="#"><span>Course1</span></a></li> -->
-                                     @php $all_chapters = $chapters->where('subject_id',$subjects->subject_id)->where('is_active',1); @endphp
+                                     @php $all_chapters = $chapters->where('subject_id',$subjects->subject_id); @endphp
                                          @if(count($all_chapters) > 0)
                                            @foreach($all_chapters as $ch=>$chpter)
                                               <li class="nav-item">
-                                                  <a class="nav-link left_menu collapsed py-1 pl-4" href="#submenu1sub{{$ch}}" data-toggle="collapse" data-target="#submenu1sub{{$ch}}"><span class="chapter-lbl" data-title="{{$chpter->chapter_name}}"><!-- <i class="fa-regular fa-folder pr-1"></i> -->  {{ substr($chpter->chapter_name, 0,28)}}...</span></a>
+                                                  <a class="nav-link left_menu collapsed py-1 pl-4" href="#submenu1sub1" data-toggle="collapse" data-target="#submenu1sub{{$ch}}"><span class=""><!-- <i class="fa-regular fa-folder pr-1"></i> --> {{$chpter->chapter_name}}</span></a>
                                                   <div class="collapse" id="submenu1sub{{$ch}}" aria-expanded="false">
                                                       <ul class="flex-column nav pl-4">
-                                                         @php $all_topics = $topic->where('chapter_id',$chpter->id)->where('is_active',1);
+                                                         @php $all_topics = $topic->where('chapter_id',$chpter->id);
                                                          @endphp
                                                          @if(count($all_topics) > 0)
                                                          @foreach($all_topics as $topc)
                                                           <li class="nav-item">
-                                                              <a class="nav-link  p-1  pl-5 topic_nm" id="top_{{$topc->id}}"  onclick="get_topic_detail({{$topc->id}})" style="cursor:pointer;"><i class="fa-solid fa-file-lines pr-1"></i>
-                                                              	{{ substr($topc->topic_name, 0,40)}}
-                                                                  </a>
+                                                              <a class="nav-link  p-1  pl-4 " onclick="get_topic_detail({{$topc->id}})" style="cursor:pointer;"><i class="fa-solid fa-file-lines pr-1"></i>
+                                                                 {{$topc->topic_name}} </a>
                                                           </li>
                                                           @endforeach
                                                           @endif
@@ -108,40 +82,22 @@
               </div>
               <div class="col-10 content">
 
-                  <div id="right_side" class="d-none ">
-                  	<div class="row">
-	                  	<div class="col-md-8">
-	                  		<input type="hidden" name="current_topic_id" id="current_topic_id" value="">
-		                    <ul class="mycourse_link nav nav-pills mb-3" id="pills-tab" role="tablist">
-	                           <li class="nav-item main_btn">
-		                           <a class="nav-link  active" id="pills-home-tab" data-toggle="pill" href="#content_tab" role="tab" aria-controls="pills-home" aria-selected="true">Content</a>
-	                           </li>
-	                           <li class="nav-item main_btn">
-		                           <a class="nav-link " id="pills-profile-tab" data-toggle="pill" href="#question_tab" role="tab" aria-controls="pills-profile" aria-selected="false">Question</a>
-	                           </li>
-		                    </ul>
-	                 	</div>
-	                 	<div class="col-md-4 btn-test">
-	                 		 <div class="left_buttonss pr-4" id="button_content_tab">
-            						
-				                    <button class="mx-1 btn btn-sm btn-primary course_btns" id="video_id" data-toggle="modal" data-id="" data-target="#videoAddModal">Add Video Link</button>
-				                    <button class="mx-1 btn btn-sm btn-primary course_btns" id="doc_id" data-toggle="modal" data-id="" data-target="#documentAddModal">Add Document</button>
-				                    <button class="mx-1 btn btn-sm btn-primary course_btns" id="content_id" data-toggle="modal" data-id="" data-target="#contentAddModal">Add Content</button>
-				             </div>
-				             <div class="left_buttonss d-none pr-4" id="button_question_tab">
-            	
-				                    <button class="mx-1 btn btn-sm btn-primary course_btns" id="mcq_id" data-toggle="modal" data-id="" data-target="#mcqAddModal">Add MCQ</button>
-									<button class="mx-1 btn btn-sm btn-primary course_btns" id="tof_id" data-toggle="modal" data-id="" data-target="#tofAddModal">Add True/False</button>
-				             </div>
-	                 	</div>
-	                 </div>
+                  <div id="right_side" class="d-none">
+                     <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                           <li class="nav-item main_btn">
+                           <a class="nav-link  active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true">Content</a>
+                           </li>
+                           <li class="nav-item main_btn">
+                           <a class="nav-link " id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false">Question</a>
+                           </li>
+                     </ul>
                      <div class="tab-content" id="pills-tabContent">
-                       <div class="tab-pane fade show active" id="content_tab" role="tabpanel" aria-labelledby="pills-home-tab">
+                       <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
                            <div id="topic_content">
                               
                            </div>
                         </div>
-                       <div class="tab-pane fade" id="question_tab" role="tabpanel" aria-labelledby="pills-profile-tab">
+                       <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
                            <div id="topic_question">
                               
                            </div>
@@ -175,28 +131,14 @@
 							<label for="company_select" class="col-form-label"> Video Link <span class="text-danger"> * </span></label>
 						</div>
 						<div class="col-lg-5">
-							<input required name="video_link" value="" id="video_link" type="url" class="form-control" placeholder="Enter Video Link" required  data-parsley-type="url"/>
+							<input required name="video_link" value="" id="video_link" type="text" class="form-control" placeholder="Enter Video Link" required />
 						</div>
-						<div class="col-lg-2 pr-0">
-							<label for="example-email-input" class="col-form-label pr-3">Thumbnail Image </label> 
-						</div>
-						<div class="col-lg-4 ">
-							  <input id="thumbnail_img" name="thumbnail_img" type="file" class="form-control" accept="image/*," data-parsley-trigger="keyup"  data-parsley-fileextension="jpg,png,svg,jpeg">
-						</div>
-						
 						<div class="col-lg-1 pr-0">
-							<label for="company_select" class="col-form-label"> Video Name <span class="text-danger"> * </span></label>
-						</div>
-						<div class="col-lg-5">
-							<input required name="video_name" value="" id="video_name" type="text" class="form-control" placeholder="Enter Video name" required />
-						</div>
-						<div class="col-lg-2 pr-0">
 							<label for="example-email-input" class="col-form-label pr-3">Status </label> 
 						</div>
-						<div class="col-lg-4 mt-3">
+						<div class="col-lg-5 mt-3">
 							<input type="checkbox" checked value="1" id="is_active" name="is_active" />
 						</div>
-						
 					</div>
 				</div>
 				<div class="modal-footer">
@@ -229,20 +171,7 @@
 							<label for="company_select" class="col-form-label"> Video Link <span class="text-danger"> * </span></label>
 						</div>
 						<div class="col-lg-5">
-							<input required name="video_link" value="" id="ed_video_link" type="url" class="form-control" placeholder="Enter Video Link" required data-parsley-type="url" />
-						</div>
-						<div class="col-lg-2 pr-0">
-							<label for="example-email-input" class="col-form-label pr-3">Thumbnail Image </label> 
-						</div>
-						<div class="col-lg-4 ">
-							  <input id="thumbnail_img" name="thumbnail_img" type="file" class="form-control" accept="image/*," data-parsley-trigger="keyup"  data-parsley-fileextension="jpg,png,svg,jpeg">
-						</div>
-						
-						<div class="col-lg-1 pr-0">
-							<label for="company_select" class="col-form-label"> Video Name <span class="text-danger"> * </span></label>
-						</div>
-						<div class="col-lg-5">
-							<input required name="video_name" value="" id="ed_video_name" type="text" class="form-control" placeholder="Enter Video name" required />
+							<input required name="video_link" value="" id="ed_video_link" type="text" class="form-control" placeholder="Enter Video Link" required />
 						</div>
 						<div class="col-lg-1 pr-0">
 							<label for="example-email-input" class="col-form-label pr-3">Status </label> 
@@ -281,7 +210,7 @@
 							<label for="company_select" class="col-form-label"> Document </label>
 						</div>
 						<div class="col-lg-4">
-                            <input id="topic_document" name="topic_document" type="file" class="form-control" accept="image/*,.pdf" data-parsley-trigger="keyup"  data-parsley-fileextension="jpg,png,svg,jpeg,pdf" required="">
+                            <input id="topic_document" name="topic_document" type="file" class="form-control" accept="image/*,.pdf" data-parsley-trigger="keyup"  data-parsley-fileextension="jpg,png,svg,jpeg,pdf">
 						</div>
 						<div class="col-lg-1 pr-0">
 							<label for="example-email-input" class="col-form-label pr-3">Status </label> 
@@ -404,7 +333,7 @@
 							<label for="company_select" class="col-form-label"> Document </label>
 						</div>
 						<div class="col-lg-4">
-                            <input id="ed_topic_document" name="topic_document" type="file" class="form-control" accept="image/*,.pdf" data-parsley-trigger="keyup"  data-parsley-fileextension="jpg,png,svg,jpeg,pdf" required="">
+                            <input id="ed_topic_document" name="topic_document" type="file" class="form-control" accept="image/*,.pdf" data-parsley-trigger="keyup"  data-parsley-fileextension="jpg,png,svg,jpeg,pdf">
 						</div>
 						<div class="col-lg-1 pr-0">
 							<label for="example-email-input" class="col-form-label pr-3">Status </label> 
@@ -431,7 +360,6 @@
 			<form method="post" id="addmcqform" name="addmcqform"  data-parsley-validate data-parsley-trigger="keyup">
 			@csrf
                 <input type="hidden" id="topic_id5" name="topic_id" value="">
-                <input type="hidden" id="type_id" name="type_id" value="1">
 				<div class="modal-header">
 					<h5 class="modal-title" id="exampleModalLabel">Add MCQ</h5>
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -492,7 +420,7 @@
 							<label for="example-email-input" class="col-form-label pr-3">Tags </label> 
 						</div>
 						<div class="col-lg-5">
-                            <textarea  name="tags" id="tags" type="text" class="form-control" placeholder="Enter Tags (comma separated values)" ></textarea>
+                            <textarea  name="tags" id="tags" type="text" class="form-control" placeholder="Enter Tags" ></textarea>
 						</div>
                     </div>
                     <div class="row mt-2">
@@ -530,7 +458,6 @@
 			@csrf
                 <input type="hidden" id="mcq_edit_id" name="mcq_edit_id" value="">
                 <input type="hidden" id="mcq_topic_id" name="mcq_topic_id" value="">
-                  <input type="hidden" id="type_id" name="type_id" value="1">
 				<div class="modal-header">
 					<h5 class="modal-title" id="exampleModalLabel">Edit MCQ</h5>
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -591,7 +518,7 @@
 							<label for="example-email-input" class="col-form-label pr-3">Tags </label> 
 						</div>
 						<div class="col-lg-5">
-                            <textarea  name="tags" id="ed_tags" type="text" class="form-control" placeholder="Enter Tags (comma separated values)" ></textarea>
+                            <textarea  name="tags" id="ed_tags" type="text" class="form-control" placeholder="Enter Tags" ></textarea>
 						</div>
                     </div>
                     <div class="row mt-2">
@@ -607,7 +534,7 @@
 							<label for="example-email-input" class="col-form-label pr-3">Status </label> 
 						</div>
 						<div class="col-lg-5 mt-3">
-							<input type="checkbox" checked value="1" id="ed_mcq_is_active" name="is_active" />
+							<input type="checkbox" checked value="1" id="ed_is_active" name="is_active" />
 						</div>
                     </div>
 				</div>
@@ -628,7 +555,6 @@
 			<form method="post" id="addtofform" name="addtofform"  data-parsley-validate data-parsley-trigger="keyup">
 			@csrf
                 <input type="hidden" id="topic_id4" name="topic_id" value="">
-                 <input type="hidden" id="type_id" name="type_id" value="2">
 				<div class="modal-header">
 					<h5 class="modal-title" id="exampleModalLabel">Add True Or False</h5>
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -656,7 +582,7 @@
 							<label for="example-email-input" class="col-form-label pr-3">Tags </label> 
 						</div>
 						<div class="col-lg-5">
-                            <textarea  name="tags" id="tags" type="text" class="form-control" placeholder="Enter Tags (comma separated values)" ></textarea>
+                            <textarea  name="tags" id="tags" type="text" class="form-control" placeholder="Enter Tags" ></textarea>
 						</div>
 					</div>
                     <div class="row mt-2">
@@ -694,7 +620,6 @@
 			@csrf
                 <input type="hidden" id="tof_edit_id" name="tof_edit_id" value="">
                 <input type="hidden" id="tof_topic_id" name="tof_topic_id" value="">
-                 <input type="hidden" id="type_id" name="type_id" value="2">
 				<div class="modal-header">
 					<h5 class="modal-title" id="exampleModalLabel">Edit True Or False</h5>
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -722,7 +647,7 @@
 							<label for="example-email-input" class="col-form-label pr-3">Tags </label> 
 						</div>
 						<div class="col-lg-5">
-                            <textarea  name="tags" id="ed_tf_tags" type="text" class="form-control" placeholder="Enter Tags (comma separated values) " ></textarea>
+                            <textarea  name="tags" id="ed_tf_tags" type="text" class="form-control" placeholder="Enter Tags" ></textarea>
 						</div>
                     </div>
                     <div class="row mt-2">
@@ -778,18 +703,6 @@ $(function () {
 
 $(document).ready(function()
 {
-    CKEDITOR.on("instanceReady", function(event) {
-        event.editor.on("beforeCommandExec", function(event) {
-            // Show the paste dialog for the paste buttons and right-click paste
-            if (event.data.name == "paste") {
-                event.editor._.forcePasteDialog = true;
-            }
-            // Don't show the paste dialog for Ctrl+Shift+V
-            if (event.data.name == "pastetext" && event.data.commandData.from == "keystrokeHandler") {
-                event.cancel();
-            }
-        })
-    });
     CKEDITOR.replace('content');
 });
 
@@ -809,12 +722,8 @@ function get_topic_content(id)
 }
 function get_topic_detail(id)
 {
-	$('#current_topic_id').val(id);
-	$(".course_btns").attr('data-id',id);
-	$(".topic_nm").removeClass('active_topic');
-	$("#top_"+id).addClass('active_topic');
-  	 get_topic_content(id);
-   	 get_topic_question(id);
+   get_topic_content(id);
+   get_topic_question(id);
 }
 function get_topic_question(id)
 {
@@ -823,59 +732,35 @@ function get_topic_question(id)
            url: "{{ route('get_topic_question') }}",
            data: { id:id , _token: '{{csrf_token()}}'},
            success: function(response) 
-           { 
-                $("#right_side").removeClass('d-none');
-                $("#topic_question").html(response);
-                var table1 = $('#mcq_table').DataTable({
-                    responsive: true
-                });
-                var table2 = $('#tof_table').DataTable({
-                    responsive: true
-                });
-            }
+           {
+               $("#right_side").removeClass('d-none');
+               $("#topic_question").html(response);
+           }
         });
 }
-$('.mycourse_link li a').click(function(){
-
-	var data = $(this).attr("href");
-	if(data ==="#question_tab")
-	{
-		$("#button_question_tab").removeClass('d-none');
-		$("#button_content_tab").addClass('d-none');
-	}
-	else
-	{
-		$("#button_question_tab").addClass('d-none');
-		$("#button_content_tab").removeClass('d-none');
-	}
-
-	// console.log(data);
-
-});
 
 $('#videoAddModal').on('shown.bs.modal', function () {
-	var id1 = $('#current_topic_id').val();
-    // var id1 = $('#video_id').data('id');
+    var id1 = $('#video_id').data('id');
     $("#topic_id1").val(id1);
 });
 
 $('#documentAddModal').on('shown.bs.modal', function () {
-    var id2 = $('#current_topic_id').val();
+    var id2 = $('#doc_id').data('id');
     $("#topic_id2").val(id2);
 });
 
 $('#contentAddModal').on('shown.bs.modal', function () {
-    var id3 = $('#current_topic_id').val();
+    var id3 = $('#content_id').data('id');
     $("#topic_id3").val(id3);
 });
 
 $('#tofAddModal').on('shown.bs.modal', function () {
-    var id4 = $('#current_topic_id').val();
+    var id4 = $('#tof_id').data('id');
     $("#topic_id4").val(id4);
 });
 
 $('#mcqAddModal').on('shown.bs.modal', function () {
-    var id5 = $('#current_topic_id').val();
+    var id5 = $('#mcq_id').data('id');
     $("#topic_id5").val(id5);
 });
 
@@ -930,12 +815,9 @@ function editVideo(id)
     var topic_id = $('#edit_video'+id).data('topic-id');
     var link = $('#edit_video'+id).data('video-link');
     var status = $('#edit_video'+id).data('is-active');
-    var video_name = $('#edit_video'+id).data('video_name');
-    
     $("#video_edit_id").val(id);
     $("#video_topic_id").val(topic_id);
     $("#ed_video_link").val(link);
-    $("#ed_video_name").val(video_name);
     if(status == 1)
     {
         $( "#ed_is_active" ).attr('checked', 'checked');
@@ -959,7 +841,7 @@ function updateVideo()
                     type: "POST",
                     cache:false,
                     async: false,
-                    url: "{{ url('mycourses/edit_video_link') }}",
+                    url: "{{ url('/edit_video_link') }}",
                     data: formData,
                     processData: false,
                     contentType: false,
@@ -1042,12 +924,15 @@ function saveContent()
 
 function editContent(id)
 {
-	var id = $('#edit_content'+id).data('id');
+    CKEDITOR.replace('ed_content');
+    var id = $('#edit_content'+id).data('id');
     var topic_id = $('#edit_content'+id).data('topic-id');
     var status = $('#edit_content'+id).data('is-active');
+    var content = $('#edit_content'+id).data('content');
     $("#content_edit_id").val(id);
     $("#content_topic_id").val(topic_id);
-  
+    var contValue = content;
+    var contentValue = CKEDITOR.instances.ed_content.setData(contValue);
     if(status == 1)
     {
         $("#ed_is_active1").attr('checked', 'checked');
@@ -1056,25 +941,7 @@ function editContent(id)
     {
         $("#ed_is_active1").removeAttr('checked', 'checked');
     }
-
-	 var url = '{{ route("edit_content") }}';
-	   CKEDITOR.replace('ed_content');
-	$.ajax({
-		type: "post",
-		url: url,
-		data: { id:id , _token: '{{csrf_token()}}'},
-		dataType:'json',
-		success: function(response)
-		{
-
-			  var contentValue = CKEDITOR.instances.ed_content.setData(response.data);
-			  
-			  
-			    $("#contentEditModal").modal('show');
-					}
-	});
-  
-    
+    $("#contentEditModal").modal('show');
 }
 
 function updateContent()
@@ -1091,7 +958,7 @@ function updateContent()
                     type: "POST",
                     cache:false,
                     async: false,
-                    url: "{{ url('mycourses/update_content') }}",
+                    url: "{{ url('/edit_content') }}",
                     data: formData,
                     processData: false,
                     contentType: false,
@@ -1132,18 +999,16 @@ function saveDocument()
         if ($("#adddocumentform").parsley().validate()) {
             event.preventDefault();
             var formData = new FormData($("#adddocumentform")[0]);
-            console.log($("#adddocumentform").parsley().isValid());
             if($("#adddocumentform").parsley().isValid()) {
                 $.ajax({
                     type: "POST",
                     cache:false,
                     async: false,
-                    url: "{{ url('mycourses/add_document') }}",
+                    url: "{{ url('/add_document') }}",
                     data: formData,
                     processData: false,
                     contentType: false,
-                    success: function(response) 
-                    {
+                    success: function(response) {
                         new PNotify({
                             title: 'Success',
                             text:  response.msg,
@@ -1202,7 +1067,7 @@ function updateDocument()
                     type: "POST",
                     cache:false,
                     async: false,
-                    url: "{{ url('mycourses/edit_document') }}",
+                    url: "{{ url('/edit_document') }}",
                     data: formData,
                     processData: false,
                     contentType: false,
@@ -1306,11 +1171,11 @@ function editMcq(id)
     $("#ed_tags").text(tags);
     if(status == 1)
     {
-        $("#ed_mcq_is_active").attr('checked', 'checked');
+        $("#ed_is_active").attr('checked', 'checked');
     }
     else
     {
-        $("#ed_mcq_is_active").removeAttr('checked', 'checked');
+        $("#ed_is_active").removeAttr('checked', 'checked');
     }
     $("#mcqEditModal").modal('show');
 }
@@ -1327,7 +1192,7 @@ function updateMcq()
                     type: "POST",
                     cache:false,
                     async: false,
-                    url: "{{ url('mycourses/edit_mcq') }}",
+                    url: "{{ url('/edit_mcq') }}",
                     data: formData,
                     processData: false,
                     contentType: false,
@@ -1432,7 +1297,7 @@ function editTrueOrFalse(id)
     $("#tofEditModal").modal('show');
 }
 
-function updateTrueOrFalse() 
+function updateTrueOrFalse()
 {
     var id=$('#tof_topic_id').val();
     if ($("#edittofform").parsley()) {
@@ -1444,7 +1309,7 @@ function updateTrueOrFalse()
                     type: "POST",
                     cache:false,
                     async: false,
-                    url: "{{ url('mycourses/edit_true_or_false') }}",
+                    url: "{{ url('/edit_true_or_false') }}",
                     data: formData,
                     processData: false,
                     contentType: false,
@@ -1477,16 +1342,6 @@ function updateTrueOrFalse()
     }
     return false;
 }
-
-// function mcqStatus(value)
-// {
-//     window.location.href = '/mcqStatus/' + value;
-// }
-
-// function tofStatus(value)
-// {
-//     window.location.href = '/tofStatus/' + value;
-// }
 
 </script>
 @endsection

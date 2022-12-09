@@ -47,6 +47,10 @@ class LoginController extends Controller
         if( $user && !$user->is_active){
             return redirect()->back()->with('error','User has been deactivated');
         }
+        elseif( $user && $user->user_type_id == 4)
+        {
+            return redirect()->back()->with('error','These credentials do not match records');
+        }
         $this->validateLogin($request);
 
         // If the class is using the ThrottlesLogins trait, we can automatically throttle

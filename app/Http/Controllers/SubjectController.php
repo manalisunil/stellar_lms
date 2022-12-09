@@ -29,6 +29,7 @@ class SubjectController extends Controller
         $subject = new Subject();
         $subject->subject_id = $request->subject_id;
         $subject->subject_name = $request->subject_name;
+        $subject->subject_intro = $request->subject_intro;
         $subject->subject_description = $request->descriptionValue;
         $subject->added_by = Auth::user()->id;
         $subject->is_active = ($request->is_active == 1)? 1 :0;
@@ -158,6 +159,9 @@ class SubjectController extends Controller
         $subject = Subject::find($request->id);
         $subject->subject_id = $request->subject_id;
         $subject->subject_name = $request->subject_name;
+        $subject->subject_intro = $request->subject_intro;
+        
+
         $subject->subject_description = $request->descriptionValue;
         $subject->added_by = Auth::user()->id;
         $subject->is_active = ($request->is_active == 1)? 1 :0;

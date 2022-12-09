@@ -13,6 +13,7 @@
                                 <th>Sl No</th>
                                 <th>Subject Id</th>
                                 <th>Subject Name</th>
+                                <th width="50%">Introduction</th>
                                 <th>Description</th>
                                 <th>Status</th>
                                 <th>Action</th>
@@ -24,6 +25,7 @@
                                 <td>{{++$k}}</td>
                                 <td>{{$subject->subject_id}}</td>
                                 <td>{{$subject->subject_name}}</td>
+                                <td>{{$subject->subject_intro}}</td>
                                 <td>
                                     @if(!empty($subject->subject_description))
                                         <span class="btn-primary btn-sm edit_icon"  onClick="view_description({{ $subject->id}})">View</span>
@@ -77,13 +79,21 @@
                             <label for="address-input" class="col-form-label">Subject Name<span class="text-danger"> * <span></label>
                         </div>
                         <div class="col-lg-3">
-                            <input name="subject_name" id="subject_name" type="text" class="form-control" placeholder="Enter Subject Name" required data-parsley-trigger="focusout" data-parsley-trigger="keyup" data-parsley-pattern="^[A-Za-z _0-9][A-Za-z 0-9]*$"/>
+                            <input name="subject_name" id="subject_name" type="text" class="form-control" placeholder="Enter Subject Name" required data-parsley-trigger="focusout" data-parsley-trigger="keyup" data-parsley-pattern="^[A-Za-z _0-9- .]*$"/>
                         </div>
                         <div class="col-lg-1 pr-0">
                             <label for="active-input" class="col-forwm-label">Is Active?</label>
                         </div>
                         <div class="col-lg-3 mt-2">
                             <input type="checkbox" checked value="1" id="is_active" name="is_active" />
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-lg-1 pr-0">
+                            <label for="desc-input" class="col-forwm-label px-0 mx-0" style="width: 114%;text-align: left;">Introduction  <span class="text-danger"> * <span></label>
+                        </div>
+                        <div class="col-lg-10">
+                            <textarea  name="subject_intro" id="subject_intro" type="text" class="form-control" placeholder="Enter Introduction" required=""  data-parsley-trigger="focusout" data-parsley-trigger="keyup" data-parsley-maxlength="400" ></textarea>
                         </div>
                     </div>
                     <div class="row mt-2">
@@ -132,13 +142,21 @@
                             <label for="address-input" class="col-form-label">Subject Name<span class="text-danger"> * <span></label>
                         </div>
                         <div class="col-lg-3">
-                            <input name="subject_name" id="ed_subject_name" type="text" class="form-control" placeholder="Enter Subject Name" required data-parsley-trigger="focusout" data-parsley-trigger="keyup" data-parsley-pattern="^[A-Za-z _0-9][A-Za-z 0-9]*$"/>
+                            <input name="subject_name" id="ed_subject_name" type="text" class="form-control" placeholder="Enter Subject Name" required data-parsley-trigger="focusout" data-parsley-trigger="keyup" data-parsley-pattern="^[A-Za-z _0-9- .]*$"/>
                         </div>
                         <div class="col-lg-1 pr-0">
                             <label for="active-input" class="col-forwm-label">Is Active?</label>
                         </div>
                         <div class="col-lg-3 mt-2">
                             <input type="checkbox" checked value="1" id="ed_is_active" name="is_active" />
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-lg-1 pr-0">
+                            <label for="desc-input" class="col-forwm-label px-0 mx-0" style="width: 114%;text-align: left;">Introduction  <span class="text-danger"> * <span></label>
+                        </div>
+                        <div class="col-lg-10">
+                            <textarea  name="subject_intro" id="ed_subject_intro" type="text" class="form-control" placeholder="Enter Description" required=""  data-parsley-trigger="focusout" data-parsley-trigger="keyup" data-parsley-maxlength="400" ></textarea>
                         </div>
                     </div>
                     <div class="row mt-2">
@@ -268,6 +286,8 @@ $(".edit_subject").click(function()
             $("#id").val(res['id']);
             $("#ed_subject_id").val(res['subject_id']);
             $("#ed_subject_name").val(res['subject_name']);
+            $("#ed_subject_intro").val(res['subject_intro']);
+
             if(res['is_active'] == 1)
             {
                 $( "#ed_is_active" ).attr('checked', 'checked');

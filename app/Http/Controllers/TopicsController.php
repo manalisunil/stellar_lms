@@ -30,6 +30,8 @@ class TopicsController extends Controller
         $topic->chapter_id = $request->chapter_id;
         $topic->topic_id = $request->topic_id;
         $topic->topic_name = $request->topic_name;
+        $topic->topic_intro = $request->topic_intro;
+
         $topic->topic_description = $request->descriptionValue;
         $topic->added_by = auth()->user()->id;
         $topic->added_datetime = Carbon::now();
@@ -85,6 +87,14 @@ class TopicsController extends Controller
                                 <input required name="topic_name" value="'.$topicDetail->topic_name.'" id="topic_name" type="text" class="form-control" placeholder="Enter Topic Name" required data-parsley-trigger="focusout" data-parsley-trigger="keyup" data-parsley-pattern="^[A-Za-z ][A-Za-z ]*$" />
 							</div>
 						</div>
+                        <div class="row mt-2">
+                            <div class="col-lg-1 pr-0">
+                                <label for="desc-input" class="col-forwm-label px-0 mx-0" style="width: 114%;text-align: left;">Introduction  <span class="text-danger"> * <span></label>
+                            </div>
+                            <div class="col-lg-10">
+                                <textarea  name="topic_intro" id="ed_topic_intro"  value="'.$topicDetail->topic_intro.'" type="text" class="form-control" placeholder="Enter Introduction" required=""  data-parsley-trigger="focusout" data-parsley-trigger="keyup" data-parsley-maxlength="300" ></textarea>
+                            </div>
+                         </div>
 						<div class="row mt-2">
 							<div class="col-lg-1 pr-0">
                                 <label for="example-email-input" class="col-form-label">Description </label><br>
@@ -123,6 +133,7 @@ class TopicsController extends Controller
         $topic->chapter_id = $request->chapter_id;
         $topic->topic_id = $request->topic_id;
         $topic->topic_name = $request->topic_name;
+         $topic->topic_intro = $request->topic_intro;
         $topic->topic_description = $request->descriptionValue;
         $topic->added_by = auth()->user()->id;
         $topic->added_datetime = \Carbon\Carbon::now();

@@ -11,6 +11,7 @@
 						<td><a id="tab7" class="btn btn-sm  odtabs"  href="{{route('mapping_list')}}">Course Subject Mapping</a></td>
 						<td><a id="tab4" class="btn btn-sm  odtabs"  href="{{route('chapter')}}">Chapters </a></td>
 						<td><a id="tab5" class="btn btn-sm  odtabs"  href="{{route('topic')}}">Topics</a></td>
+						<td><a id="tab8" class="btn btn-sm  odtabs"  href="{{route('student_course_mapping')}}"> Student Course Mapping</a></td>
 					</tr>
 				</table>
 			</div>

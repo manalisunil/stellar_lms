@@ -127,7 +127,9 @@
 							<label for="active-input" class="col-form-label">Date of Birth </label>
 						</div>
 						<div class="col-lg-3">
-							<input class="form-control date-picker" name="dob" id="dob" type="text"/>							
+							<input class="form-control date-picker" name="dob" id="dob" type="text" class="js-validate-dob" value="" data-parsley-minimumage="15" 
+							data-parsley-minimumage-message="Applicant must be at least 15 years of age to apply" data-parsley-validdate="" data-parsley-validdate-message="Please enter a valid date" data-parsley-pattern="/[0-9]\d*/"
+	 						data-parsley-pattern-message="Only numbers allowed"   data-parsley-trigger="focusout" data-parsley-trigger="change"  ata-parsley-validation-threshold="0" />							
 						</div>
 						<div class="col-lg-1 pr-0">
 							<label for="name-input" class="col-form-label">Address 1<span class="text-danger">  <span></label>
@@ -405,22 +407,10 @@ $(document).ready(function()
 			dataType:'html',
 			success: function(response)
 			{
+
 				$("#userEditModal").modal('show');
 				$("#edituserdata").html(response);
-				$('input[name="dob"]').daterangepicker({
-				    singleDatePicker: true,
-				    startDate: new Date(),
-					// startDate: new Date(val(response.dob)),
-				    // maxDate: new Date,
-				    showDropdowns: true,
-				    timePicker: false,
-				    timePicker24Hour: false,
-				    // timePickerIncrement: 10,
-				    autoUpdateInput: true,
-				    locale: {
-				    format: 'DD/MM/YYYY'
-				    },
-				});
+				
 				var id = $("#ed_user_type_id").val();
 				if(id == 3)
 			  	{
@@ -437,8 +427,28 @@ $(document).ready(function()
 			  		$(".user_type_div").show();
 			  		$(".tutor_div").show();
 			  	}
-					}
+			     var eddob = $("#eddob").val();
+			  	$('input[name="dob"]').daterangepicker({
+				    singleDatePicker: true,
+				    // startDate: new Date(),
+					// startDate: new Date(val(response.dob)),
+				    // maxDate: new Date,
+				    showDropdowns: true,
+				    timePicker: false,
+				    timePicker24Hour: false,
+				    // timePickerIncrement: 10,
+				    autoUpdateInput: true,
+				    locale: {
+				    format: 'DD/MM/YYYY'
+				    },
 				});
+			  	if(eddob == "")
+			  	{
+					$('input[name="dob"]').val("");
+
+			  	}
+			}
+		});
 		
 	});
 
@@ -541,15 +551,65 @@ $(document).ready(function()
 	    en: 'Your password must contain at least (%s) special characters.'
 	  }
 	});
+
+	window.Parsley.addValidator("minimumage", {
+		validateString: function(value, requirements) {
+			// get validation requirments
+			var reqs = value.split("/"),
+				day = reqs[0],
+				month = reqs[1],
+				year = reqs[2];
+
+				// console.log(value);
+				// console.log(year);
+				// console.log(month);
+				// console.log(day);
+			// check if date is a valid
+			var birthday = new Date(year + "-" + month + "-" + day);
+			// Calculate birtday and check if age is greater than 18
+			var today = new Date();
+
+			var age = today.getFullYear() - birthday.getFullYear();
+			var m = today.getMonth() - birthday.getMonth();
+			if (m < 0 || (m === 0 && today.getDate() < birthday.getDate())) {
+				age--;
+			}
+			// console.log(age);
+			return age >= requirements;
+		}
+	});
+
+	/* add validation for minimum age */
+	// window.Parsley.addValidator("validdate", {
+	// 	validateString: function(value) {
+	// 		// get validation requirments
+	// 		var reqs = value.split("/"),
+	// 			day = reqs[0],
+	// 			month = reqs[1],
+	// 			year = reqs[2];
+
+	// 		// check if date is a valid
+	// 		var birthday = new Date(year + "-" + month + "-" + day);
+	// 		var isValidDate =
+	// 			Boolean(+birthday) && birthday.getDate().toString() === day;
+
+	// 		return isValidDate;
+	// 	},
+	// 	messages: {
+	// 		en: ""
+	// 	}
+	// });
 });
+
+
 $(function() {
 	$('input[name="dob"]').daterangepicker({
 	    singleDatePicker: true,
-		minDate: new Date(1900,1-1,1), 
-		maxDate: '-18Y',
-		yearRange: '-110:-18',
+		// minDate: new Date(1900,1-1,1), 
+		// maxDate: '-18Y',
+		// yearRange: '-110:-18',
 	    // startDate: new Date(),
-	    // maxDate: new Date,
+	    maxDate: new Date,
 	    showDropdowns: true,
 	    timePicker: false,
 	    timePicker24Hour: false,
@@ -559,6 +619,7 @@ $(function() {
 	    format: 'DD/MM/YYYY'
 	    },
 	});
+	 $('input[name="dob"]').val("");
 });
 </script>
 @endsection

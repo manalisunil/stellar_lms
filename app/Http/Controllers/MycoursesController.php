@@ -16,6 +16,7 @@ use App\Models\TopicDocument;
 use App\Models\MCQ;
 use App\Models\TrueOrFalse;
 use Carbon\Carbon;
+use Redirect;
 
 class MycoursesController extends Controller
 {
@@ -26,12 +27,19 @@ class MycoursesController extends Controller
         $chapters = Chapter::where('is_active',1)->get();
         $topic = Topic::where('is_active',1)->get();
         $course_id = "";
+        if( count($cources) > 0)
+        {
+       		$course_id = $cources[0]->id;
+       		return Redirect::route('course_detail',array($course_id));
+        }
+
+
     	return view('includes.mycourses',compact('course_id','cources','courses_subjects','chapters','topic'));
     }
     public function course_detail($id)
     {
     	$cources = Course::where('is_active',1)->get(); 
-    	$courses_subjects = CourseSubjectMapping::where('course_id',$id)->get();
+    	$courses_subjects = CourseSubjectMapping::where('course_id',$id)->where('is_active',1)->get();
         $chapters = Chapter::where('is_active',1)->get();
     	$topic = Topic::where('is_active',1)->get();
     	$course_id  = $id;
@@ -49,11 +57,11 @@ class MycoursesController extends Controller
     	<div class="col-md-12 row ">
     		<div class="col-md-6">
     			<label class="lbl">Topic Name </label>
-    			<span class="lbl_text">:&nbsp; <?php echo $topic->topic_name;?></span>
+    			<span class="lbl_text  ">:&nbsp;<strong> <?php echo $topic->topic_name;?></strong></span>
     		</div>
     		<div class="col-md-6">
     			<label class="lbl">Chapter Name</label>
-    			<span  class="lbl_text">:&nbsp; <?php echo $topic->getChapter['chapter_name'];?></span>
+    			<span  class="lbl_text">:&nbsp; <strong><?php echo $topic->getChapter['chapter_name'];?></strong></span>
     		</div>
     	</div>
       	<div class="row p-2">
@@ -62,12 +70,13 @@ class MycoursesController extends Controller
 					<div class="card-header">
 							<b>Video Links</b>	
 					</div>
-					<div class="card-body" style="max-height:200px;overflow-y:auto;">
-						<table id="video_table">
+					<div class="card-body" style="max-height:200px;overflow-y:auto;padding: 0px!important;">
+						<table id="video_table" width="100%" class="table datatable">
+							<thead><tr style="background-color: #8080801a;"><th>Name</th><th>Link</th><th></th></tr></thead>
 							<?php foreach($videos as $video)
 								{
-									echo '<tr>'.$video->video_link. '<span style="float:right;" id="edit_video'.$video->id.'" class="edit_icon ml-2" onclick="editVideo('.$video->id.')"  data-is-active="'.$video->is_active.'" data-video-link="'.$video->video_link.'" data-topic-id="'.$topic->id.'" data-toggle="modal" data-id="'.$video->id.'">
-										<img class="menuicon tbl_editbtn" src="'.asset("app-assets/assets/images/edit.svg").'" >&nbsp;</span></tr></br>';
+									echo '<tr><td>'.$video->video_name.'</td><td>'.$video->video_link. '</td><td><span style="float:right;" id="edit_video'.$video->id.'" class="edit_icon ml-2" onclick="editVideo('.$video->id.')"  data-is-active="'.$video->is_active.'" data-video-link="'.$video->video_link.'"  data-video_name="'.$video->video_name.'"  data-topic-id="'.$topic->id.'"    data-toggle="modal" data-id="'.$video->id.'">
+										<img class="menuicon tbl_editbtn" src="'.asset("app-assets/assets/images/edit.svg").'" >&nbsp;</span></td></tr>';
 								}
 							?>
 						</table>
@@ -80,14 +89,15 @@ class MycoursesController extends Controller
 							<b>Documents</b>
 					</div>
 					<div class="card-body" style="max-height:200px;overflow-y:auto;">
-						<table id="document_table">
+						<div class="row row-cols-2 px-2" id="document_table">
+
 							<?php foreach($documents as $document)
 							{
-								echo '<tr>'.$document->doc_name.'<span id="edit_document'.$document->id.'" class="edit_icon ml-2" onclick="editDocument('.$document->id.')" data-is-active="'.$document->is_active.'" data-topic-id="'.$topic->id.'" data-toggle="modal" data-id="'.$document->id.'">
-									<img class="menuicon tbl_editbtn" src="'.asset("app-assets/assets/images/edit.svg").'" >&nbsp;</span></tr>&nbsp;';
+								echo '<div class="col pb-2 border-bottom">'.$document->doc_name.'<span id="edit_document'.$document->id.'" class="edit_icon ml-2" onclick="editDocument('.$document->id.')" data-is-active="'.$document->is_active.'" data-topic-id="'.$topic->id.'" data-toggle="modal" data-id="'.$document->id.'">
+									<img class="menuicon tbl_editbtn" src="'.asset("app-assets/assets/images/edit.svg").'" >&nbsp;</span></div>';
 							}
 							?>
-						</table>
+						</div>
 					</div>
              	</div>
 			</div>
@@ -98,10 +108,11 @@ class MycoursesController extends Controller
 					</div>
 					<div class="card-body" style="max-height:400px;overflow-y:auto;">
 							<table id="content_table">
+								
 							<?php foreach($contents as $content)
 								{
-									echo '<tr>'.$content->content.'<span style="float:right;" id="edit_content'.$content->id.'" class="edit_icon ml-2" onclick="editContent('.$content->id.')" data-is-active="'.$content->is_active.'" data-topic-id="'.$topic->id.'" data-toggle="modal" data-id="'.$content->id.'" data-content="'.$content->content.'">
-										<img class="menuicon tbl_editbtn" src="'.asset("app-assets/assets/images/edit.svg").'" >&nbsp;</span></tr></br>';
+									echo '<tr><td>'.$content->content.'<span style="float:right;" id="edit_content'.$content->id.'" class="edit_icon ml-2" onclick="editContent('.$content->id.')" data-is-active="'.$content->is_active.'" data-topic-id="'.$topic->id.'" data-toggle="modal" data-id="'.$content->id.'" >
+										<img class="menuicon tbl_editbtn" src="'.asset("app-assets/assets/images/edit.svg").'" >&nbsp;</span></td></tr>';
 								}
 							?>
 							</table>
@@ -116,11 +127,29 @@ class MycoursesController extends Controller
 	{
 		$request->validate([
     		'video_link'  =>'required',
+    		'thumbnail_img'=>'max:50'
+
+        ],[
+        	'thumbnail_img.max'=>'The :attribute must have a maximum length of :max'
         ]);
+
+		if($request->file('thumbnail_img'))
+        {
+			$file = $request->file('thumbnail_img');      
+			$imgs  = $file->openFile()->fread($file->getSize());
+			// $doc_name = $file->getClientOriginalName();
+			$img_type = $file->getMimeType();  
+        } else {
+            $imgs = NULL;
+            $img_type = NULL;
+        }
 
         $video = new TopicVideo();
         $video->topic_id = $request->topic_id;
         $video->video_link = $request->video_link;
+        $video->video_name = $request->video_name;
+        $video->thumbnail_img = $imgs;
+        $video->img_type = $img_type;
         $video->is_active = isset($request->is_active) ? 1 : 0;
         $video->added_by = auth()->user()->id;
         $video->added_datetime = Carbon::now();
@@ -139,7 +168,11 @@ class MycoursesController extends Controller
     {
         $request->validate([
           'contentvalue'  =>'required',
-        ]);
+        ],
+		[
+			'contentvalue.required'=>'Content field is required'
+		]
+    	);
 
         $content = new TopicContent();
         $content->topic_id = $request->topic_id;
@@ -160,9 +193,9 @@ class MycoursesController extends Controller
 
     public function addDocument(Request $request)
     {
-        // $request->validate([
-        //   'topic_document'  =>'required',
-        // ]);
+        $request->validate([
+          'topic_document'  =>'required',
+        ]);
 
         if($request->file('topic_document'))
         {
@@ -199,11 +232,29 @@ class MycoursesController extends Controller
 	{
 		$request->validate([
     		'video_link'  =>'required',
+    		'thumbnail_img'=>'max:50'
+
+        ],[
+        	'thumbnail_img.max'=>'The :attribute must have a maximum length of :max'
         ]);
+        if($request->file('thumbnail_img'))
+        {
+			$file = $request->file('thumbnail_img');      
+			$imgs  = $file->openFile()->fread($file->getSize());
+			// $doc_name = $file->getClientOriginalName();
+			$img_type = $file->getMimeType();  
+        } else {
+            $imgs = NULL;
+            $img_type = NULL;
+        }
+        
 		$id = $request->video_edit_id;
         $video = TopicVideo::find($id);
         $video->topic_id = $request->video_topic_id;
         $video->video_link = $request->video_link;
+         $video->video_name = $request->video_name;
+        $video->thumbnail_img = $imgs;
+        $video->img_type = $img_type;
         $video->is_active = isset($request->is_active) ? 1 : 0;
         $video->added_by = auth()->user()->id;
         $video->added_datetime = Carbon::now();
@@ -218,11 +269,25 @@ class MycoursesController extends Controller
         }
 	}
 
+	public function edit_content(Request $request)
+	{
+		$id = $request->id;
+		$topicContent = TopicContent::where('id',$id)->pluck('content')->first();
+		// dd($topicContent);
+		return response()->json(['data'=>$topicContent]);
+
+
+	}
+
 	public function updateContent(Request $request)
 	{
 		$request->validate([
-			'contentValue'  =>'required',
-		]);
+          'contentvalue'  =>'required',
+        ],
+		[
+			'contentvalue.required'=>'Content field is required'
+		]
+    	);
 
 		$id = $request->content_edit_id;
 		$content = TopicContent::find($id);
@@ -234,7 +299,7 @@ class MycoursesController extends Controller
 		$res = $content->save();
 		if($res)
 		{
-		return response()->json(['data'=>'success','msg'=>'Content Updated Successfully!']);
+			return response()->json(['data'=>'success','msg'=>'Content Updated Successfully!']);
 		}
 		else 
 		{
@@ -274,8 +339,8 @@ class MycoursesController extends Controller
     {
 		$id = $request->id;
 		$topic = Topic::find($id);
-		$mcqs = MCQ::where('topic_id', $topic->id)->get();
-		$tofs = TrueOrFalse::where('topic_id', $topic->id)->get();
+		$mcqs = MCQ::where('topic_id', $topic->id)->where('type_id',1)->get();
+		$tofs = MCQ::where('topic_id', $topic->id)->where('type_id',2)->get();
 		?>
 		<div class="col-md-12 row ">
     		<div class="col-md-6">
@@ -380,6 +445,8 @@ class MycoursesController extends Controller
 
         $mcq = new MCQ();
         $mcq->topic_id = $request->topic_id;
+        $mcq->type_id = $request->type_id;
+
         $mcq->question = $request->question;
 		$mcq->option_1 = $request->opt1;
         $mcq->option_2 = $request->opt2;
@@ -418,6 +485,7 @@ class MycoursesController extends Controller
 		$id = $request->mcq_edit_id;
 		$mcq = MCQ::find($id);
 		$mcq->topic_id = $request->mcq_topic_id;
+		$mcq->type_id = $request->type_id;
 		$mcq->question = $request->question;
 		$mcq->option_1 = $request->opt1;
         $mcq->option_2 = $request->opt2;
@@ -449,17 +517,34 @@ class MycoursesController extends Controller
 			'reason'  =>'required',
         ]);
 
-        $tof = new TrueOrFalse();
-        $tof->topic_id = $request->topic_id;
-        $tof->question = $request->question;
-		$tof->correct_answer = $request->answer;
-        $tof->reason = $request->reason;
-		$tof->tags = $request->tags;
-        $tof->is_active = isset($request->is_active) ? 1 : 0;
-        $tof->added_by = auth()->user()->id;
-		$tof->updated_by = auth()->user()->id;
-        $tof->datetime = Carbon::now();
-        $res = $tof->save();
+  //       $tof = new TrueOrFalse();
+  //       $tof->topic_id = $request->topic_id;
+  //       $tof->question = $request->question;
+		// $tof->correct_answer = $request->answer;
+  //       $tof->reason = $request->reason;
+		// $tof->tags = $request->tags;
+  //       $tof->is_active = isset($request->is_active) ? 1 : 0;
+  //       $tof->added_by = auth()->user()->id;
+		// $tof->updated_by = auth()->user()->id;
+  //       $tof->datetime = Carbon::now();
+  //       $res = $tof->save();
+
+        $mcq = new MCQ();
+		$mcq->topic_id = $request->topic_id;
+		$mcq->type_id = $request->type_id;
+		$mcq->question = $request->question;
+		$mcq->option_1 = 1;
+        $mcq->option_2 = 2;
+        $mcq->option_3 = NULL;
+        $mcq->option_4 = NULL;
+		$mcq->correct_answer = $request->answer;
+        $mcq->reason = $request->reason;
+		$mcq->tags = $request->tags;
+        $mcq->is_active = isset($request->is_active) ? 1 : 0;
+        $mcq->added_by = auth()->user()->id;
+		$mcq->updated_by = auth()->user()->id;
+        $mcq->datetime = Carbon::now();
+        $res = $mcq->save();
         if($res)
         {
           return response()->json(['data'=>'success','msg'=>'True Or False Questions Added Successfully!']);
@@ -479,17 +564,33 @@ class MycoursesController extends Controller
         ]);
 
 		$id = $request->tof_edit_id;
-		$tof = TrueOrFalse::find($id);
-		$tof->topic_id = $request->tof_topic_id;
-		$tof->question = $request->question;
-		$tof->correct_answer = $request->answer;
-        $tof->reason = $request->reason;
-		$tof->tags = $request->tags;
-        $tof->is_active = isset($request->is_active) ? 1 : 0;
-        $tof->added_by = auth()->user()->id;
-		$tof->updated_by = auth()->user()->id;
-        $tof->datetime = Carbon::now();
-        $res = $tof->save();
+		// $tof = TrueOrFalse::find($id);
+		// $tof->topic_id = $request->tof_topic_id;
+		// $tof->question = $request->question;
+		// $tof->correct_answer = $request->answer;
+  //       $tof->reason = $request->reason;
+		// $tof->tags = $request->tags;
+  //       $tof->is_active = isset($request->is_active) ? 1 : 0;
+  //       $tof->added_by = auth()->user()->id;
+		// $tof->updated_by = auth()->user()->id;
+  //       $tof->datetime = Carbon::now();
+  //       $res = $tof->save();
+        $mcq =  MCQ::find($id);
+		$mcq->topic_id = $request->tof_topic_id;
+		$mcq->type_id = $request->type_id;
+		$mcq->question = $request->question;
+		$mcq->option_1 = 1;
+        $mcq->option_2 = 2;
+        $mcq->option_3 = NULL;
+        $mcq->option_4 = NULL;
+		$mcq->correct_answer = $request->answer;
+        $mcq->reason = $request->reason;
+		$mcq->tags = $request->tags;
+        $mcq->is_active = isset($request->is_active) ? 1 : 0;
+        // $mcq->added_by = auth()->user()->id;
+		$mcq->updated_by = auth()->user()->id;
+        $mcq->datetime = Carbon::now();
+        $res = $mcq->save();
 		if($res)
 		{
 		return response()->json(['data'=>'success','msg'=>'True Or False Questions Updated Successfully!']);
@@ -513,11 +614,11 @@ class MycoursesController extends Controller
 
 	public function tofStatus($tofid) 
     {
-        $tofdetails = TrueOrFalse::find($tofid);
+        $tofdetails = MCQ::find($tofid);
         if ($tofdetails->is_active == 1) {
-            TrueOrFalse::where('id', $tofid)->update(['is_active' => 0]);
+            MCQ::where('id', $tofid)->update(['is_active' => 0]);
         } else {
-            TrueOrFalse::where('id', $tofid)->update(['is_active' => 1]);
+            MCQ::where('id', $tofid)->update(['is_active' => 1]);
         }
         return redirect()->back()->with('success', "Status Changed Successfully!");
     }

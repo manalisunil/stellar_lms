@@ -14,6 +14,7 @@
 									<th>Topic Id</th>
 									<th>Topic</th>
 									<th>Chapter</th>
+								    <th width="40%">Introduction</th>
 									<th>Description</th>
 									<th>Status</th>
 									<th>Action</th>
@@ -25,7 +26,9 @@
 									<td> {{++$k}}</td>
 									<td> {{$topcDt->topic_id}}</td>
 									<td> {{$topcDt->topic_name}}</td>
+									
 									<td> @if($topcDt->getChapter != null) {{$topcDt->getChapter['chapter_name']}} @endif</td>
+									<td> {{$topcDt->topic_intro}}</td>
 									<td>
                                         <span  class="btn-primary btn-sm edit_icon"  onClick="view_description({{ $topcDt->id}})">View</span>
                                     </td>
@@ -89,6 +92,14 @@
 								<input required name="topic_name" value="" id="topic_name" type="text" class="form-control" placeholder="Enter Topic Name" required data-parsley-trigger="focusout" data-parsley-trigger="keyup" data-parsley-pattern="^[A-Za-z ][A-Za-z ]*$" />
 							</div>
 						</div>
+						<div class="row mt-2">
+	                        <div class="col-lg-1 pr-0">
+	                            <label for="desc-input" class="col-forwm-label px-0 mx-0" style="width: 114%;text-align: left;">Introduction  <span class="text-danger"> * <span></label>
+	                        </div>
+	                        <div class="col-lg-10">
+	                            <textarea  name="topic_intro" id="topic_intro" type="text" class="form-control" placeholder="Enter Introduction" required=""  data-parsley-trigger="focusout" data-parsley-trigger="keyup" data-parsley-maxlength="300" ></textarea>
+	                        </div>
+                   		 </div>
 						<div class="row mt-2">
 							<div class="col-lg-1 pr-0">
 								<label for="example-email-input" class="col-form-label">Description <span class="text-danger"> * </span></label><br>

@@ -133,7 +133,7 @@ class CourseController extends Controller
                         '<label for="city-input" class="col-form-label px-0 mx-0" style="width: 114%;text-align: left;">Course Duration <span class="text-danger"> * <span></label>'.
                     '</div>'.
                     '<div class="col-lg-3">'.
-                        '<input name="course_duration" id="ed_course_duration" type="text" class="form-control" value="'.$courseData->course_duration.'" placeholder="Enter Course Duration" required data-parsley-trigger="focusout" data-parsley-trigger="keyup" data-parsley-pattern="^[A-Za-z _0-9][A-Za-z 0-9]*$" />'.
+                        '<input name="course_duration" id="ed_course_duration" type="text" class="form-control" value="'.$courseData->course_duration.'" placeholder="Enter Course Duration" required data-parsley-trigger="focusout" data-parsley-trigger="keyup" data-parsley-pattern="^[A-Za-z _0-9()-/,]*$" />'.
                     '</div>'.
                     '<div class="col-lg-1 pr-0">'.
                         '<label for="state-input" class="col-form-label">Course Price</label>'.
