@@ -87,7 +87,7 @@
                             <label for="unique-id-input" class="col-form-label">Course Id<span class="text-danger"> * <span></label>
                         </div>
                         <div class="col-lg-3">
-                            <input name="course_id" id="course_id" type="text" class="form-control" placeholder="COURS0001" required data-parsley-trigger="focusout" data-parsley-trigger="keyup" data-parsley-pattern="^[a-zA-Z 0-9\.\,\&\-\!\@\;\:\'\/\[\]\(\)\_]*$"/>
+                            <input name="course_id" id="course_id" type="text" class="form-control" placeholder="COURS0001" required />
                         </div>
                         <div class="col-lg-1 pr-0">
                             <label for="name-input" class="col-form-label px-0 mx-0" style="width: 114%;text-align: left;">Company Name<span class="text-danger"> * <span></label>
@@ -105,7 +105,7 @@
                             <label for="address-input" class="col-form-label">Course Name<span class="text-danger"> * <span></label>
                         </div>
                         <div class="col-lg-3">
-                            <input name="course_name" id="course_name" type="text" class="form-control" placeholder="Enter Course Name" required data-parsley-trigger="focusout" data-parsley-trigger="keyup" data-parsley-pattern="^[a-zA-Z 0-9\.\,\&\-\!\@\;\:\'\/\[\]\(\)\_]*$"/>
+                            <input name="course_name" id="course_name" type="text" class="form-control" placeholder="Enter Course Name" required />
                         </div>
                     </div>
                     <div class="row">
@@ -113,7 +113,7 @@
                             <label for="city-input" class="col-form-label px-0 mx-0" style="width: 114%;text-align: left;">Course Duration <span class="text-danger"> * <span></label>
                         </div>
                         <div class="col-lg-3">
-                            <input name="course_duration" id="course_duration" type="text" class="form-control" placeholder="Enter Course Duration" required data-parsley-trigger="focusout" data-parsley-trigger="keyup" data-parsley-pattern="^[A-Za-z _0-9()-/,]*$"/>
+                            <input name="course_duration" id="course_duration" type="text" class="form-control" placeholder="Enter Course Duration" required />
                         </div>
                         <div class="col-lg-1 pr-0">
                             <label for="state-input" class="col-form-label">Course Price</label>
@@ -274,6 +274,15 @@ $(document).ready(function()
 
     $('.modal').on('hidden.bs.modal', function() {
 		$(this).find('form')[0].reset();
+
+        var frmName = $(this).find('form')[0].name;
+        if(frmName == "addCourseForm")
+        {
+
+            CKEDITOR.instances['course_description'].setData('');
+            CKEDITOR.instances['course_deliverables'].setData('');
+            CKEDITOR.instances['course_eligibility'].setData('');
+        }
   	});
 
     var table = $('#datatable').DataTable({

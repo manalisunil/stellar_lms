@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+Route::group(['middleware' => 'prevent-back-history'],function(){
 Route::get('/', function () 
 {
 	if(Auth::check())
@@ -26,6 +26,8 @@ Auth::routes();
 Route::get('logout', 'App\Http\Controllers\Auth\LoginController@logout')->name('logout');
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home')->middleware('auth');
+Route::get('/profile', [App\Http\Controllers\ProfileController::class, 'index'])->name('profile')->middleware('auth');
+Route::post('/update_profile', [App\Http\Controllers\ProfileController::class,'update_profile'])->name('update_profile');
 
 //user 
 Route::get('settings/user',[App\Http\Controllers\UserController::class, 'index'])->name('user')->middleware('auth');
@@ -37,7 +39,7 @@ Route::post('user_view_topic',[\App\Http\Controllers\UserController::class, 'use
 
 
 //company 
-Route::get('settings/company',[App\Http\Controllers\CompanyController::class, 'viewCompany'])->name('company_list');
+Route::get('settings/company',[App\Http\Controllers\CompanyController::class, 'viewCompany'])->name('company_list')->middleware('auth');
 Route::post('/submit_company', [App\Http\Controllers\CompanyController::class, 'submitCompany'])->name('submit_company');
 Route::get('/edit_company/{id}',[\App\Http\Controllers\CompanyController::class, 'editCompany'])->name('edit_company');
 Route::post('/update_company',[\App\Http\Controllers\CompanyController::class, 'updateCompany'])->name('update_company');
@@ -71,7 +73,7 @@ Route::get('/view_course_document/{id}',[\App\Http\Controllers\CourseController:
 Route::post('/course_view',[\App\Http\Controllers\CourseController::class, 'viewCourseDescription'])->name('course_view');
 
 //Subject
-Route::get('settings/view_subjects', [App\Http\Controllers\SubjectController::class, 'viewSubject'])->name('subject_list');
+Route::get('settings/view_subjects', [App\Http\Controllers\SubjectController::class, 'viewSubject'])->name('subject_list')->middleware('auth');
 Route::post('/submit_subject', [App\Http\Controllers\SubjectController::class, 'submitSubject'])->name('submit_subject');
 Route::any('/subjectStatus/{subjectid?}', [App\Http\Controllers\SubjectController::class, 'subjectStatus'])->name('subject_status');
 Route::post('/edit_subject',[\App\Http\Controllers\SubjectController::class, 'editSubject'])->name('edit_subject');
@@ -90,8 +92,8 @@ Route::post('get_courses_maped',[\App\Http\Controllers\SubjectController::class,
 
 
 //mycourses
-Route::get('mycourses/index', [App\Http\Controllers\MycoursesController::class, 'index'])->name('mycourses_index');
-Route::get('mycourses/course_detail/{id}',[\App\Http\Controllers\MycoursesController::class, 'course_detail'])->name('course_detail');
+Route::get('mycourses/index', [App\Http\Controllers\MycoursesController::class, 'index'])->name('mycourses_index')->middleware('auth');
+Route::get('mycourses/course_detail/{id}',[\App\Http\Controllers\MycoursesController::class, 'course_detail'])->name('course_detail')->middleware('auth');
 Route::post('mycourses/get_topic_detail',[\App\Http\Controllers\MycoursesController::class, 'get_topic_detail'])->name('get_topic_detail');
 Route::post('mycourses/get_topic_question',[\App\Http\Controllers\MycoursesController::class, 'get_topic_question'])->name('get_topic_question');
 Route::post('mycourses/add_video_link',[\App\Http\Controllers\MycoursesController::class, 'addVideoLink'])->name('add_video_link');
@@ -122,3 +124,4 @@ Route::any('/student_mappingStatus/{mappingid?}', [App\Http\Controllers\studentC
 
 Route::post('/edit_student_mapping',[\App\Http\Controllers\studentCourseController::class, 'edit_student_mapping'])->name('edit_student_mapping');
 
+});

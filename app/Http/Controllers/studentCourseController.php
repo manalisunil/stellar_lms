@@ -15,6 +15,7 @@ use Auth;
 
 class studentCourseController extends Controller
 {
+    
    public function index()
    {
    		$mappings = Course_assignment::all();
@@ -85,7 +86,7 @@ class studentCourseController extends Controller
                 }
             }
         }
-        return response()->json(['data'=>'success','msg'=>'Mapping Added Successfully!']);
+        return response()->json(['data'=>'success','msg'=>'Mapping Updated Successfully!']);
    }
    public function mappingStatus($mappingid) 
     {

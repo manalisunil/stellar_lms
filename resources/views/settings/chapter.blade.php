@@ -80,13 +80,13 @@
 							<label for="company_select" class="col-form-label"> Chapter Id <span class="text-danger"> * </span></label>
 						</div>
 						<div class="col-lg-3">
-							<input required name="chapter_id" value="" id="chapter_id" type="text" class="form-control" placeholder="Enter Chapter Id" required data-parsley-trigger="focusout" data-parsley-trigger="keyup" data-parsley-pattern="^[a-zA-Z 0-9\.\,\&\-\!\@\;\:\'\/\[\]\(\)\_]*$" />
+							<input required name="chapter_id" value="" id="chapter_id" type="text" class="form-control" placeholder="Enter Chapter Id" required  />
 						</div>
 						<div class="col-lg-1 pr-0">
 							<label for="example-firstname-input" class="col-form-label">Chapter Name <span class="text-danger"> * </span></label>
 						</div>
 						<div class="col-lg-3">
-							<input required name="chapter_name" value="" id="chapter_name" type="text" class="form-control" placeholder="Enter Chapter Name" required data-parsley-trigger="focusout" data-parsley-trigger="keyup" data-parsley-pattern="^[a-zA-Z 0-9\.\,\&\-\!\@\;\:\'\/\[\]\(\)\_]*$" />
+							<input required name="chapter_name" value="" id="chapter_name" type="text" class="form-control" placeholder="Enter Chapter Name" required  />
 						</div>
 					</div>
 					<div class="row mt-2">
@@ -208,6 +208,15 @@ $(document).ready(function() {
 
 	$('.modal').on('hidden.bs.modal', function() {
 		$(this).find('form')[0].reset();
+		
+		var frmName = $(this).find('form')[0].name;
+		console.log(frmName);
+        if(frmName == "chptfrm")
+        {
+
+            CKEDITOR.instances['chapter_description'].setData('');
+          
+        }
   	});
 
 	CKEDITOR.replace('chapter_description');

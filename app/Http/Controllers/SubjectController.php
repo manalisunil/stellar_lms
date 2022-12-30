@@ -120,7 +120,7 @@ class SubjectController extends Controller
                 }
             }
         }
-        return response()->json(['data'=>'success','msg'=>'Mapping Added Successfully!']);
+        return response()->json(['data'=>'success','msg'=>'Mapping Updated Successfully!']);
             
         // if($csmapping)
         // {

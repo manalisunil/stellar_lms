@@ -78,13 +78,13 @@ class TopicsController extends Controller
                                 <label for="company_select" class="col-form-label"> Topic Id <span class="text-danger"> * </span></label>
 							</div>
 							<div class="col-lg-3">
-                                <input required name="topic_id" value="'.$topicDetail->topic_id.'" id="topic_id" type="text" class="form-control" placeholder="Enter Topic Id" required data-parsley-trigger="focusout" data-parsley-trigger="keyup" data-parsley-pattern="^[a-zA-Z 0-9\.\,\&\-\!\@\;\:\'\/\[\]\(\)\_]*$" />
+                                <input required name="topic_id" value="'.$topicDetail->topic_id.'" id="topic_id" type="text" class="form-control" placeholder="Enter Topic Id" required  />
 							</div>
 							<div class="col-lg-1 pr-0">
                                 <label for="example-firstname-input" class="col-form-label">Topic Name <span class="text-danger"> * </span></label>
 							</div>
 							<div class="col-lg-3">
-                                <input required name="topic_name" value="'.$topicDetail->topic_name.'" id="topic_name" type="text" class="form-control" placeholder="Enter Topic Name" required data-parsley-trigger="focusout" data-parsley-trigger="keyup" data-parsley-pattern="^[a-zA-Z 0-9\.\,\&\-\!\@\;\:\'\/\[\]\(\)\_]*$" />
+                                <input required name="topic_name" value="'.$topicDetail->topic_name.'" id="topic_name" type="text" class="form-control" placeholder="Enter Topic Name" required  />
 							</div>
 						</div>
                         <div class="row mt-2">
@@ -92,7 +92,7 @@ class TopicsController extends Controller
                                 <label for="desc-input" class="col-forwm-label px-0 mx-0" style="width: 114%;text-align: left;">Introduction  <span class="text-danger"> * <span></label>
                             </div>
                             <div class="col-lg-10">
-                                <textarea  name="topic_intro" id="ed_topic_intro"  value="'.$topicDetail->topic_intro.'" type="text" class="form-control" placeholder="Enter Introduction" required=""  data-parsley-trigger="focusout" data-parsley-trigger="keyup" data-parsley-maxlength="300" ></textarea>
+                                <textarea  name="topic_intro" id="ed_topic_intro"  value="" type="text" class="form-control" placeholder="Enter Introduction" required=""  data-parsley-trigger="focusout" data-parsley-trigger="keyup" data-parsley-maxlength="300" >'.$topicDetail->topic_intro.'</textarea>
                             </div>
                          </div>
 						<div class="row mt-2">

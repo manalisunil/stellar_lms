@@ -16,11 +16,11 @@ class CompanyController extends Controller
     public function submitCompany(Request $request)
     {
         $request->validate([
-            'company_name' => 'required|company_name|unique:mdblms_company,company_name',
+            'company_name' => 'required|unique:mdblms_company,company_name',
             'address' => 'required',
-            'phone_no' =>'required|phone_no|unique:mdblms_company,phone_no',
-            'email_id' => 'required|email|unique:mdblms_company,email_id',
-            'logo' => 'nullable|file|max:50',
+            'phone_no' =>'required|unique:mdblms_company,phone_no',
+            'email_id' => 'required|unique:mdblms_company,email_id',
+            'logo' => 'nullable|file|max:50|image|mimes:jpeg,jpg,svg,png',
         ]);
 
         if($request->file('logo'))
@@ -78,7 +78,7 @@ class CompanyController extends Controller
                     '</div>'.
                     '<div class="col-lg-3">'.
                         '<input data-parsley-type="number" data-parsley-trigger="change" data-parsley-minlength="10" 
-                            data-parsley-maxlength="10" id="ed_phone_no" name="phone_no" type="text" class="form-control" value="'.$companyData->phone_no.'" autocomplete="off" placeholder="Enter Phone Number" >'.                    
+                            data-parsley-maxlength="15" id="ed_phone_no" name="phone_no" type="text" class="form-control" value="'.$companyData->phone_no.'" autocomplete="off" placeholder="Enter Phone Number"  data-parsley-minlength-message="Number should be Minimum 10 digits"  data-parsley-maxlength-message="Number should be max 15 digits" data-parsley-trigger="keyup" data-parsley-trigger="focusout" >'.                    
                     '</div>'.
                 '</div>'.
                 '<div class="row mt-2">'.
@@ -86,7 +86,7 @@ class CompanyController extends Controller
                         '<label for="city-input" class="col-form-label px-0 mx-0" style="width: 114%;text-align: left;">Email Id<span class="text-danger"> * <span></label>'.
                     '</div>'.
                     '<div class="col-lg-3">'.
-                        '<input name="email_id" id="ed_email_id" type="text" class="form-control" value="'.$companyData->email_id.'" placeholder="Enter Email Id" required/>'.
+                        '<input name="email_id" id="ed_email_id" type="email" class="form-control" value="'.$companyData->email_id.'" placeholder="Enter Email Id" required data-parsley-type="email" data-parsley-trigger="keyup" data-parsley-trigger="focusout"/>'.
                     '</div>'.
                     '<div class="col-lg-1 pr-0">'.
                         '<label for="doc-input" class="col-form-label px-0 mx-0" style="width: 114%;text-align: left;"> Logo</label>'.
@@ -115,11 +115,11 @@ class CompanyController extends Controller
     public function updateCompany(Request $request)
     {
         $request->validate([
-            'company_name' => 'required',
+            'company_name' => 'required|unique:mdblms_company,company_name,'.$request->id,
             'address' => 'required',
-            'phone_no' =>'required',
+            'phone_no' =>'required|unique:mdblms_company,phone_no,'.$request->id,
             'email_id' => 'required|email|unique:mdblms_company,email_id,'.$request->id,
-            'logo' => 'nullable|file|max:50',
+            'logo' => 'nullable|file|max:50|image|mimes:jpeg,jpg,svg,png',
         ]);
 
         $company = Company::find($request->id);

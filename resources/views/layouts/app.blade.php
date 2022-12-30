@@ -7,6 +7,9 @@
         <meta content="Home" name="description" />
         <meta content="" name="author" />
         <meta name="csrf_token" content="{{ csrf_token() }}" />
+        <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+        <meta http-equiv="Pragma" content="no-cache" />
+        <meta http-equiv="Expires" content="0" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <link rel="shortcut icon" href="{{asset('app-assets/assets/images/favicon.ico')}}">
         <link href="{{asset('app-assets/plugins/daterangepicker/daterangepicker.css')}}" rel="stylesheet" />
@@ -39,6 +42,7 @@
         <link rel="stylesheet" type="text/css" href="{{asset('app-assets/assets/css/pnotify.custom.css')}}">
         <script type="text/javascript" src="{{asset('app-assets/assets/js/pnotify.custom.js')}}"></script>
         <script src="//cdn.ckeditor.com/4.20.0/standard/ckeditor.js"></script>
+        <!-- <script src="https://cdn.ckeditor.com/ckeditor5/35.4.0/classic/ckeditor.js"></script> -->
         <!-- <script src="{{asset('app-assets/assets/js/ckeditor.js')}}"></script> -->
     </head>
     <body data-layout="horizontal" style="background-color: #edf0f5;">
@@ -95,7 +99,7 @@
                                 
                               
                                    
-                                <a class="dropdown-item" href=""><i class="fa fa-user ti-power-off text-muted mr-2"></i> Profile</a>
+                                <a class="dropdown-item" href="{{ route('profile') }}"><i class="fa fa-user ti-power-off text-muted mr-2"></i> Profile</a>
                                   <a class="dropdown-item border-top" href="{{ route('logout') }}"><i class="ti-power-off text-muted mr-2"></i> Logout</a>
                             </div>
                         </li>

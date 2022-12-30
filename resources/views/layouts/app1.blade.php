@@ -8,6 +8,9 @@
         <meta content="" name="author" />
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+        <meta http-equiv="Pragma" content="no-cache" />
+        <meta http-equiv="Expires" content="0" />
         <link rel="shortcut icon" href="{{asset('app-assets/assets/images/favicon.ico')}}">
          <link href="{{asset('app-assets/plugins/daterangepicker/daterangepicker.css')}}" rel="stylesheet" />
         <link href="{{asset('app-assets/plugins/select2/select2.min.css')}}" rel="stylesheet" type="text/css" />

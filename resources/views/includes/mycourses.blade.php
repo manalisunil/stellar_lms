@@ -201,7 +201,7 @@
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-					<button type="submit" class="btn btn-primary" onclick="saveVideo();">Submit</button>
+					<button type="submit" id="submit_video" class="btn btn-primary" onclick="saveVideo();">Submit</button>
 				</div>
 			</form>
 		</div>
@@ -278,7 +278,7 @@
 				<div class="modal-body">
 					<div class="row">
 						<div class="col-lg-1 pr-0">
-							<label for="company_select" class="col-form-label"> Document </label>
+							<label for="company_select" class="col-form-label"> Document <span class="text-danger"> * </span></label>
 						</div>
 						<div class="col-lg-4">
                             <input id="topic_document" name="topic_document" type="file" class="form-control" accept="image/*,.pdf" data-parsley-trigger="keyup"  data-parsley-fileextension="jpg,png,svg,jpeg,pdf" required="">
@@ -293,7 +293,7 @@
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-					<button type="submit" class="btn btn-primary" onclick="saveDocument();">Submit</button>
+					<button type="submit" class="btn btn-primary" id="submitDoc" onclick="saveDocument();">Submit</button>
 				</div>
 			</form>
 		</div>
@@ -334,7 +334,7 @@
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-					<button type="submit" class="btn btn-primary" onclick="saveContent();">Submit</button>
+					<button type="submit" id="submitContent" class="btn btn-primary" onclick="saveContent();">Submit</button>
 				</div>
 			</form>
 		</div>
@@ -514,7 +514,7 @@
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-					<button type="submit" class="btn btn-primary" onclick="saveMCQ();">Submit</button>
+					<button type="submit" class="btn btn-primary" id="submitmcq" onclick="saveMCQ();">Submit</button>
 				</div>
 			</form>
 		</div>
@@ -678,7 +678,7 @@
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-					<button type="submit" class="btn btn-primary" onclick="saveTrueOrFalse();">Submit</button>
+					<button type="submit" class="btn btn-primary" id="submittfque" onclick="saveTrueOrFalse();">Submit</button>
 				</div>
 			</form>
 		</div>
@@ -780,6 +780,11 @@ $(document).ready(function()
 {
     $('.modal').on('hidden.bs.modal', function() {
 		$(this).find('form')[0].reset();
+		var frmName = $(this).find('form')[0].name;
+		if(frmName == "addcontentform")
+		{
+			CKEDITOR.instances['content'].setData('');
+		}
   	});
     
     CKEDITOR.on("instanceReady", function(event) {
@@ -864,21 +869,26 @@ $('#videoAddModal').on('shown.bs.modal', function () {
 });
 
 $('#documentAddModal').on('shown.bs.modal', function () {
+	$("#submitDoc").html('Submit').attr("disabled", false);
     var id2 = $('#current_topic_id').val();
     $("#topic_id2").val(id2);
 });
 
 $('#contentAddModal').on('shown.bs.modal', function () {
+		
+  $("#submitContent").html('Submit').attr("disabled", false);
     var id3 = $('#current_topic_id').val();
     $("#topic_id3").val(id3);
 });
 
 $('#tofAddModal').on('shown.bs.modal', function () {
+	$("#submittfque").html('Submit').attr("disabled", false);
     var id4 = $('#current_topic_id').val();
     $("#topic_id4").val(id4);
 });
 
 $('#mcqAddModal').on('shown.bs.modal', function () {
+	$("#submitmcq").html('Submit').attr("disabled", false);
     var id5 = $('#current_topic_id').val();
     $("#topic_id5").val(id5);
 });
@@ -889,6 +899,7 @@ function saveVideo()
     if($("#addvideoform").parsley()) {
         if ($("#addvideoform").parsley().validate()) {
             event.preventDefault();
+              $("#btnSubmit").attr("disabled", true);
             var formData = new FormData($("#addvideoform")[0]);
             if($("#addvideoform").parsley().isValid()) {
                 $.ajax({
@@ -899,6 +910,9 @@ function saveVideo()
                     data: formData,
                     processData: false,
                     contentType: false,
+                    beforeSend: function(){
+					$('#submit_video').html("<i class='bx bx-loader-circle bx-spin bx-flip-horizontal' ></i>Please Wait!");
+					},
                     success: function(response) {
                         new PNotify({
                             title: 'Success',
@@ -921,7 +935,10 @@ function saveVideo()
                             type: 'error',
                             delay: 2000
                         });
-                    }
+                    },
+                    complete: function() {
+				        $("#submit_video").html('Submit');
+				    },
                 });
             }
         }
@@ -1006,6 +1023,7 @@ function saveContent()
             var formData = new FormData($("#addcontentform")[0]);
             var contentValue = CKEDITOR.instances.content.getData();
             formData.append("contentvalue", contentValue);
+              console.log(contentValue);
             if($("#addcontentform").parsley().isValid()) {
                 $.ajax({
                     type: "POST",
@@ -1015,7 +1033,11 @@ function saveContent()
                     data: formData,
                     processData: false,
                     contentType: false,
+                    beforeSend: function(){
+					$('#submitContent').html("Please Wait..").attr("disabled", true);
+					},
                     success: function(response) {
+
                         new PNotify({
                             title: 'Success',
                             text:  response.msg,
@@ -1025,6 +1047,7 @@ function saveContent()
                         $('#contentAddModal').modal('hide');
                         $('#addcontentform')[0].reset();
                         get_topic_content(id);
+                        CKEDITOR.instances['content'].setData('');
                     },
                     error:function(response) {
                         var err = "";
@@ -1037,7 +1060,13 @@ function saveContent()
                             type: 'error',
                             delay: 2000
                         });
-                    }
+                        $("#submitContent").html('Submit').attr("disabled", false);
+                    },
+                    complete: function() {
+                    	
+                    	$("#submitContent").html('Submit').attr("disabled", false);
+				       
+				    },
                 });
             }
         }
@@ -1061,7 +1090,7 @@ function editContent(id)
         $("#ed_is_active1").removeAttr('checked', 'checked');
     }
 
-	 var url = '{{ route("edit_content") }}';
+	   var url = '{{ route("edit_content") }}';
 	   CKEDITOR.replace('ed_content');
 	$.ajax({
 		type: "post",
@@ -1146,6 +1175,9 @@ function saveDocument()
                     data: formData,
                     processData: false,
                     contentType: false,
+                    beforeSend: function(){
+					$('#submitDoc').attr("disabled", true);
+					},
                     success: function(response) 
                     {
                         new PNotify({
@@ -1256,6 +1288,9 @@ function saveMCQ()
                     data: formData,
                     processData: false,
                     contentType: false,
+                    beforeSend: function(){
+					$('#submitmcq').html("Please Wait..").attr("disabled", true);
+					},
                     success: function(response) {
                         new PNotify({
                             title: 'Success',
@@ -1381,6 +1416,9 @@ function saveTrueOrFalse()
                     data: formData,
                     processData: false,
                     contentType: false,
+                    beforeSend: function(){
+					$('#submittfque').html("Please Wait..").attr("disabled", true);
+					},
                     success: function(response) {
                         new PNotify({
                             title: 'Success',

@@ -59,7 +59,7 @@
 				<span aria-hidden="true">&times;</span>
 				</button>
 			</div>
-			<form method="post" id="userfrm" name="userfrm"  autocomplete="off" data-parsley-validate data-parsley-trigger="keyup">
+			<form method="post" id="userfrm" name="userfrm"  autocomplete="off" data-parsley-validate data-parsley-trigger="keyup" >
 				@csrf
 				<div class="modal-body">
 					<div class="row">
@@ -120,14 +120,13 @@
 							<label for="name-input" class="col-form-label">Contact Number<span class="text-danger">  <span></label>
 						</div>
 						<div class="col-lg-3">
-							<input data-parsley-type="number" data-parsley-trigger="change" data-parsley-minlength="10" 
-								data-parsley-maxlength="10" id="contact_no" name="contact_no" type="text" class="form-control" autocomplete="off" placeholder="Enter Contact Number" >							
+							<input data-parsley-type="number" data-parsley-trigger="change" data-parsley-minlength="10"   data-parsley-maxlength="15" id="contact_no" name="contact_no" type="text" class="form-control" autocomplete="off" placeholder="Enter Contact Number" data-parsley-minlength-message="Number should be Minimum 10 digits"  data-parsley-maxlength-message="Number should be max 15 digits" data-parsley-trigger="keyup" data-parsley-trigger="focusout" >							
 						</div>
 						<div class="col-lg-1 pr-0">
 							<label for="active-input" class="col-form-label">Date of Birth </label>
 						</div>
 						<div class="col-lg-3">
-							<input class="form-control date-picker" name="dob" id="dob" type="text" class="js-validate-dob" value="" data-parsley-minimumage="15" 
+							<input class="form-control" name="dob" id="dob" type="date" class="js-validate-dob" value="" data-parsley-minimumage="15" 
 							data-parsley-minimumage-message="Applicant must be at least 15 years of age to apply" data-parsley-validdate="" data-parsley-validdate-message="Please enter a valid date" data-parsley-pattern="/[0-9]\d*/"
 	 						data-parsley-pattern-message="Only numbers allowed" data-parsley-trigger="keyup" data-parsley-trigger="focusout"  data-parsley-validation-threshold="0" />							
 						</div>
@@ -149,7 +148,7 @@
 							<label for="example-email-input" class="col-form-label">Email <span class="text-danger"> * </span></label>
 						</div>
 						<div class="col-lg-3">
-							<input autocomplete="off" required value="" name="email" id="email" type="email" class="form-control" placeholder="Enter Email"/>
+							<input autocomplete="off" required value="" name="email" id="email" type="email" class="form-control" placeholder="Enter Email" data-parsley-type="email" data-parsley-trigger="keyup" data-parsley-trigger="focusout"/>
 						</div>
 						<div class="col-lg-1 pr-0">
 							<label for="example-email-input" class="col-form-label"> Password<span class="text-danger"> * </span> </label>
@@ -197,13 +196,13 @@
 							<label for="name-input" class="col-form-label">Qualification<span class="text-danger"> <span></label>
 						</div>
 						<div class="col-lg-3 user_type_div">
-							<input id="qualification" name="qualification" type="text" class="form-control" autocomplete="off" placeholder="Enter qualification"  data-parsley-trigger="focusout" data-parsley-trigger="keyup" data-parsley-pattern="^[A-Za-z ][A-Za-z ]*$">
+							<input id="qualification" name="qualification" type="text" class="form-control" autocomplete="off" placeholder="Enter qualification"   >
 						</div>
 						<div class="col-lg-1 pr-0 user_type_div">
 							<label for="name-input" class="col-form-label">Institution<span class="text-danger"> <span></label>
 						</div>
 						<div class="col-lg-3 user_type_div">
-							<input id="institution" name="institution" type="text" class="form-control" autocomplete="off" placeholder="Enter institution"  data-parsley-trigger="focusout" data-parsley-trigger="keyup" data-parsley-pattern="^[A-Za-z ][A-Za-z ]*$">
+							<input id="institution" name="institution" type="text" class="form-control" autocomplete="off" placeholder="Enter institution"  >
 						</div>
 					</div>
 					<div class="row mt-1">
@@ -238,7 +237,7 @@
 				<span aria-hidden="true">&times;</span>
 				</button>
 			</div>
-			<form method="post" id="updateuserfrm" name="updateuserfrm"  data-parsley-validate data-parsley-trigger="keyup">
+			<form method="post" id="updateuserfrm" name="updateuserfrm"  data-parsley-validate data-parsley-trigger="keyup" >
 				@csrf
 			<div id="edituserdata"></div>
 			<div class="modal-footer">
@@ -431,26 +430,26 @@ $(document).ready(function()
 			  		$(".user_type_div").show();
 			  		$(".tutor_div").show();
 			  	}
-			     var eddob = $("#eddob").val();
-			  	$('input[name="dob"]').daterangepicker({
-				    singleDatePicker: true,
-				    // startDate: new Date(),
-					// startDate: new Date(val(response.dob)),
-				    // maxDate: new Date,
-				    showDropdowns: true,
-				    timePicker: false,
-				    timePicker24Hour: false,
-				    // timePickerIncrement: 10,
-				    autoUpdateInput: true,
-				    locale: {
-				    format: 'DD/MM/YYYY'
-				    },
-				});
-			  	if(eddob == "")
-			  	{
-					$('input[name="dob"]').val("");
+			 //     var eddob = $("#eddob").val();
+			 //  	$('input[name="dob"]').daterangepicker({
+				//     singleDatePicker: true,
+				//     // startDate: new Date(),
+				// 	// startDate: new Date(val(response.dob)),
+				//     // maxDate: new Date,
+				//     showDropdowns: true,
+				//     timePicker: false,
+				//     timePicker24Hour: false,
+				//     // timePickerIncrement: 10,
+				//     autoUpdateInput: true,
+				//     locale: {
+				//     format: 'DD/MM/YYYY'
+				//     },
+				// });
+			 //  	if(eddob == "")
+			 //  	{
+				// 	$('input[name="dob"]').val("");
 
-			  	}
+			 //  	}
 			}
 		});
 		
@@ -607,23 +606,23 @@ $(document).ready(function()
 
 
 $(function() {
-	$('input[name="dob"]').daterangepicker({
-	    singleDatePicker: true,
-		// minDate: new Date(1900,1-1,1), 
-		// maxDate: '-18Y',
-		// yearRange: '-110:-18',
-	    // startDate: new Date(),
-	    maxDate: new Date,
-	    showDropdowns: true,
-	    timePicker: false,
-	    timePicker24Hour: false,
-	    // timePickerIncrement: 10,
-	    autoUpdateInput: true,
-	    locale: {
-	    format: 'DD/MM/YYYY'
-	    },
-	});
-	 $('input[name="dob"]').val("");
+	// $('input[name="dob"]').daterangepicker({
+	//     singleDatePicker: true,
+	// 	// minDate: new Date(1900,1-1,1), 
+	// 	// maxDate: '-18Y',
+	// 	// yearRange: '-110:-18',
+	//     // startDate: new Date(),
+	//     maxDate: new Date,
+	//     showDropdowns: true,
+	//     timePicker: false,
+	//     timePicker24Hour: false,
+	//     // timePickerIncrement: 10,
+	//     autoUpdateInput: true,
+	//     locale: {
+	//     format: 'DD/MM/YYYY'
+	//     },
+	// });
+	//  $('input[name="dob"]').val("");
 });
 </script>
 @endsection

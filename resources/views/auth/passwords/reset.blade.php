@@ -41,7 +41,7 @@
                                             <a class="logo logo-admin"><img src="{{asset('app-assets/assets/images/logo-sm.png')}}" width="60%" height="auto" alt="logo"></a>
                                                 
                                             </div>
-                                             <div class="col-lg-10 pt-4  text-center "> <b><h5> Welcome to Stellar - Abstractor Vendor Management System </b> </h5>
+                                             <div class="col-lg-10 pt-4  text-center "> <b><h5> Welcome to Stellar - Learning Management System </b> </h5>
                                              </div>
                                             <form class="form-horizontal auth-form my-4" method="POST" action="{{ route('password.update') }}">
                                                 @csrf

@@ -41,7 +41,7 @@ class UserController extends Controller
     	if(isset($request->dob))
     	{
     		$dob = $request->dob;
-    		$newDate = \Carbon\Carbon::createFromFormat('d/m/Y', $dob)->format('Y-m-d');
+    		$newDate = \Carbon\Carbon::createFromFormat('Y-m-d', $dob)->format('Y-m-d');
     	}
     	else
     	{
@@ -93,7 +93,7 @@ class UserController extends Controller
         {
 
       
-        	 $dob_date  = \Carbon\Carbon::parse($userDetail->dob)->format('d-m-Y');
+        	 $dob_date  = \Carbon\Carbon::parse($userDetail->dob)->format('Y-m-d');
         }
         else
         {
@@ -186,14 +186,14 @@ class UserController extends Controller
 							</div>
                         	<div class="col-lg-3">
 								<input data-parsley-type="number" data-parsley-trigger="change" data-parsley-minlength="10" 
-								data-parsley-maxlength="10" id="contact_no" name="contact_no" type="text" class="form-control" autocomplete="off" placeholder="Enter Contact Number" value="'.$userDetail->contact_no.'" >
+								data-parsley-maxlength="15" id="contact_no" name="contact_no" type="text" class="form-control" autocomplete="off" placeholder="Enter Contact Number" value="'.$userDetail->contact_no.'" data-parsley-minlength-message="Number should be Minimum 10 digits"  data-parsley-maxlength-message="Number should be max 15 digits" data-parsley-trigger="keyup" data-parsley-trigger="focusout">
 		                	</div>
 							<div class="col-lg-1 pr-0">
 								<label for="active-input" class="col-form-label">Date of Birth </label>
 							</div>
                         	<div class="col-lg-3">
-                                <input class="form-control date-picker" name="dob" id="eddob" type="text" value="'.$dob_date.'" class="js-validate-dob" data-parsley-minimumage="15" 
-							data-parsley-minimumage-message="Applicant must be at least 15 years of age to apply" data-parsley-validdate="" data-parsley-validdate-message="Please enter a valid date" data-parsley-pattern="/[0-9]\d*/"
+                                <input class="form-control " name="dob" id="eddob" type="date" value="'.$userDetail->dob.'" class="js-validate-dob" data-parsley-minimumage="15" 
+							data-parsley-minimumage-message="Applicant must be at least 15 years of age to apply" data-parsley-validdate="" data-parsley-validdate-message="Please enter a valid date" data-parsley-pattern="/[0-9]\d*/"  data-parsley-trigger="keyup" data-parsley-trigger="focusout"
 	 						data-parsley-pattern-message="Only numbers allowed"    ata-parsley-validation-threshold="0" />
                             </div>
 							<div class="col-lg-1 pr-0">
@@ -214,7 +214,7 @@ class UserController extends Controller
 								<label for="example-email-input" class="col-form-label">Email <span class="text-danger"> * </span></label>
 							</div>
 							<div class="col-lg-3">
-								<input autocomplete="off" required value="'.$userDetail->email.'" name="email" id="email" type="email" class="form-control" placeholder="Enter Email"/>
+								<input autocomplete="off" required value="'.$userDetail->email.'" name="email" id="email" type="email" class="form-control" placeholder="Enter Email" data-parsley-type="email" data-parsley-trigger="keyup" data-parsley-trigger="focusout"/>
 							</div>
 							<div class="col-lg-1 pr-0">
 								<label for="example-email-input" class="col-form-label"> New Password<span class="text-danger"> * </span> </label>
@@ -261,13 +261,13 @@ class UserController extends Controller
 								<label for="name-input" class="col-form-label">Qualification<span class="text-danger"> <span></label>
 							</div>
 							<div class="col-lg-3 user_type_div">
-								<input id="qualification" name="qualification" type="text" class="form-control" autocomplete="off" placeholder="Enter qualification"  data-parsley-trigger="focusout" data-parsley-trigger="keyup" data-parsley-pattern="^[A-Za-z ][A-Za-z ]*$" value="'.$userDetail->qualification.'">
+								<input id="qualification" name="qualification" type="text" class="form-control" autocomplete="off" placeholder="Enter qualification"  data-parsley-trigger="focusout"  value="'.$userDetail->qualification.'">
 							</div>
 							<div class="col-lg-1 pr-0 user_type_div">
 								<label for="name-input" class="col-form-label">Institution<span class="text-danger"> <span></label>
 							</div>
 							<div class="col-lg-3 user_type_div">
-								<input id="institution" name="institution" type="text" class="form-control" autocomplete="off" placeholder="Enter institution"  data-parsley-trigger="focusout" data-parsley-trigger="keyup" data-parsley-pattern="^[A-Za-z ][A-Za-z ]*$" value="'.$userDetail->institution.'">
+								<input id="institution" name="institution" type="text" class="form-control" autocomplete="off" placeholder="Enter institution"  data-parsley-trigger="focusout"  value="'.$userDetail->institution.'">
 							</div>
 						</div>
 						<div class="row mt-1">
@@ -315,7 +315,7 @@ class UserController extends Controller
     	if(isset($request->dob))
     	{
     		$dob = $request->dob;
-    		$newDate = Carbon::createFromFormat('d/m/Y', $dob)->format('Y-m-d');
+    		$newDate = Carbon::createFromFormat('Y-m-d', $dob)->format('Y-m-d');
     	}
     	else
     	{

@@ -20,6 +20,7 @@ use Redirect;
 
 class MycoursesController extends Controller
 {
+	
     public function index()
     {
         $cources = Course::where('is_active',1)->get(); 
@@ -39,7 +40,7 @@ class MycoursesController extends Controller
     public function course_detail($id)
     {
     	$cources = Course::where('is_active',1)->get(); 
-    	$courses_subjects = CourseSubjectMapping::where('course_id',$id)->where('is_active',1)->get();
+    	$courses_subjects = CourseSubjectMapping::join('mdblms_subjects','mdblms_subjects.id','=','mdblms_course_subject_mapping.subject_id')->where('mdblms_course_subject_mapping.course_id',$id)->where('mdblms_course_subject_mapping.is_active',1)->where('mdblms_subjects.is_active',1)->select('mdblms_course_subject_mapping.*')->get();
         $chapters = Chapter::where('is_active',1)->get();
     	$topic = Topic::where('is_active',1)->get();
     	$course_id  = $id;
@@ -50,9 +51,9 @@ class MycoursesController extends Controller
     {
 		$id = $request->id;
 		$topic = Topic::find($id);
-		$videos = TopicVideo::where('topic_id', $topic->id)->get();
-		$contents = TopicContent::where('topic_id', $topic->id)->get();
-		$documents = TopicDocument::where('topic_id', $topic->id)->get();
+		$videos = TopicVideo::where('topic_id', $topic->id)->where('is_active',1)->get();
+		$contents = TopicContent::where('topic_id', $topic->id)->where('is_active',1)->get();
+		$documents = TopicDocument::where('topic_id', $topic->id)->where('is_active',1)->get();
     	?>
     	<div class="col-md-12 row ">
     		<div class="col-md-6">
@@ -107,15 +108,16 @@ class MycoursesController extends Controller
 							<b>Content</b>
 					</div>
 					<div class="card-body" style="max-height:400px;overflow-y:auto;">
-							<table id="content_table">
-								
+							<!-- <table id="content_table"> -->
+							<div class="row">	
 							<?php foreach($contents as $content)
 								{
-									echo '<tr><td>'.$content->content.'<span style="float:right;" id="edit_content'.$content->id.'" class="edit_icon ml-2" onclick="editContent('.$content->id.')" data-is-active="'.$content->is_active.'" data-topic-id="'.$topic->id.'" data-toggle="modal" data-id="'.$content->id.'" >
-										<img class="menuicon tbl_editbtn" src="'.asset("app-assets/assets/images/edit.svg").'" >&nbsp;</span></td></tr>';
+									echo '<div class="col-12  border-bottom"><span style="float:right;" id="edit_content'.$content->id.'" class="edit_icon ml-2" onclick="editContent('.$content->id.')" data-is-active="'.$content->is_active.'" data-topic-id="'.$topic->id.'" data-toggle="modal" data-id="'.$content->id.'" >
+										<img class="menuicon tbl_editbtn" src="'.asset("app-assets/assets/images/edit.svg").'" >&nbsp;</span>'.$content->content.'</div>';
 								}
 							?>
-							</table>
+						</div>
+							<!-- </table> -->
 					</div>
              	</div>
          	</div>
@@ -173,7 +175,7 @@ class MycoursesController extends Controller
 			'contentvalue.required'=>'Content field is required'
 		]
     	);
-
+		
         $content = new TopicContent();
         $content->topic_id = $request->topic_id;
         $content->content = $request->contentvalue;
@@ -209,6 +211,7 @@ class MycoursesController extends Controller
             $doc_type = NULL;
         }
 
+
         $document = new TopicDocument();
         $document->topic_id = $request->topic_id;
         $document->doc = $doc;
@@ -235,7 +238,7 @@ class MycoursesController extends Controller
     		'thumbnail_img'=>'max:50'
 
         ],[
-        	'thumbnail_img.max'=>'The :attribute must have a maximum length of :max'
+        	'thumbnail_img.max'=>'The Thumbnail image must have a maximum length of :max KB'
         ]);
         if($request->file('thumbnail_img'))
         {
@@ -282,10 +285,10 @@ class MycoursesController extends Controller
 	public function updateContent(Request $request)
 	{
 		$request->validate([
-          'contentvalue'  =>'required',
+          'contentValue'  =>'required',
         ],
 		[
-			'contentvalue.required'=>'Content field is required'
+			'contentValue.required'=>'Content field is required'
 		]
     	);
 
@@ -339,8 +342,8 @@ class MycoursesController extends Controller
     {
 		$id = $request->id;
 		$topic = Topic::find($id);
-		$mcqs = MCQ::where('topic_id', $topic->id)->where('type_id',1)->get();
-		$tofs = MCQ::where('topic_id', $topic->id)->where('type_id',2)->get();
+		$mcqs = MCQ::where('topic_id', $topic->id)->where('type_id',1)->where('is_active',1)->get();
+		$tofs = MCQ::where('topic_id', $topic->id)->where('type_id',2)->where('is_active',1)->get();
 		?>
 		<div class="col-md-12 row ">
     		<div class="col-md-6">

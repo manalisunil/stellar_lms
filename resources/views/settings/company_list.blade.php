@@ -65,7 +65,7 @@
                             <label for="unique-id-input" class="col-form-label px-0 mx-0" style="width: 114%;text-align: left;">Company Name<span class="text-danger"> * <span></label>
                         </div>
                         <div class="col-lg-3">
-                            <input name="company_name" id="company_name" type="text" class="form-control" placeholder="Enter Company Name" required data-parsley-trigger="focusout" data-parsley-trigger="keyup" data-parsley-pattern="^[a-zA-Z 0-9\.\&\-\@\:\/\[\]\(\)\_]*$"/>
+                            <input name="company_name" id="company_name" type="text" class="form-control" placeholder="Enter Company Name" required />
                         </div>
                         <div class="col-lg-1 pr-0">
                             <label for="name-input" class="col-form-label px-0 mx-0" style="width: 114%;text-align: left;">Address<span class="text-danger"> * <span></label>
@@ -78,7 +78,7 @@
                         </div>
                         <div class="col-lg-3">
                             <input required data-parsley-type="number" data-parsley-trigger="change" data-parsley-minlength="10" 
-								data-parsley-maxlength="10" id="phone_no" name="phone_no" type="text" class="form-control" autocomplete="off" placeholder="Enter Phone Number" >                        
+								data-parsley-maxlength="15" id="phone_no" name="phone_no" type="text" class="form-control" autocomplete="off" placeholder="Enter Phone Number"   data-parsley-minlength-message="Number should be Minimum 10 digits"  data-parsley-maxlength-message="Number should be max 15 digits" data-parsley-trigger="keyup" data-parsley-trigger="focusout"  >                        
                         </div>
                     </div>
                     <div class="row mt-2">
@@ -86,7 +86,7 @@
                             <label for="city-input" class="col-form-label px-0 mx-0" style="width: 114%;text-align: left;">Email Id<span class="text-danger"> * <span></label>
                         </div>
                         <div class="col-lg-3">
-                            <input name="email_id" id="email_id" type="text" class="form-control" placeholder="Enter Email Id" required/>
+                            <input name="email_id" id="email_id" type="email" class="form-control" placeholder="Enter Email Id" required data-parsley-type="email" data-parsley-trigger="keyup" data-parsley-trigger="focusout" />
                         </div>
                         <div class="col-lg-1 pr-0">
                             <label for="doc-input" class="col-form-label px-0 mx-0" style="width: 114%;text-align: left;"> Logo</label>
