@@ -94,7 +94,7 @@ class MycoursesController extends Controller
 
 							<?php foreach($documents as $document)
 							{
-								echo '<div class="col pb-2 border-bottom">'.$document->doc_name.'<span id="edit_document'.$document->id.'" class="edit_icon ml-2" onclick="editDocument('.$document->id.')" data-is-active="'.$document->is_active.'" data-topic-id="'.$topic->id.'" data-toggle="modal" data-id="'.$document->id.'">
+								echo '<div class="col pb-2 border-bottom"><a onclick="viewDocument('.$document->id.')" style="cursor: pointer;">'.$document->doc_name.'</a><span id="edit_document'.$document->id.'" class="edit_icon ml-2" onclick="editDocument('.$document->id.')" data-is-active="'.$document->is_active.'" data-topic-id="'.$topic->id.'" data-toggle="modal" data-id="'.$document->id.'">
 									<img class="menuicon tbl_editbtn" src="'.asset("app-assets/assets/images/edit.svg").'" >&nbsp;</span></div>';
 							}
 							?>
@@ -309,6 +309,31 @@ class MycoursesController extends Controller
 			return response()->json(['data'=>'error','msg'=>$validator->errors()->all()]);
 		}
 	}
+
+	public function viewDocument($id)
+    {
+        if(request()->ajax()) {
+            $output="";
+            $document = TopicDocument::findOrFail($id);
+            if(!empty($document->doc)) {
+                if($document->doc_type == "application/pdf")
+                {
+                    $output.='<div id="removeData">'.
+                        '<center><iframe height="450" width="700" display="block" src="data:application/pdf;base64,'.base64_encode($document->doc).'"></iframe></center>'.
+                    '</div>';
+                } else {
+                    $output.='<div id="removeData">'.
+                        '<img src="data:image;base64,'.base64_encode($document->doc).'"  style="width:40%;height:auto;">'.
+                    '</div>';
+                }
+            } else {
+                $output.= '<div id="removeData">'.
+                    '<p>No Document to Display!</p>'.
+                '</div>';
+            }
+            return response()->json(['data' => $output]);
+        }
+    }
 
 	public function updateDocument(Request $request)
 	{

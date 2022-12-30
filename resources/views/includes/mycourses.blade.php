@@ -424,6 +424,24 @@
 </div>
 <!-- End  Modal -->
 
+<!-- View Document Modal -->
+<div class="modal" id="documentModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h5 class="modal-title">View Document</h5>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body">
+                <div id="append_doc"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Modal -->
+
 <!-- Add MCQ Modal -->
 <div class="modal fade" id="mcqAddModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	<div class="modal-dialog modal-xl" role="document">
@@ -802,6 +820,19 @@ $(document).ready(function()
     CKEDITOR.replace('content');
 });
 
+
+function viewDocument(value)
+{
+    event.stopPropagation();
+    $("#removeData").remove();
+    $.ajax({
+        url: "/view_mycourse_document/" + value,
+        success: function(data) {
+            $("#append_doc").append(data.data);
+            $('#documentModal').modal('show'); 
+        }
+    })
+} 
 
 function get_topic_content(id)
 {

@@ -102,7 +102,7 @@ Route::post('mycourses/add_content',[\App\Http\Controllers\MycoursesController::
 Route::post('mycourses/update_content',[\App\Http\Controllers\MycoursesController::class, 'updateContent'])->name('update_content');
 Route::post('mycourses/edit_content',[\App\Http\Controllers\MycoursesController::class, 'edit_content'])->name('edit_content');
 
-
+Route::get('/view_mycourse_document/{id}',[\App\Http\Controllers\MycoursesController::class, 'viewDocument'])->name('view_document');
 Route::post('mycourses/add_document',[\App\Http\Controllers\MycoursesController::class, 'addDocument'])->name('add_document');
 Route::post('mycourses/edit_document',[\App\Http\Controllers\MycoursesController::class, 'updateDocument'])->name('update_document');
 //mycourses - Questions
