@@ -42,7 +42,6 @@
         <link rel="stylesheet" type="text/css" href="{{asset('app-assets/assets/css/pnotify.custom.css')}}">
         <script type="text/javascript" src="{{asset('app-assets/assets/js/pnotify.custom.js')}}"></script>
         <script src="//cdn.ckeditor.com/4.20.0/standard/ckeditor.js"></script>
-        <!-- <script src="https://cdn.ckeditor.com/ckeditor5/35.4.0/classic/ckeditor.js"></script> -->
         <!-- <script src="{{asset('app-assets/assets/js/ckeditor.js')}}"></script> -->
     </head>
     <body data-layout="horizontal" style="background-color: #edf0f5;">
