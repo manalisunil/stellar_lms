@@ -12,21 +12,19 @@ class ChapterController extends Controller
 {
     public function index()
     {
-    	$subjectList  = Subject::where('is_active',1)->get();
+    	// $subjectList  = Subject::where('is_active',1)->get();
         $chapterList  = Chapter::get();
-        return view('settings.chapter',compact('chapterList','subjectList'));
+        return view('settings.chapter',compact('chapterList'));
     }
     public function add_chapter(Request $request)
     {
     	$request->validate([
-    		'subject_id'  =>'required',
             'chapter_id' => 'required|unique:mdblms_chapters,chapter_id',
             'chapter_name' => 'required|unique:mdblms_chapters,chapter_name',
             'descriptionValue' => 'required',
         ]);
 
         $chapt = new Chapter();
-        $chapt->subject_id = $request->subject_id;
         $chapt->chapter_id = $request->chapter_id;
         $chapt->chapter_name = $request->chapter_name;
         $chapt->chapter_description = $request->descriptionValue;
@@ -48,28 +46,12 @@ class ChapterController extends Controller
     public function edit_chapter(Request $request)
     {
         $id =$request->id;
-        $subjectList  = Subject::where('is_active',1)->get();
+        // $subjectList  = Subject::where('is_active',1)->get();
         $chapterDetail = Chapter::where('id',$id)->first();
        	$output="";
        	$output .= '<div class="modal-body">
 						<input type="hidden" name="id" id="id" value="'.$chapterDetail->id.'">
 						<div class="row">
-                            <div class="col-lg-1 pr-0">
-                                <label for="company_select" class="col-form-label"> Subject  <span class="text-danger"> * </span></label>
-							</div>
-							<div class="col-lg-3">
-                                <select required class="form-control" name="subject_id" id="subject_id">
-                                <option value="">Select Subject</option>';
-                                foreach($subjectList as $subDt) 
-                                {
-                                    $output.='<option value="'.$subDt->id.'"';
-                                    if($subDt->id == $chapterDetail->subject_id) {
-                                    $output.='selected="selected"';
-                                    }
-                                    $output.= '>'.$subDt->subject_name.'</option>';
-                                }
-                                $output .='</select>					
-							</div>
 							<div class="col-lg-1 pr-0">
                                 <label for="company_select" class="col-form-label"> Chapter Id <span class="text-danger"> * </span></label>
 							</div>
@@ -82,16 +64,6 @@ class ChapterController extends Controller
 							<div class="col-lg-3">
                                 <input required name="chapter_name" value="'.$chapterDetail->chapter_name.'" id="chapter_name" type="text" class="form-control" placeholder="Enter Chapter Name" required />
 							</div>
-						</div>
-                        <div class="row mt-2">
-                            <div class="col-lg-1 pr-0">
-                                <label for="example-email-input" class="col-form-label">Description <span class="text-danger"> * </span></label><br>
-                            </div>
-                            <div class="col-lg-10">
-                                <textarea class="form-control" name="chapter_description1" id="chapter_description1" required>'.$chapterDetail->chapter_description.'</textarea>
-                            </div>	
-                        </div>
-                        <div class="row mt-2">
                             <div class="col-lg-1 pr-0">
                                 <label for="example-email-input" class="col-form-label pr-3">Status </label> 
                             </div>
@@ -104,6 +76,14 @@ class ChapterController extends Controller
                                 }
                                 $output .='/>
                             </div>
+						</div>
+                        <div class="row mt-2">
+                            <div class="col-lg-1 pr-0">
+                                <label for="example-email-input" class="col-form-label">Description <span class="text-danger"> * </span></label><br>
+                            </div>
+                            <div class="col-lg-10">
+                                <textarea class="form-control" name="chapter_description1" id="chapter_description1" required>'.$chapterDetail->chapter_description.'</textarea>
+                            </div>	
                         </div>
 					</div>';
 		echo $output;
@@ -111,14 +91,12 @@ class ChapterController extends Controller
     public function updateChapter(Request $request)
     {
     	$request->validate([
-    		'subject_id'  =>'required',
             'chapter_id' => 'required|unique:mdblms_chapters,chapter_id,'.$request->id,
             'chapter_name' => 'required|unique:mdblms_chapters,chapter_name,'.$request->id,
             'descriptionValue' => 'required'
         ]);
 
         $chapt = Chapter::find($request->id);
-        $chapt->subject_id = $request->subject_id;
         $chapt->chapter_id = $request->chapter_id;
         $chapt->chapter_name = $request->chapter_name;
         $chapt->chapter_description = $request->descriptionValue;
@@ -150,7 +128,6 @@ class ChapterController extends Controller
     {
         $id = $request->id;
         $detail = Chapter::find($id);
-        // dd($detail);
 
         $output ='<div class="row ">
             <div class="col-lg-9 text-left">
@@ -160,9 +137,6 @@ class ChapterController extends Controller
                     
                         '.$detail->chapter_name.'
                 </h5>
-            </div>
-            <div class="col-lg-3 pt-2">
-                <label for="unique-id-input" class="">Subject Name  : '.$detail->getSubject['subject_name'].'</b></label>
             </div>
         </div>
         <div class="card  card_top_orenge" >

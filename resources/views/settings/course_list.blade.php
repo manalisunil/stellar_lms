@@ -33,7 +33,7 @@
                                         <span  class="btn-primary btn-sm edit_icon" onClick="view_description({{ $course->id}})">View</span>
                                     @endif
                                 </td>
-                                <td>{{$course->course_duration}}</td>
+                                <td>{{$course->course_duration}} Days</td>
                                 <td>{{$course->course_price}}</td>
                                 <td>       
                                     @if(!empty($course->course_banner))                                             
@@ -113,7 +113,7 @@
                             <label for="city-input" class="col-form-label px-0 mx-0" style="width: 114%;text-align: left;">Course Duration <span class="text-danger"> * <span></label>
                         </div>
                         <div class="col-lg-3">
-                            <input name="course_duration" id="course_duration" type="text" class="form-control" placeholder="Enter Course Duration" required />
+                            <input name="course_duration" id="course_duration" type="text" class="form-control" placeholder="Enter Number Of Days" data-parsley-trigger="keyup" data-parsley-type="number" required />
                         </div>
                         <div class="col-lg-1 pr-0">
                             <label for="state-input" class="col-form-label">Course Price</label>

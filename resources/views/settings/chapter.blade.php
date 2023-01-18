@@ -11,7 +11,6 @@
 						<thead>
 							<tr>
 								<th>Sl no</th>
-								<th>Subject Name</th>
 								<th>Chapter Id</th>
 								<th>Name</th>
 								<th>Status</th>
@@ -23,7 +22,6 @@
 							@forelse($chapterList as $k=> $chpDt)
 							<tr>
 								<td> {{++$k}}</td>
-								<td> @if($chpDt->getSubject != null) {{$chpDt->getSubject['subject_name']}} @endif</td>
 								<td> {{$chpDt->chapter_id}}</td>
 								<td> {{$chpDt->chapter_name}}</td>
 								<td>
@@ -65,18 +63,6 @@
 				<div class="modal-body">
 					<div class="row">
 						<div class="col-lg-1 pr-0">
-							<label for="company_select" class="col-form-label"> Subject  <span class="text-danger"> * </span></label>
-						</div>
-						<div class="col-lg-3">
-							<select required class="form-control" name="subject_id" id="subject_id">
-								<option value="">Select Subject</option>
-								@forelse($subjectList as $subDt)
-								<option value="{{$subDt->id}}"> {{$subDt->subject_name}}</option>
-								@empty
-								@endforelse
-							</select>						
-						</div>
-						<div class="col-lg-1 pr-0">
 							<label for="company_select" class="col-form-label"> Chapter Id <span class="text-danger"> * </span></label>
 						</div>
 						<div class="col-lg-3">
@@ -88,6 +74,12 @@
 						<div class="col-lg-3">
 							<input required name="chapter_name" value="" id="chapter_name" type="text" class="form-control" placeholder="Enter Chapter Name" required  />
 						</div>
+						<div class="col-lg-1 pr-0">
+							<label for="example-email-input" class="col-form-label pr-3">Status </label> 
+						</div>
+						<div class="col-lg-3 mt-3">
+							<input type="checkbox" checked class="" value="1" id="is_active" name="is_active" />
+						</div>
 					</div>
 					<div class="row mt-2">
 						<div class="col-lg-1 pr-0">
@@ -96,14 +88,6 @@
 						<div class="col-lg-10">
 							<textarea class="form-control" name="chapter_description" id="chapter_description" required></textarea>
 						</div>	
-					</div>
-					<div class="row mt-2">
-						<div class="col-lg-1 pr-0">
-							<label for="example-email-input" class="col-form-label pr-3">Status </label> 
-						</div>
-						<div class="col-lg-3 mt-3">
-							<input type="checkbox" checked class="" value="1" id="is_active" name="is_active" />
-						</div>
 					</div>
 				</div>
 				<div class="modal-footer">

@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section('title', 'Course Subject Mapping')
+@section('title', 'Subject Chapter Mapping')
 
 @section('content')
 <style type="text/css">
@@ -22,21 +22,21 @@
                         <thead>
                             <tr>
                                 <th>Sl No</th>
-                                <th>Course</th>
                                 <th>Subject</th>
+                                <th>Chapter</th>
                                 <th>Status</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @forelse($mappings as $k=>$map)
+                             @forelse($mappings as $k=>$map)
                             <tr>
                                 <td>{{++$k}}</td>
-                                <td>@if(isset($map->course)){{$map->course->course_name}}@endif</td>
                                 <td>@if(isset($map->subject)){{$map->subject->subject_name}}@endif</td>
+                                <td>@if(isset($map->chapter)){{$map->chapter->chapter_name}}@endif</td>
                                 <td>
                                     <div class="custom-control custom-switch">
-                                        <input type="checkbox"  class="custom-control-input" id="customSwitch{{ $map->id }}"  value="{{ $map->id }}" onclick="mappingStatus(this.value)" @if($map->is_active==1) checked @endif>
+                                        <input type="checkbox"  class="custom-control-input" id="customSwitch{{ $map->id }}"  value="{{ $map->id }}" onclick="subject_chapter_mappingStatus(this.value)" @if($map->is_active==1) checked @endif>
                                         <label class="custom-control-label" for="customSwitch{{ $map->id }}">@if($map->is_active==1) Active @else Inactive @endif</label>
                                     </div>
                                 </td>
@@ -57,11 +57,11 @@
 <div class="modal fade" id="addMappingModal">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
-            <form method="post" name="addMappingForm" id="addMappingForm" role="form" enctype="multipart/form-data" autocomplete="off" data-parsley-validate data-parsley-trigger="keyup" data-parsley-trigger="focusout">
+            <form method="post" name="addMappingForm" id="addMappingForm" role="form"  autocomplete="off" data-parsley-validate data-parsley-trigger="keyup" data-parsley-trigger="focusout">
 	            @csrf
                 <!-- Modal Header -->
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Add Course Subject Mapping</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Add Subject Chapter Mapping</h5>
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 						<span aria-hidden="true">&times;</span>
 					</button>
@@ -70,15 +70,15 @@
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-lg-1">
-                            <label for="unique-id-input" class="col-form-label">Course<span class="text-danger"> * </span></label>
+                            <label for="unique-id-input" class="col-form-label">Subject<span class="text-danger"> * </span></label>
                         </div>
                         <div class="col-lg-3">
-                            <select required class="form-control" name="course_id" id="course_id" required >
-                                <option value="">Select Course</option>
-                               @forelse($cources as $course)
-                                    <option value="{{$course->id}}"  >{{$course->course_name}}</option>
+                            <select required class="form-control" name="subject_id" id="subject_id" required >
+                                <option value="">Select Subject</option>
+                                @forelse($subjects as $subject)
+                                    <option value="{{$subject->id}}">{{$subject->subject_name}}</option>
                                     @empty
-                                    @endforelse
+                                @endforelse
                             </select>                                        
                         </div>
                         <div class="col-lg-1 pr-0">
@@ -90,13 +90,13 @@
                     </div>
                     <div class="row">
                         <div class="col-lg-1 pr-0">
-                            <label for="address-input" class="col-form-label">Subject<span class="text-danger"> * </span></label>
+                            <label for="address-input" class="col-form-label">Chapters<span class="text-danger"> * </span></label>
                         </div>
                         <div class="col-lg-10 demo">
-                            <select multiple="multiple" size="10" id="subject_id" name="subject_id[]" title="subject_id[]" required="" >
+                            <select multiple="multiple" size="10" id="chapter_id" name="chapter_id[]" title="subject_id[]" >
                                     
-                                     @foreach($subjects as $subject)
-                                    <option value="{{ $subject->id }}">{{ $subject->subject_name }}</option>
+                                     @foreach($chapters as $chapter)
+                                    <option value="{{ $chapter->id }}">{{ $chapter->chapter_name }}</option>
                                 @endforeach
                             </select>  
                         </div>
@@ -112,9 +112,6 @@
 </div>
 <!-- End -->
 
-<!-- The Edit Mapping Modal -->
-
-<!-- End Modal -->
 <script src="{{asset('app-assets/assets/js/jquery.bootstrap-duallistbox.js')}}"></script>
 <link rel="stylesheet" type="text/css" href="{{asset('app-assets/assets/css/bootstrap-duallistbox.css')}}">
 <script type="text/javascript">
@@ -143,12 +140,12 @@ $(function () {
 
 $(document).ready(function()
 {
-    $(".odtabs").not("#tab7").addClass('btn-outline-secondary');
-	$("#tab7").addClass('btn-secondary');
+    $(".odtabs").not("#tab9").addClass('btn-outline-secondary');
+	$("#tab9").addClass('btn-secondary');
 
     $('.modal').on('hidden.bs.modal', function() {
 		$(this).find('form')[0].reset();
-         $('[name="subject_id[]"]').bootstrapDualListbox('refresh', true);
+         $('[name="chapter_id[]"]').bootstrapDualListbox('refresh', true);
   	});
     
     var table = $('#datatable').DataTable({
@@ -163,49 +160,49 @@ $(document).ready(function()
         }]
     });
 
-    var demo1 = $('select[name="subject_id[]"]').bootstrapDualListbox({
-        nonSelectedListLabel: 'Non-selected Subjects',
-        selectedListLabel: 'Selected Subjects',
+    var demo1 = $('select[name="chapter_id[]"]').bootstrapDualListbox({
+        nonSelectedListLabel: 'Non-selected Chapters',
+        selectedListLabel: 'Selected Chapters',
         moveOnSelect: false,
         moveAllLabel:"",
         removeAllLabel:"",
         removeSelectedLabel:""
     });
-    $("#course_id").change(function()
+    $("#subject_id").change(function()
     {
-        var sub_id = $(this).val();
+        var subjectId = $(this).val();
 
-        if(sub_id != "")
+        if(subjectId != "")
         {
          $.ajax({
                     type: "POST",
-                    url: "{{ route('get_courses_maped') }}",
-                    data: {sub_id:sub_id ,_token: '{{csrf_token()}}'},
+                    url: "{{ route('get_sub_chapter_maped') }}",
+                    data: {subjectId:subjectId ,_token: '{{csrf_token()}}'},
                     success: function(response) {
                         var dt = response.data;
-                        $('[name="subject_id[]"] option').prop('selected', false);
+                        $('[name="chapter_id[]"] option').prop('selected', false);
                         if(dt.length === 0 )
                         {
-                            $('[name="subject_id[]"] option').prop('selected', false);
+                            $('[name="chapter_id[]"] option').prop('selected', false);
                         }
                         else
                         {
                             $.each(dt, function (i, item) 
                             {
-                                $('[name="subject_id[]"] option[value="'+item+'"]').prop('selected', true);
+                                $('[name="chapter_id[]"] option[value="'+item+'"]').prop('selected', true);
 
                            });
                         }
-                        $('[name="subject_id[]"]').bootstrapDualListbox('refresh', true);
+                        $('[name="chapter_id[]"]').bootstrapDualListbox('refresh', true);
                     }
                 });
         }
     });
 });
 
-function mappingStatus(value)
+function subject_chapter_mappingStatus(value)
 {
-    window.location.href = '/mappingStatus/' + value;
+    window.location.href = '/subject_chapter_mappingStatus/' + value;
 }
 
 function saveMapping() {
@@ -217,7 +214,7 @@ function saveMapping() {
                     type: "POST",
                     cache:false,
                     async: false,
-                    url: "{{ route('submit_csmapping') }}",
+                    url: "{{ route('submit_chaptermapping') }}",
                     data: new FormData($("#addMappingForm")[0]),
                     processData: false,
                     contentType: false,
@@ -260,7 +257,7 @@ function saveMapping() {
 $(".edit_mapping").click(function() {
     var id = $(this).data('id');
    
-    var url = '{{ route("edit_mapping") }}';
+    var url = '{{ route("edit_chapter_mapping") }}';
     $.ajax({
         type: "post",
         url: url,
@@ -269,7 +266,7 @@ $(".edit_mapping").click(function() {
         {
             $("#addMappingModal").modal('show');
             var res =response.data[0];
-            $("#course_id").val(res['course_id']).change();
+            $("#subject_id").val(res['subject_id']).change();
             if(res['is_active'] == 1)
             {
                 $( "#is_active" ).attr('checked', 'checked');
