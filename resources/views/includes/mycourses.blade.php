@@ -73,14 +73,14 @@
                              <div class="collapse" id="submenu{{$s1}}" aria-expanded="false">
                                  <ul class="flex-column pl-2 nav">
                                      <!-- <li class="nav-item"><a class="nav-link py-0" href="#"><span>Course1</span></a></li> -->
-                                     @php $all_chapters = $chapters->where('subject_id',$subjects->subject_id)->where('is_active',1); @endphp
+                                     @php $all_chapters = $subject_chapters->where('subject_id',$subjects->subject_id)->where('is_active',1); @endphp 
                                          @if(count($all_chapters) > 0)
                                            @foreach($all_chapters as $ch=>$chpter)
                                               <li class="nav-item">
-                                                  <a class="nav-link left_menu collapsed py-1 pl-4" href="#submenu1sub{{$ch}}" data-toggle="collapse" data-target="#submenu1sub{{$ch}}"><span class="chapter-lbl" data-title="{{$chpter->chapter_name}}"><!-- <i class="fa-regular fa-folder pr-1"></i> -->  {{ substr($chpter->chapter_name, 0,28)}}...</span></a>
+                                                  <a class="nav-link left_menu collapsed py-1 pl-4" href="#submenu1sub{{$ch}}" data-toggle="collapse" data-target="#submenu1sub{{$ch}}"><span class="chapter-lbl" data-title="{{$chpter->chapter->chapter_name}}"><!-- <i class="fa-regular fa-folder pr-1"></i> -->  {{ substr($chpter->chapter->chapter_name, 0,28)}}...</span></a>
                                                   <div class="collapse" id="submenu1sub{{$ch}}" aria-expanded="false">
                                                       <ul class="flex-column nav pl-4">
-                                                         @php $all_topics = $topic->where('chapter_id',$chpter->id)->where('is_active',1);
+                                                         @php $all_topics = $topic->where('chapter_id',$chpter->chapter->id)->where('is_active',1);
                                                          @endphp
                                                          @if(count($all_topics) > 0)
                                                          @foreach($all_topics as $topc)

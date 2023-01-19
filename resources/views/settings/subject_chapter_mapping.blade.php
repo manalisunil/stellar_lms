@@ -22,6 +22,7 @@
                         <thead>
                             <tr>
                                 <th>Sl No</th>
+                                <th>Course</th>
                                 <th>Subject</th>
                                 <th>Chapter</th>
                                 <th>Status</th>
@@ -32,6 +33,7 @@
                              @forelse($mappings as $k=>$map)
                             <tr>
                                 <td>{{++$k}}</td>
+                                <td>@if(isset($map->course)){{$map->course->course_name}}@endif</td>
                                 <td>@if(isset($map->subject)){{$map->subject->subject_name}}@endif</td>
                                 <td>@if(isset($map->chapter)){{$map->chapter->chapter_name}}@endif</td>
                                 <td>
@@ -70,15 +72,27 @@
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-lg-1">
+                            <label for="unique-id-input" class="col-form-label">Course<span class="text-danger"> * </span></label>
+                        </div>
+                        <div class="col-lg-3">
+                            <select required class="form-control" name="course_id" id="course_id">
+                                <option value="">Select Course</option>
+                                @forelse($courses as $course)
+                                    <option value="{{$course->id}}">{{$course->course_name}}</option>
+                                    @empty
+                                @endforelse
+                            </select>                                        
+                        </div>
+                        <div class="col-lg-1 pr-0">
                             <label for="unique-id-input" class="col-form-label">Subject<span class="text-danger"> * </span></label>
                         </div>
                         <div class="col-lg-3">
-                            <select required class="form-control" name="subject_id" id="subject_id" required >
+                            <select required class="form-control" name="subject_id" id="subject_id">
                                 <option value="">Select Subject</option>
-                                @forelse($subjects as $subject)
+                                <!-- @forelse($subjects as $subject)
                                     <option value="{{$subject->id}}">{{$subject->subject_name}}</option>
                                     @empty
-                                @endforelse
+                                @endforelse -->
                             </select>                                        
                         </div>
                         <div class="col-lg-1 pr-0">
@@ -93,9 +107,8 @@
                             <label for="address-input" class="col-form-label">Chapters<span class="text-danger"> * </span></label>
                         </div>
                         <div class="col-lg-10 demo">
-                            <select multiple="multiple" size="10" id="chapter_id" name="chapter_id[]" title="subject_id[]" >
-                                    
-                                     @foreach($chapters as $chapter)
+                            <select multiple="multiple" size="10" id="chapter_id" name="chapter_id[]" title="chapter_id[]" required="" >
+                                @foreach($chapters as $chapter)
                                     <option value="{{ $chapter->id }}">{{ $chapter->chapter_name }}</option>
                                 @endforeach
                             </select>  
@@ -155,7 +168,7 @@ $(document).ready(function()
 		    $("div.toolbar").html('<button id="addMapping" type="button" class="ml-2 btn btn-primary" data-toggle="modal" data-target="#addMappingModal"><img class="menuicon" src="{{asset("app-assets/assets/images/add.svg")}}">&nbsp;Add Mapping</button><br />');
 		}, 
         'columnDefs': [ {
-            'targets': [4],
+            'targets': [5],
             'orderable': false,
         }]
     });
@@ -168,34 +181,57 @@ $(document).ready(function()
         removeAllLabel:"",
         removeSelectedLabel:""
     });
+
+    $('select[name="course_id"]').on('change', function() {
+        var course_id = $(this).val();
+        if(course_id) {
+            $.ajax({
+                url: '/getsubject',
+                data: { id:course_id , _token: '{{csrf_token()}}'},
+                type: "GET",
+                dataType: "json",
+                success:function(data) {                      
+                    $('select[name="subject_id"]').empty();
+                    $('select[name="subject_id"]').append('<option value="">Select Subject</option>');
+                    $.each(data, function(key, value) {
+                        $('select[name="subject_id"]').append('<option value="'+ value.id +'">'+ value.subject_name +'</option>');
+                    });
+                }
+            });
+        }else{
+            $('select[name="subject_id"]').empty();
+        }
+    });
+
     $("#subject_id").change(function()
     {
         var subjectId = $(this).val();
+        var courseId = $('#course_id').val();
 
         if(subjectId != "")
         {
-         $.ajax({
-                    type: "POST",
-                    url: "{{ route('get_sub_chapter_maped') }}",
-                    data: {subjectId:subjectId ,_token: '{{csrf_token()}}'},
-                    success: function(response) {
-                        var dt = response.data;
+            $.ajax({
+                type: "POST",
+                url: "{{ route('get_sub_chapter_maped') }}",
+                data: {subjectId:subjectId ,courseId:courseId,_token: '{{csrf_token()}}'},
+                success: function(response) {
+                    var dt = response.data;
+                    $('[name="chapter_id[]"] option').prop('selected', false);
+                    if(dt.length === 0 )
+                    {
                         $('[name="chapter_id[]"] option').prop('selected', false);
-                        if(dt.length === 0 )
-                        {
-                            $('[name="chapter_id[]"] option').prop('selected', false);
-                        }
-                        else
-                        {
-                            $.each(dt, function (i, item) 
-                            {
-                                $('[name="chapter_id[]"] option[value="'+item+'"]').prop('selected', true);
-
-                           });
-                        }
-                        $('[name="chapter_id[]"]').bootstrapDualListbox('refresh', true);
                     }
-                });
+                    else
+                    {
+                        $.each(dt, function (i, item) 
+                        {
+                            $('[name="chapter_id[]"] option[value="'+item+'"]').prop('selected', true);
+
+                        });
+                    }
+                    $('[name="chapter_id[]"]').bootstrapDualListbox('refresh', true);
+                }
+            });
         }
     });
 });
@@ -266,7 +302,33 @@ $(".edit_mapping").click(function() {
         {
             $("#addMappingModal").modal('show');
             var res =response.data[0];
-            $("#subject_id").val(res['subject_id']).change();
+            $("#course_id").val(res['course_id']).change();
+            // $("#subject_id").val(res['subject_id']).change();
+            var courseID = res['course_id'];
+			if(courseID) {
+				$.ajax({
+					url: '/getsubject',
+					data: { id:courseID , _token: '{{csrf_token()}}'},
+					type: "GET",
+					dataType: "json",
+					success:function(data) {                      
+						$("#subject_id").empty();
+						$.each(data, function(key, value) {
+                            if(value.id == courseID)
+							{
+								$("#subject_id").append('<option value="'+ value.id +'" selected="selected"    >'+ value.subject_name +'</option>');
+							}
+							else
+							{
+                                $("#subject_id").append('<option value="'+ value.id +'">'+ value.subject_name +'</option>');
+							}
+						});
+					}
+				});
+			} else {
+				$('select[name="subject_id"]').empty();
+			}
+
             if(res['is_active'] == 1)
             {
                 $( "#is_active" ).attr('checked', 'checked');
@@ -279,52 +341,21 @@ $(".edit_mapping").click(function() {
     });
 });
 
-// function updateMapping()
-// {
-//     var url = '{{ route("update_mapping") }}';
-//     if ($("#updateMappingForm").parsley()) {
-// 		if ($("#updateMappingForm").parsley().validate()) {
-// 			event.preventDefault();
-//             var formData = new FormData($("#updateMappingForm")[0]);
-// 			if ($("#updateMappingForm").parsley().isValid()) {
-// 				$.ajax({
-// 					type: "POST",
-// 					cache:false,
-// 					async: false,
-// 					url: url,
-// 					data: formData,
-// 					processData: false,
-// 					contentType: false,
-// 					success: function(response) {
-//                         if(response.msg=="Mapping Already Exists!"){
-//                             new PNotify({
-//                             title: 'Error',
-//                             text:  response.msg,
-//                             type: 'error',
-//                             delay: 1000
-//                             });
-//                             return false;
-//                         } else {
-//                             new PNotify({
-//                             title: 'Success',
-//                             text:  response.msg,
-//                             type: 'success'
-//                             });
-//                             setTimeout(function(){  location.reload(); }, 1000);
-//                         }
-//                     },
-// 					error:function(response) {
-// 						var errors = response.responseJSON;
-// 						new PNotify({
-//                             title: 'Error',
-//                             text:  errors.msg,
-//                             type: 'error'
-// 					    });
-// 					}
-// 				});
-// 			}
-// 		}
-// 	}
+// function get_course_subjects(course_id)
+// {		
+//     $.ajax({
+//         url: '/getsubject',
+//         data: { id:course_id , _token: '{{csrf_token()}}'},
+//         type: "GET",
+//         dataType: "json",
+//         success:function(data) {                      
+//             $('select[name="subject_id"]').empty();
+//             $('select[name="subject_id"]').append('<option value="">Select Subject</option>');
+//             $.each(data, function(key, value) {
+//                 $('select[name="subject_id"]').append('<option value="'+ value.id +'">'+ value.subject_name +'</option>');
+//             });
+//         }
+//     });
 // }
 </script>
 @endsection

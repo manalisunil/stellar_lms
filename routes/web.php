@@ -129,6 +129,7 @@ Route::post('/edit_student_mapping',[\App\Http\Controllers\studentCourseControll
 //Subject Chapter Mapping
 
 Route::get('settings/subject_chapter_mapping', [App\Http\Controllers\SubjectChapterController::class, 'index'])->name('subject_chapter_mapping')->middleware('auth');
+Route::get('getsubject',[App\Http\Controllers\SubjectChapterController::class,'getSubject'])->name('get_subject');
 Route::post('get_sub_chapter_maped',[\App\Http\Controllers\SubjectChapterController::class, 'get_sub_chapter_maped'])->name('get_sub_chapter_maped');
 Route::post('/submit_chaptermapping', [App\Http\Controllers\SubjectChapterController::class, 'submit_chaptermapping'])->name('submit_chaptermapping');
 Route::any('/subject_chapter_mappingStatus/{mappingid?}', [App\Http\Controllers\SubjectChapterController::class, 'mappingStatus'])->name('chapter_mappingStatus');

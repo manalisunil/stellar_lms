@@ -10,6 +10,7 @@ use App\Models\Topic;
 use App\Models\User;
 use App\Models\Company;
 use App\Models\CourseSubjectMapping;
+use App\Models\SubjectChapterMapping;
 use App\Models\TopicVideo;
 use App\Models\TopicContent;
 use App\Models\TopicDocument;
@@ -25,6 +26,11 @@ class MycoursesController extends Controller
     {
         $cources = Course::where('is_active',1)->get(); 
         $courses_subjects =[];
+		$subject_chapters = SubjectChapterMapping::get();
+		foreach($subject_chapters as $chptr) 
+        {
+            $chptr->chapter = Chapter::where('id', $chptr->chapter_id)->first();
+        }
         $chapters = Chapter::where('is_active',1)->get();
         $topic = Topic::where('is_active',1)->get();
         $course_id = "";
@@ -35,16 +41,21 @@ class MycoursesController extends Controller
         }
 
 
-    	return view('includes.mycourses',compact('course_id','cources','courses_subjects','chapters','topic'));
+    	return view('includes.mycourses',compact('course_id','cources','courses_subjects','chapters','subject_chapters','topic'));
     }
     public function course_detail($id)
     {
     	$cources = Course::where('is_active',1)->get(); 
     	$courses_subjects = CourseSubjectMapping::join('mdblms_subjects','mdblms_subjects.id','=','mdblms_course_subject_mapping.subject_id')->where('mdblms_course_subject_mapping.course_id',$id)->where('mdblms_course_subject_mapping.is_active',1)->where('mdblms_subjects.is_active',1)->select('mdblms_course_subject_mapping.*')->get();
         $chapters = Chapter::where('is_active',1)->get();
+		$subject_chapters = SubjectChapterMapping::where('course_id',$id)->get();
+		foreach($subject_chapters as $chptr) 
+        {
+            $chptr->chapter = Chapter::where('id', $chptr->chapter_id)->first();
+        }
     	$topic = Topic::where('is_active',1)->get();
     	$course_id  = $id;
-    	return view('includes.mycourses',compact('course_id','cources','courses_subjects','chapters','topic'));
+    	return view('includes.mycourses',compact('course_id','cources','courses_subjects','chapters','topic','subject_chapters'));
 
     }
     public function get_topic_detail(Request $request)

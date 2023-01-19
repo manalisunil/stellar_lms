@@ -11,6 +11,7 @@ class SubjectChapterMapping extends Model
     protected $table = 'mdblms_subject_chapter_mapping';
     public $timestamps = false;
      protected $fillable = [
+        'course_id',
         'subject_id',
         'chapter_id',
         'added_by',
