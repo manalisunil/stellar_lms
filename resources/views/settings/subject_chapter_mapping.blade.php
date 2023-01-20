@@ -316,11 +316,11 @@ $(".edit_mapping").click(function() {
 						$.each(data, function(key, value) {
                             if(value.id == courseID)
 							{
-								$("#subject_id").append('<option value="'+ value.id +'" selected="selected"    >'+ value.subject_name +'</option>');
+								$("#subject_id").append('<option value="'+ value.id +'" selected="selected"    >'+ value.subject_name +'</option>').change();
 							}
 							else
 							{
-                                $("#subject_id").append('<option value="'+ value.id +'">'+ value.subject_name +'</option>');
+                                $("#subject_id").append('<option value="'+ value.id +'">'+ value.subject_name +'</option>').change();
 							}
 						});
 					}
