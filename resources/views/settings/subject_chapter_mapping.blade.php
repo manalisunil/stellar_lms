@@ -89,10 +89,6 @@
                         <div class="col-lg-3">
                             <select required class="form-control" name="subject_id" id="subject_id">
                                 <option value="">Select Subject</option>
-                                <!-- @forelse($subjects as $subject)
-                                    <option value="{{$subject->id}}">{{$subject->subject_name}}</option>
-                                    @empty
-                                @endforelse -->
                             </select>                                        
                         </div>
                         <div class="col-lg-1 pr-0">
@@ -158,7 +154,9 @@ $(document).ready(function()
 
     $('.modal').on('hidden.bs.modal', function() {
 		$(this).find('form')[0].reset();
-         $('[name="chapter_id[]"]').bootstrapDualListbox('refresh', true);
+        $('select[name="subject_id"]').empty();
+        $('select[name="subject_id"]').append('<option value="">Select Subject</option>');
+        $('[name="chapter_id[]"]').bootstrapDualListbox('refresh', true);
   	});
     
     var table = $('#datatable').DataTable({
@@ -303,8 +301,8 @@ $(".edit_mapping").click(function() {
             $("#addMappingModal").modal('show');
             var res =response.data[0];
             $("#course_id").val(res['course_id']).change();
-            // $("#subject_id").val(res['subject_id']).change();
             var courseID = res['course_id'];
+            var subjectID = res['subject_id'];
 			if(courseID) {
 				$.ajax({
 					url: '/getsubject',
@@ -314,7 +312,7 @@ $(".edit_mapping").click(function() {
 					success:function(data) {                      
 						$("#subject_id").empty();
 						$.each(data, function(key, value) {
-                            if(value.id == courseID)
+                            if(value.id == subjectID)
 							{
 								$("#subject_id").append('<option value="'+ value.id +'" selected="selected"    >'+ value.subject_name +'</option>').change();
 							}
@@ -340,22 +338,5 @@ $(".edit_mapping").click(function() {
         }
     });
 });
-
-// function get_course_subjects(course_id)
-// {		
-//     $.ajax({
-//         url: '/getsubject',
-//         data: { id:course_id , _token: '{{csrf_token()}}'},
-//         type: "GET",
-//         dataType: "json",
-//         success:function(data) {                      
-//             $('select[name="subject_id"]').empty();
-//             $('select[name="subject_id"]').append('<option value="">Select Subject</option>');
-//             $.each(data, function(key, value) {
-//                 $('select[name="subject_id"]').append('<option value="'+ value.id +'">'+ value.subject_name +'</option>');
-//             });
-//         }
-//     });
-// }
 </script>
 @endsection

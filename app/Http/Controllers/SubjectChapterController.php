@@ -96,7 +96,7 @@ class SubjectChapterController extends Controller
    }
 
    public function edit_chapter_mapping(Request $request)
-   {
+   { 
        $id =$request->id;
        $mappingDetail = SubjectChapterMapping::where('id',$id)->get();
        return response()->json(['data'=>$mappingDetail]);
