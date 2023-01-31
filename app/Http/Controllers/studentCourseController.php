@@ -18,16 +18,21 @@ class studentCourseController extends Controller
     
    public function index()
    {
-   		$mappings = Course_assignment::all();
-        foreach($mappings as $map) 
+        if(Auth::user()->user_type_id != 3)
         {
-            $map->user = User::where('id', $map->user_id)->first();
-            $map->Course = Course::where('id', $map->course_id)->first();
+            $mappings = Course_assignment::all();
+            foreach($mappings as $map) 
+            {
+                $map->user = User::where('id', $map->user_id)->first();
+                $map->Course = Course::where('id', $map->course_id)->first();
+            }
+            $cources = Course::where('is_active', 1)->get();
+            $students = User::where('user_type_id',4)->where('is_active', 1)->get();
+            return view('settings.student_courses_mapping',compact('mappings','students','cources'));
+        } else {
+            return "Unauthorized Access!";
         }
-        $cources = Course::where('is_active', 1)->get();
-        $students = User::where('user_type_id',4)->where('is_active', 1)->get();
-        // dd( $students);
-        return view('settings.student_courses_mapping',compact('mappings','students','cources'));
+
    }
    public function get_stud_courses_maped(Request $request)
    {

@@ -4,13 +4,19 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Company;
+use Auth;
 
 class CompanyController extends Controller
 {
     public function viewCompany()
     {
-        $companies = Company::all();
-        return view('settings.company_list',compact('companies'));
+        if(Auth::user()->user_type_id != 3)
+        {
+            $companies = Company::all();
+            return view('settings.company_list',compact('companies'));
+        } else {
+            return "Unauthorized Access!";
+        }
     }
 
     public function submitCompany(Request $request)

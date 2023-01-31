@@ -9,20 +9,24 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Company;
 use App\Models\User;
-
+use Auth;
 
 class UserController extends Controller
 {
      public function index()
     {
-    	// DB::enableQueryLog();
-    	$userList  = User::with('getCompany')->whereNotIn('user_type_id',[1])->get();
-    	// dd(DB::getQueryLog());
-        $companyList  = Company::where('is_active',1)->get();
-        $usertypesList    = DB::table('mdblms_usertypes')->whereNotIn('id', [1])->orderBy('id', 'ASC')->get();
-        $allcompanyList  = Company::get();
-        
-        return view('settings.user',compact('userList','companyList','usertypesList'));
+		if(Auth::user()->user_type_id != 3)
+        {
+            // DB::enableQueryLog();
+			$userList  = User::with('getCompany')->whereNotIn('user_type_id',[1])->get();
+			// dd(DB::getQueryLog());
+			$companyList  = Company::where('is_active',1)->get();
+			$usertypesList    = DB::table('mdblms_usertypes')->whereNotIn('id', [1])->orderBy('id', 'ASC')->get();
+			$allcompanyList  = Company::get();
+			return view('settings.user',compact('userList','companyList','usertypesList'));
+        } else {
+            return "Unauthorized Access!";
+        }
     }
     public function adduser(Request $request)
     {

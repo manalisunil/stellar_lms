@@ -10,6 +10,7 @@
                 </div>
                <div class="card-body">                  
                    <div class="row px-3" style="">
+                        @if(auth::user()->user_type_id !=3)
                         <div class="card shadow mx-1 p-0 " style="width:8%;border-radius: 14%!important;">
                             <div class="card-body">
                                 <div class="row align-items-center gx-0">
@@ -44,7 +45,7 @@
                                 </div>
                             </div>
                         </div>
-
+                        @endif
                         <div class="card shadow mx-1 p-0 " style="width:8%;border-radius: 14%!important;">
                             <div class="card-body">
                                 <div class="row align-items-center gx-0">
