@@ -9,7 +9,7 @@
 <div class="container-fluid mt-4">
 	<div class="card shadow-lg">
 		<div class="card-header card_header" >
-			<h4 class="mt-0 text-left"> Profile </h4>
+			<h4 class="mt-3 text-left"><a href="{{ route('home') }}"><i class="fa-solid fa-circle-arrow-left"></i></a> Profile </h4>
 		</div></br>
 		<div class="card-body p-0 ">
 			<div class="d-flex flex-row-reverse bd-highlight ml-2" >
@@ -25,8 +25,8 @@
 			<div class="row mt-3 display_div mx-3">
 				<div class="col-lg-12">
 					<div class="card mb-4">
-						<div class="card-body" >
-							<div class="row">
+						<div class="card-body">
+							<div class="row mt-3">
 								<div class="col-sm-2">
 									<p class="mb-0">First Name</p>
 								</div>
