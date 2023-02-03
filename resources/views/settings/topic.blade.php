@@ -7,6 +7,17 @@
 			<div class="card">
 				<div class="card-body">
 					<div class="p-0" id="tbl_list">
+						<div class="row">
+							<div class="col-md-3">
+								<select required class="form-control" name="select_chapter_id" id="select_chapter_id">
+									<option value="" selected disabled>Select Chapter</option>
+									@forelse($chapters as $chapter)
+									<option value="@if(isset($chapter->chapter_data)){{$chapter->chapter_data->id}}@endif">@if(isset($chapter->chapter_data)) {{$chapter->chapter_data->chapter_name}} @endif</option>
+									@empty
+									@endforelse
+								</select>							
+							</div>
+						</div></br>
 						<table id="datatable" class="table table-bordered mb-0" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
 							<thead>
 								<tr>
@@ -20,7 +31,7 @@
 									<th>Action</th>
 								</tr>
 							</thead>
-							<tbody>
+							<tbody id="test">
 								@forelse($topicList as $k=> $topcDt)
 								<tr>
 									<td> {{++$k}}</td>
@@ -39,7 +50,7 @@
 										</div>
 									</td>
 									<td> 
-										<span class="edit_icon edit_topic ml-2"  data-id="{{ $topcDt->id }}"><img class="menuicon tbl_editbtn" src="{{asset("app-assets/assets/images/edit.svg")}}" >&nbsp;</span>
+										<span class="edit_icon edit_topic ml-2"  onClick="editTopic({{ $topcDt->id}})"><img class="menuicon tbl_editbtn" src="{{asset("app-assets/assets/images/edit.svg")}}" >&nbsp;</span>
 									</td>
 								</tr>
 								@empty
@@ -168,12 +179,7 @@ function topicStatus(value)
 {
 	window.location.href = '/topicStatus/' + value;
 }
-// function view_description(text)
-// {
-//     $('#viewDocModal').modal('show');
-//     $(".modal-body #append_stdoc_view").html(text.topic_description);
-    
-// }
+
 function backTo_tble()
 {
 	$("#tbl_list").show();
@@ -202,12 +208,11 @@ $(function ()
 {
 	@if(Session::has('success'))
 		new PNotify({
-		title: 'Success',
-		delay: 500,
-		text:  "{{Session::get('success')}}",
-		type: 'success'
-	});
-			
+			title: 'Success',
+			delay: 500,
+			text:  "{{Session::get('success')}}",
+			type: 'success'
+		});
 	@endif
 	@if ($errors->any())
 		var err = "";
@@ -238,13 +243,44 @@ $(document).ready(function()
         }
   	});
 
+	$('#select_chapter_id').on('change', function() {
+		var chapter_id =this.value;
+		$.ajax({
+			type: "POST",
+			url: "{{ route('get_selected_chapter_topic') }}",
+			data: { id:chapter_id , _token: '{{csrf_token()}}'},
+			success: function(data) {
+				$('#test').empty();
+				var res='';
+				$.each (data, function (key, value) {
+					res +=
+					'<tr>'+
+						'<td>'+ ++key +'</td>'+
+						'<td>'+value.topic_id+'</td>'+
+						'<td>'+value.topic_name+'</td>'+
+						'<td>'+value.chapter+'</td>'+
+						'<td>'+value.topic_intro+'</td>'+
+						'<td><span  class="btn-primary btn-sm edit_icon"  onClick="view_description('+value.id+')">View</span></td>'+
+						'<td><div class="custom-control custom-switch">'+
+							'<input type="checkbox"  class="custom-control-input" id="customSwitch'+value.id+'"  value="'+value.id+'" onclick="topicStatus(this.value)"';
+								if(value.is_active==1) 
+								{
+									res += 'checked';
+								}
+							res +='><label class="custom-control-label" for="customSwitch'+value.id+'">'+value.active+'</label>'+
+						'</div></td>'+
+						'<td><span class="edit_icon edit_topic ml-2" onClick="editTopic('+value.id+')"><img class="menuicon tbl_editbtn" src="{{asset("app-assets/assets/images/edit.svg")}}" >&nbsp;</span></td>'+
+					'</tr>';
+   				});
+            	$('#test').html(res);
+			}
+		});
+	});
+
 	CKEDITOR.replace('topic_description');
 	var table = $('#datatable').DataTable({
 		responsive: true,
 		dom: 'l<"toolbar">frtip',
-		// buttons: [
-		// 	'excel'
-		// ],
 		initComplete: function(){
 		$("div.toolbar").html('<button   type="button" class=" ml-2 btn btn-primary" data-toggle="modal" data-target="#topicaddModal"><img class="menuicon" src="{{asset("app-assets/assets/images/add.svg")}}">&nbsp;Add Topic</button><br />');
 		}
@@ -293,11 +329,10 @@ $(document).ready(function()
 		}
 	}
 
-	$(".edit_topic").click(function()
+	function editTopic(id)
 	{
-		var id = $(this).data('id');
+		var id = id;
 		var url = '{{ route("edit_topic") }}';
-		// alert(id);
 		$.ajax({
 			type: "post",
 			url: url,
@@ -310,7 +345,7 @@ $(document).ready(function()
 				CKEDITOR.replace('topic_description1');
 			}
 		});
-	});
+	}
 
 	function updateTopic()
 	{
@@ -355,58 +390,7 @@ $(document).ready(function()
 			}
 		}
 	}
-$(document).ready(function()
-{
-	//has uppercase
-	window.Parsley.addValidator('uppercase', {
-	  requirementType: 'number',
-	  validateString: function(value, requirement) {
-	    var uppercases = value.match(/[A-Z]/g) || [];
-	    return uppercases.length >= requirement;
-	  },
-	  messages: {
-	    en: 'Your password must contain at least (%s) uppercase letter.'
-	  }
-	});
 
-	//has lowercase
-	window.Parsley.addValidator('lowercase', {
-	  requirementType: 'number',
-	  validateString: function(value, requirement) {
-	    var lowecases = value.match(/[a-z]/g) || [];
-	    return lowecases.length >= requirement;
-	  },
-	  messages: {
-	    en: 'Your password must contain at least (%s) lowercase letter.'
-	  }
-	});
-
-	//has number
-	window.Parsley.addValidator('number', {
-	  requirementType: 'number',
-	  validateString: function(value, requirement) {
-	    var numbers = value.match(/[0-9]/g) || [];
-	    return numbers.length >= requirement;
-	  },
-	  messages: {
-	    en: 'Your password must contain at least (%s) number.'
-	  }
-	});
-
-	//has special char
-	window.Parsley.addValidator('special', {
-	  requirementType: 'number',
-	  validateString: function(value, requirement) {
-	    var specials = value.match(/[^a-zA-Z0-9]/g) || [];
-	    return specials.length >= requirement;
-	  },
-	  messages: {
-	    en: 'Your password must contain at least (%s) special characters.'
-	  }
-	});
-
-
-});
 $(function() {
 	$('input[name="dob"]').daterangepicker({
 	    singleDatePicker: true,

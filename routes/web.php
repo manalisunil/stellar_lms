@@ -60,6 +60,7 @@ Route::post('edit_topic',[\App\Http\Controllers\TopicsController::class, 'edit_t
 Route::post('update_topic',[\App\Http\Controllers\TopicsController::class, 'updatetopic'])->name('update_topic');
 Route::any('/topicStatus/{topicid?}', [App\Http\Controllers\TopicsController::class, 'topicStatus']);
 Route::post('topic_view_topic',[\App\Http\Controllers\TopicsController::class, 'view_topic'])->name('topic_view_topic');
+Route::post('get_selected_chapter_topic',[\App\Http\Controllers\TopicsController::class, 'get_chapter_topic'])->name('get_selected_chapter_topic');
 
 //Course
 Route::get('settings/view_courses', [App\Http\Controllers\CourseController::class, 'viewCourse'])->name('course_list')->middleware('auth');

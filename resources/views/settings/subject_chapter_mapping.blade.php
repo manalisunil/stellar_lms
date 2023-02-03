@@ -33,9 +33,9 @@
                              @forelse($mappings as $k=>$map)
                             <tr>
                                 <td>{{++$k}}</td>
-                                <td>@if(isset($map->course)){{$map->course->course_name}}@endif</td>
-                                <td>@if(isset($map->subject)){{$map->subject->subject_name}}@endif</td>
-                                <td>@if(isset($map->chapter)){{$map->chapter->chapter_name}}@endif</td>
+                                <td>@if(isset($map->course)){{$map->course->course_name}} ({{$map->course->course_id}})@endif</td> 
+                                <td>@if(isset($map->subject)){{$map->subject->subject_name}} ({{$map->subject->subject_id}})@endif</td>
+                                <td>@if(isset($map->chapter)){{$map->chapter->chapter_name}} ({{$map->chapter->chapter_id}})@endif</td>
                                 <td>
                                     <div class="custom-control custom-switch">
                                         <input type="checkbox"  class="custom-control-input" id="customSwitch{{ $map->id }}"  value="{{ $map->id }}" onclick="subject_chapter_mappingStatus(this.value)" @if($map->is_active==1) checked @endif>

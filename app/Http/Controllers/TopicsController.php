@@ -15,7 +15,12 @@ class TopicsController extends Controller
     {
         $chapterList  = Chapter::where('is_active',1)->get();
         $topicList    = Topic::get();
-        return view('settings.topic',compact('topicList','chapterList'));
+        $chapters  = Topic::select('chapter_id')->distinct()->get();
+        foreach($chapters as $chapter)
+        {
+            $chapter->chapter_data = Chapter::select('id','chapter_name')->where('id',$chapter->chapter_id)->first();
+        }
+        return view('settings.topic',compact('topicList','chapterList','chapters'));
     }
     public function add_topic(Request $request)
     {
@@ -188,5 +193,22 @@ class TopicsController extends Controller
             </div>
         </div>';
         echo $output;
+    }
+
+    public function get_chapter_topic(Request $request) 
+    {
+        $id =$request->id;
+        $result = Topic::where('chapter_id',$id)->get();  
+        foreach($result as $res)
+        {
+            $res->chapter = $res->getChapter['chapter_name'];
+            if($res->is_active == 1)
+            {
+                $res->active = "Active";
+            } else {
+                $res->active = "Inactive";
+            }
+        }     
+        return $result;
     }
 }
