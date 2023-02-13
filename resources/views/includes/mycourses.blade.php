@@ -798,6 +798,8 @@ $(document).ready(function()
 {
     $('.modal').on('hidden.bs.modal', function() {
 		$(this).find('form')[0].reset();
+        $(this).find('form').parsley().reset();
+        $(this).removeData('bs.modal');
 		var frmName = $(this).find('form')[0].name;
 		if(frmName == "addcontentform")
 		{
