@@ -1561,5 +1561,56 @@ function updateTrueOrFalse()
 //     window.location.href = '/tofStatus/' + value;
 // }
 
+function deleteDocument(id ,topic_id)
+{
+	Swal.fire({
+  title: 'Are you sure?',
+  text: "File permanently delete!",
+  icon: 'warning',
+  showCancelButton: true,
+  confirmButtonColor: '#3085d6',
+  cancelButtonColor: '#d33',
+  confirmButtonText: 'Yes, delete it!'
+}).then((result) => {
+	
+  if (result.value) 
+  {
+        $.ajax({
+            type: "POST",
+            cache:false,
+            async: false,
+            url: "{{ route('delete_file') }}",
+            data: { id:id , _token: '{{csrf_token()}}'},
+           
+            success: function(response) {
+            	if(response.data =='success')
+            	{
+            		new PNotify({
+	                    title: 'Success',
+	                    text:  response.msg,
+	                    type: 'success',
+	                    delay: 1000
+                	});
+        	    console.log(topic_id);
+                	get_topic_content(topic_id);
+
+            	}
+            	else
+            	{
+            		new PNotify({
+	                    title: 'Error',
+	                    text: response.msg,
+	                    type: 'error',
+	                    delay: 2000
+                });
+            	}
+
+            }
+        });
+    
+  }
+});
+}
+
 </script>
 @endsection

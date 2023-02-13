@@ -136,3 +136,4 @@ Route::post('/submit_chaptermapping', [App\Http\Controllers\SubjectChapterContro
 Route::any('/subject_chapter_mappingStatus/{mappingid?}', [App\Http\Controllers\SubjectChapterController::class, 'mappingStatus'])->name('chapter_mappingStatus');
 Route::post('/edit_chapter_mapping',[\App\Http\Controllers\SubjectChapterController::class, 'edit_chapter_mapping'])->name('edit_chapter_mapping');
 
+Route::post('delete_file', [App\Http\Controllers\MycoursesController::class, 'delete_doc'])->name('delete_file');

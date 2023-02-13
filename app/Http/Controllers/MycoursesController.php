@@ -88,7 +88,7 @@ class MycoursesController extends Controller
 							<?php foreach($videos as $video)
 								{
 									echo '<tr><td>'.$video->video_name.'</td><td>'.$video->video_link. '</td><td><span style="float:right;" id="edit_video'.$video->id.'" class="edit_icon ml-2" onclick="editVideo('.$video->id.')"  data-is-active="'.$video->is_active.'" data-video-link="'.$video->video_link.'"  data-video_name="'.$video->video_name.'"  data-topic-id="'.$topic->id.'"    data-toggle="modal" data-id="'.$video->id.'">
-										<img class="menuicon tbl_editbtn" src="'.asset("app-assets/assets/images/edit.svg").'" >&nbsp;</span></td></tr>';
+										<img class="menuicon tbl_editbtn" src="'.asset("app-assets/assets/images/edit.svg").'" >&nbsp;</span> </td></tr>';
 								}
 							?>
 						</table>
@@ -106,7 +106,7 @@ class MycoursesController extends Controller
 							<?php foreach($documents as $document)
 							{
 								echo '<div class="col pb-2 border-bottom"><a onclick="viewDocument('.$document->id.')" style="cursor: pointer;">'.$document->doc_name.'</a><span id="edit_document'.$document->id.'" class="edit_icon ml-2" onclick="editDocument('.$document->id.')" data-is-active="'.$document->is_active.'" data-topic-id="'.$topic->id.'" data-toggle="modal" data-id="'.$document->id.'">
-									<img class="menuicon tbl_editbtn" src="'.asset("app-assets/assets/images/edit.svg").'" >&nbsp;</span></div>';
+									<img class="menuicon tbl_editbtn" src="'.asset("app-assets/assets/images/edit.svg").'" >&nbsp; </span><img class="menuicon pl-1"  style="cursor:pointer;" onclick="deleteDocument('.$document->id.','.$topic->id.')"" src="'.asset("app-assets/assets/images/trash.svg").'" ></div>';
 							}
 							?>
 						</div>
@@ -660,5 +660,20 @@ class MycoursesController extends Controller
             MCQ::where('id', $tofid)->update(['is_active' => 1]);
         }
         return redirect()->back()->with('success', "Status Changed Successfully!");
+    }
+    public function delete_doc(Request $request)
+    {
+    	$id = $request->id;
+    	$res = TopicDocument::where('id',$id)->delete();
+    	if($res)
+		{
+			return response()->json(['data'=>'success','msg'=>'Document Deleted Successfully!']);
+		}
+		else 
+		{
+			return response()->json(['data'=>'error','msg'=>$validator->errors()->all()]);
+		}
+
+
     }
 }
